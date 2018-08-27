@@ -1,0 +1,38 @@
+%Macro for 'where'-enviroment was improved by Andrea and Niels :-)
+
+%-----------UNITS-------------------------------------------
+\newcommand{\unit}[1]{&& \left[\si{#1}\right]}
+%
+%\newcommand{\unit}[1]{[\si{#1}]}            %<<| Use these if you want equations to be
+%\newcommand{\eq}[2]{&&\si{#1} &= \si{#2}&&} %<<| centered.. .. will appear scrambled
+%                                            %  | from one equation to the next though..
+%                                            %  | and does not work with long equations.. :/
+%
+%-----------------------------------------------------------
+
+%-----------WHERE ENVIRONMENT-------------------------------
+\newenvironment{where}{\leavevmode{\parindent=1em\indent} Where:\\}{}
+\newcommand{\va}[3]
+{
+  \begin{tabular}{p{20pt} p{40pt} p{290pt} l}
+    & { $#1$ } & { #2 } & \ifthenelse{\isempty{ #3 }}  {}  {[{\si{#3}}]} \\
+  \end{tabular}\\
+}
+%-----------------------------------------------------------
+
+%Vertical line in equations ie. |_x=y (whereTwo stacks two equalities at the line)
+\newcommand{\whereOne}[1]{ \left.\rule{0cm}{.7cm}\right\vert\rule{0cm}{.7cm}_{\substack{\rule{0cm}{.28cm}\\ #1 }} }
+\newcommand{\whereTwo}[2]{ \left.\rule{0cm}{.7cm}\right\vert\rule{0cm}{.7cm}_{\substack{#1 \rule{0cm}{.2cm}\\\vspace{-.1cm}\\ #2}} }
+\newcommand{\whereThree}[3]{ \left.\rule{0cm}{1.3cm}\right\vert\rule{0cm}{1.3cm}_{\substack{\\\vspace{-.1cm}\\ #1 \rule{0cm}{.2cm}\\\vspace{-.1cm}\\ #2 \rule{0cm}{.2cm}\\\vspace{-.1cm}\\ #3}} }
+
+%-----------TikZ SETTINGS-----------------------------------
+\tikzset{
+  block/.style    = {draw, thick, rectangle,
+                     minimum height = 2.1em,
+                     minimum width = 1.7em},
+  sum/.style      = {draw, circle, inner sep=3pt} %<--Adder
+}
+%-----------------------------------------------------------
+
+%------------VECTORS----------------------------------------
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}

@@ -1,0 +1,163 @@
+\input{setup/preamble.tex}% package inclusion and set up of the document
+%
+\input{setup/macros.tex}% my new macros
+%
+%
+\fancypagestyle{lscape}{% 
+  \fancyhf{} % clear all header and footer fields 
+  \fancyfoot[LE]{%
+    \begin{textblock}{20}(1,5){\rotatebox{90}{\leftmark}}\end{textblock}
+    \begin{textblock}{1}(13,10.5){\rotatebox{90}{\thepage}}\end{textblock}}
+  \fancyfoot[LO] {%
+    \begin{textblock}{1}(13,10.5){\rotatebox{90}{\thepage}}\end{textblock}
+    \begin{textblock}{20}(1,13.25){\rotatebox{90}{\rightmark}}\end{textblock}}
+  \renewcommand{\headrulewidth}{0pt} 
+  \renewcommand{\footrulewidth}{0pt}}
+
+\setlength{\TPHorizModule}{1.5cm}
+\setlength{\TPVertModule}{1.4cm}
+
+\begin{document}
+%%% Prereport %%%
+%\setlength\cftaftertoctitleskip{2pt}
+%\setlength\cftafterloftitleskip{6pt}
+%\setlength\cftafterlottitleskip{6pt}
+\selectlanguage{english}
+%\title{Cubli}
+%
+%%% Frontmatter Settings %%%
+%\pagestyle{empty} %disable headers and footers
+%\pagenumbering{roman} %use roman page numbering in the frontmatter I II...
+%\fancyfoot[RE,LO]{} %page number on all pages
+%\fancyfoot[LE,RO]{\thepage}
+%\fancyhead[LE,LO,RE,RO]{}
+
+%%% Introductory Formalities %%%
+%\includepdf[pages={1}]{formalities/frontpage.pdf}
+%\include{chapters/frontpage}
+%\pagestyle{fancy}
+%\include{formalities/kolofon}
+%\input{formalities/titleSheet.tex}
+%%% Preface %%%
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5\input{formalities/preface.tex}
+%
+%\pdfbookmark[0]{Table of Contents}{label: tableOfCentents}
+%\tableofcontents
+%\cleardoublepage
+%
+%
+%%% Mainmatter Settings %%%
+%\pagenumbering{arabic} %use arabic page numbering in the mainmatter
+%\fancyfoot[RO,LE]{\thepage \text{ of} \pageref{LastPage}}
+%\fancyfoot[RE,LO]{}
+%\fancyhead[RE,LO]{}
+%\fancyhead[RE,LO]{\color{aaublue}\small\nouppercase\leftmark} %even page - chapter title
+%\pagestyle{fancy}
+%
+%---------- CORRECTIONS ---------------------------------------- corrections
+\pagenumbering{gobble}
+\newgeometry{hmargin=1.3cm,vmargin=1.3cm}
+\thispagestyle{lscape}
+\pagestyle{lscape}
+\begin{landscape}
+  \input{content/ganttChart.tex}
+\end{landscape}
+
+\restoregeometry
+\pagestyle{headings}
+
+%---------- Chapter 1 ---------------------------------------- Problem Description
+%\input{chapters/chapter1/problemDescription.tex}
+%
+%%% PART 1 %%%
+%\part{System and Stabilization}
+%
+%---------- Chapter 1 ---------------------------------------- Introduction
+%\input{chapters/chapter1/introduction.tex}
+%
+%---------- Chapter 2 ---------------------------------------- The System
+%\input{chapters/chapter1/aChapters1.tex}
+%\input{chapters/chapter1/systemSetup.tex}
+%\input{chapters/chapter1/hardware.tex}
+%
+%---------- Chapter 4 ---------------------------------------- Modelling
+%\input{chapters/chapter1/model.tex}
+%\input{chapters/chapter1/newtonsMethod.tex}
+%\input{chapters/chapter1/energyMethod.tex}
+%\input{chapters/chapter1/frictionModel.tex}
+%\input{chapters/chapter1/parameters.tex}
+%
+%\input{chapters/chapter1/modelVerification.tex}
+%\input{chapters/chapter1/nonlinearAnalysis.tex}
+%
+%---------- Chapter 5 ---------------------------------------- Nonlinear Control
+%\input{chapters/chapter2/nonlinearControl.tex}
+%\input{chapters/chapter2/systemTransformation.tex}
+%\input{chapters/chapter2/slidingMode.tex}
+%
+%%% PART 2 %%%
+%\part{Phase Plane Trajectory Planning}
+%
+%---------- Chapter 6 ---------------------------------------- Trajectory Planning
+%\input{chapters/chapter2/aChapters2.tex}
+%\input{chapters/chapter2/successiveTasks.tex}
+%\input{chapters/chapter2/firstTrajectory.tex}
+%\input{chapters/chapter2/secondTrajectory.tex}
+%\input{chapters/chapter2/thirdTrajectory.tex}
+%
+%---------- Chapter 3 ----------------------------------------
+%\input{chapters/chapter3/aChapters3.tex}
+%
+%%% PART 2 %%%
+%\part{Design \& Implementation}
+%---------- Chapter 4 ---------------------------------------- Modelling
+%\input{chapters/chapter4/aChapters4.tex}
+%
+%---------- Chapter 5 ---------------------------------------- Control
+%\input{chapters/chapter5/aChapters5.tex}
+%
+%%% PART 3 %%%
+%\part{Test \& Conclusion}
+%\input{chapters/aAcceptanceTest/AcceptanceTest}
+%\input{chapters/bConclusion/conclusion}
+%\input{chapters/cDiscussion/discussion.tex}
+%
+%%% Setup for Appendix and Bibliography %%%
+%\bookmarksetup{startatroot}
+%\addtocontents{toc}{\bigskip}
+%\newpage
+%\fancyhead[RO]{\color{aaublue}\small Appendix \nouppercase\rightmark} %even page - chapter title
+%\fancyhead[L]{\color{aaublue}\small Appendix \nouppercase\rightmark} %uneven page - section title
+%\fancyhead[R,LO]{}
+%\titleformat{\section}[hang]{\Large\bfseries}{\thesection\hsp\textcolor{aaublue}{|}\hsp}{0pt}{\Large\bfseries}
+%\renewcommand{\thesection}{\Alph{section}}
+%\setcounter{section}{0}
+
+%%% APPENDIX %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\part*{Appendix}
+
+%\addcontentsline{toc}{chapter}{Appendix}
+%\chapter*{Appendix}
+%---------- Appendix A ---------------------------------------- Test Title
+%\input{appendix/aTest.tex}
+
+%---------- Appendix B ---------------------------------------- Test Title
+%\input{appendix/bTest.tex}
+
+%----------Appendix C ---------------------------------------- Test Title
+%\input{appendix/cTest.tex}
+
+%---------- Appendix D ---------------------------------------- Test Title
+%\input{appendix/dTest.tex}
+
+%%% BIBLIOGRAPHY %%%
+%\printbibliography
+
+%%% LIST OF CORRECTIONS %%%
+%\listoffixmes
+
+%\end{adjustwidth}
+%\vfill\eject
+%}
+\end{document}
