@@ -1,0 +1,165 @@
+%
+%\documentclass[handout]{beamer}
+%
+%\mode<handout>
+%{
+%  \usepackage{pgf}
+%  \usepackage{pgfpages}
+%  
+%  \pgfpagesdeclarelayout{4 on 1 boxed}
+%  {
+%    \edef\pgfpageoptionheight{\the\paperheight} 
+%    \edef\pgfpageoptionwidth{\the\paperwidth}
+%    \edef\pgfpageoptionborder{0pt}
+%  }
+%  {
+%    \pgfpagesphysicalpageoptions
+%    {%
+%      logical pages=4,%
+%      physical height=\pgfpageoptionheight,%
+%      physical width=\pgfpageoptionwidth%
+%    }
+%    \pgfpageslogicalpageoptions{1}
+%    {%
+%      %border code=\pgfsetlinewidth{2pt}\pgfstroke,%
+%      %border shrink=\pgfpageoptionborder,%
+%      resized width=.44\pgfphysicalwidth,%
+%      resized height=.44\pgfphysicalheight,%
+%      center=\pgfpoint{.25\pgfphysicalwidth}{.75\pgfphysicalheight}%
+%    }%
+%    \pgfpageslogicalpageoptions{2}
+%    {%
+%      %border code=\pgfsetlinewidth{2pt}\pgfstroke,%
+%      %border shrink=\pgfpageoptionborder,%
+%      resized width=.44\pgfphysicalwidth,%
+%      resized height=.44\pgfphysicalheight,%
+%      center=\pgfpoint{.75\pgfphysicalwidth}{.75\pgfphysicalheight}%
+%    }%
+%    \pgfpageslogicalpageoptions{3}
+%    {%
+%      %border code=\pgfsetlinewidth{2pt}\pgfstroke,%
+%      %border shrink=\pgfpageoptionborder,%
+%      resized width=.44\pgfphysicalwidth,%
+%      resized height=.44\pgfphysicalheight,%
+%      center=\pgfpoint{.25\pgfphysicalwidth}{.25\pgfphysicalheight}%
+%    }%
+%    \pgfpageslogicalpageoptions{4}
+%    {%
+%      %border code=\pgfsetlinewidth{2pt}\pgfstroke,%
+%      %border shrink=\pgfpageoptionborder,%
+%      resized width=.44\pgfphysicalwidth,%
+%      resized height=.44\pgfphysicalheight,%
+%      center=\pgfpoint{.75\pgfphysicalwidth}{.25\pgfphysicalheight}%
+%    }%
+%  }
+%  
+%  
+%  \pgfpagesuselayout{4 on 1 boxed}[a4paper, landscape]
+%  \nofiles
+%}
+
+
+
+%-------handout-option--------------------------
+%  add the handout-option to limit the number  %
+%  of slides when printing for handout         %
+%  (this affects the \only-environment)        %
+%  \documentclass[10pt,handout]{beamer}        %
+%-----------------------------------------------
+\documentclass[10pt]{beamer}
+\usetheme[
+%%% options passed to the outer theme
+%    progressstyle=movCircCnt,   %either fixedCircCnt, movCircCnt, or corner
+%    rotationcw,          % change the rotation direction from counter-clockwise to clockwise
+%    shownavsym          % show the navigation symbols
+  ]{AAUsimple}
+  
+% If you want to change the colors of the various elements in the theme, edit and uncomment the following lines
+% Change the bar and sidebar colors:
+%\setbeamercolor{AAUsimple}{fg=red!20,bg=red}
+%\setbeamercolor{sidebar}{bg=red!20}
+% Change the color of the structural elements:
+%\setbeamercolor{structure}{fg=red}
+% Change the frame title text color:
+%\setbeamercolor{frametitle}{fg=blue}
+% Change the normal text color background:
+%\setbeamercolor{normal text}{fg=black,bg=gray!10}
+% ... and you can of course change a lot more - see the beamer user manual.
+\usepackage{atbegshi}
+\usepackage{anyfontsize}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+\usepackage{helvet}
+\usepackage{tikz}
+
+% Defines new environments such as equation,
+% align and split 
+\usepackage{amsmath}
+\usepackage{relsize}
+% Adds new math symbols
+\usepackage{amssymb}
+
+% colored hyperlinks
+\newcommand{\chref}[2]{%
+  \href{#1}{{\usebeamercolor[bg]{AAUsimple}#2}}%
+}
+
+\begin{document}
+
+\title{\large{ Sliding Mode Stabilization and Phase Plane Trajectory Planning for a Cart Pendulum System } }
+
+\subtitle{ 
+           \vspace{3.5cm}
+          }  % could also be a conference name
+
+%\date{\today}
+%
+\author{
+    \footnotesize{\hspace{-10pt}by\\ Niels Skov Vestergaard}
+\tikz[remember picture,overlay] \node[opacity=0.2,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{figures/frontPage}};
+\clearpage  
+}  
+
+\pgfdeclareimage[height=1.5cm]{titlepagelogo}{AAUgraphics/aau_logo_new} % placed on the title page
+\titlegraphic{% is placed on the bottom of the title page
+    \pgfuseimage{titlepagelogo}
+    %  \hspace{1cm}\pgfuseimage{titlepagelogo2}
+}
+
+\input{macros.tex}
+
+% the titlepage
+%{\aauwavesbg%
+\begin{frame}[plain,noframenumbering] % the plain option removes the header from the title page
+  \titlepage
+\end{frame}%}
+
+
+%\input{Agenda1.tex}
+%\input{Slides1.tex}
+
+%\input{Agenda2.tex}
+%\input{Slides2.tex}
+
+%\input{Agenda3.tex}
+%\input{Slides3.tex}
+
+\input{Agenda.tex}
+\input{nonlinearControlStrategies.tex}
+
+%\input{Agenda4.tex}
+%\input{Slides4.tex}
+
+%\input{Agenda5.tex}
+%\input{Slides5.tex}
+
+%{\aauwavesbg
+\begin{frame}[plain,noframenumbering]
+    \finalpage{\large{ Sliding Mode Stabilization and Phase Plane Trajectory Planning for a Cart Pendulum System }}
+\end{frame}%}
+
+\end{document}

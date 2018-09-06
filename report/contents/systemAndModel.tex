@@ -1,0 +1,94 @@
+\chapter{System and Model}
+
+
+\section{System}
+Test setup \fxnote{real picture of system with arrows}
+
+As seen on \fxnote{figRef here} the belt is attacted by pulleys one of which is driven by a brushed Maxon 370356 DC motor\cite{maxonMotor}. An other of these maxon motors is mounted on the pendulum but is disconnected and just used as a bearing in this project. Both motors are fitted with an HEDS 5540 optical quadrature encoder allowing for relative position and angle of the cart and pendulum respectively \cite{avagoTechnologies}.
+
+The motor driving the belt is controlled using a Maxon ADS 50/10 motor controller configured in current control mode. The motor controller takes a $\pm$\SI{10}{V} input signal which then determines the armature current, $I_a$. \cite{maxonMotorController} 
+
+The primary control unit is a Teensy 3.6 microcontroller board. To program the board through the onboard USB connection a bootloader is used along with the Teensyduino add-on for the Arduino IDE. \cite{sprkfunTeensy}
+
+The encoders are decoded on a shield using Avago HCTL-2021-PLC decoders and read through an 8 bit parallel data bus on the microcontroller board resulting in 2000 tics pr. revolution. This ensures a resolution for the pendulum angle, $\theta$, of $2\pi/2000=$ \SI{\pi e-3} rad/tic and $2\pi r /2000=\nolinebreak 2\pi\cdot 0.028 /2000\approx$ \SI{0.088e-3} m/tic for the cart position, $x$.\cite{avagoDataSheet}
+
+The supply circuit on the microcontroller board is powered by 5V which is regulated to \SI{3.3}{V} resulting in a $0-$\SI{3.3}{V} range for the 12 bit analog output \cite{teensyDataSheet}. This output is used to provide the motor controller with an armature current reference, thus, the microcontroller analog output is amplified through the shield to meet the $\pm$\SI{10}{V} input requirement of the motor controller \cite{JHHorgensen}.
+
+The following relation between analog 12 bit output values, $\text{bit}_\text{DAC}$, from the microcontroller and armature current in the motor was found by a previous project group, \cite{JHHorgensen} %linear regression
+%
+\begin{flalign}
+  \text{bit}_\text{DAC} &= 105.78 \cdot i_{a} + 1970  \ \ \ . & 
+  \label{eq:Ia-bit}
+\end{flalign}
+
+The results of the force test \fxnote{vælg én?}
+\begin{flalign}
+  \text{bit}_\text{DAC} &= 111.9 \cdot i_{a} + 1970  \ \ \ , & 
+  \label{eq:Ia-bit-corrected}
+\end{flalign}
+
+All the system parameters used in the design are listed in \autoref{table:systemParameters}. It is assumed that all frictions in the system can be modeled as a combination of Coulomb and viscous frictions. Wires hanging from the cart are unmodeled and their weight along with that of the belt are contained in the estimation of the cart mass. 
+
+\begin{table}[H]
+  \begin{tabular}{|l|l|l|l|}
+    \hline %--------------------------------------------------------------------------------
+    \textbf{Parameter}        & \textbf{Notation} & \textbf{Quantity} & \textbf{Unit} \\
+    \hline %--------------------------------------------------------------------------------
+    Nominal current (max. continuous current) & $I_{\mathrm{N}}$ & \SI{4.58}         &  \si{A}             \\
+    \hline %--------------------------------------------------------------------------------
+    Torque constant                           & $\tau_m$  & \SI{93.4e-3}      &  \si{N\cdot m\cdot A^{-1}} \\
+    \hline %--------------------------------------------------------------------------------
+    Rod Length                &   $l$             &   \num{0.3235}    &  m            \\
+    \hline %--------------------------------------------------------------------------------
+    Rail Length               &   $l_r$           &   \num{0.89}      &  m            \\
+    \hline %--------------------------------------------------------------------------------
+    Pulley Radius             &   $r$             &   \num{0.028}     &  m            \\
+    \hline %--------------------------------------------------------------------------------
+    Pendulum Mass             &   $m$             &   \num{0.201}     &  kg           \\
+    \hline %--------------------------------------------------------------------------------
+    Cart Mass                 &   $M$             &   \num{5.273}     &  kg           \\
+    \hline %--------------------------------------------------------------------------------
+    Cart Coulomb Friction     &   $b_{c,c}$       &   \num{2.884}     &  N            \\
+    \hline %--------------------------------------------------------------------------------
+    Cart Viscous Friction     &   $b_{c,v}$       &   \num{1.680}     &  N$\cdot$m$^{-1}\cdot$s \\
+    \hline %--------------------------------------------------------------------------------
+    Pendulum Coulomb Friction &   $b_{p,c}$       &   \num{0.004}     &  N$\cdot$m              \\
+    \hline %--------------------------------------------------------------------------------
+    Pendulum Viscous Friction &   $b_{p,v}$       &   \num{0.4e-3}    &  N$\cdot$m$\cdot$s      \\
+    \hline %--------------------------------------------------------------------------------
+  \end{tabular}
+  \caption{The motor parameters, $I_{\mathrm{N}}$ and $\tau_m$, are given by maxon in \cite{maxonMotor}. The rod length is measured from the pendulum pivot point to the geometrical center of the pendulum. Pendulum mass, rod length, pulley radius and rail length are measured parameters, while cart mass is estimated same as all frictions. The estimations are performed by a previous project group \cite{JHHorgensen}.\label{table:systemParameters}}
+\end{table}
+
+\section{Model}
+The model is based on the general coordinates presented in \autoref{fig:mechanicalDrawing}.
+\begin{figure}[H]
+  \includegraphics[scale=.8]{figures/mechanicalDrawing}
+  \caption{Mechanical drawing of the system, where $\theta$ is the angle of the pendulum, $x$ is the position of the center of the cart along the rail, $F$ is the applied force and $g$ is the gravitational acceleration. It is indicated that friction is modeled between cart and rail as well as in the pendulum joint.}
+  \label{fig:mechanicalDrawing}
+\end{figure}
+The hight of the center of the cart is $l$ such that the pendulum mass center is positioned at zero hight at rest. It is assumed that the pendulum rod is rigid and massless and that the pendulum weights are a point mass at the geometrical center of the weights.\\
+The motor torque is given by direct relation to the armature current by the motor constant, $\tau_m = k_\tau i_a $, such that,
+\begin{flalign}
+F &= \tfrac{1}{r} k_\tau i_a       & \unit{N}  
+\label{eq:motorForce}
+\end{flalign}
+%
+It is well known that the potential energy, $U$, and the kinetic energy, $T$, are given by, \cite{RWisniewski}
+\begin{flalign}
+    U &= mgl( 1 + \cos \theta )   &  \unit{J}  \\
+    T &= \frac{1}{2} ( M + m ) \dot{x}^2 - m \dot{x} l \cos \theta \dot{\theta} + \frac{1}{2} m l^2 \dot{\theta}^2 \ \ \ , & \unit{J}
+  \label{eq:generalizedPotentialAndKinetic}
+\end{flalign}
+and that, by use of, \cite{RWisniewski}
+\begin{flalign}
+  \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \vec{\dot{q}}} - \frac{\partial \cal{L}}{\partial \vec{q}}  &=  \vec{Q} \ \ \ , &
+  \label{eq:energyMethodWith external forces}
+\end{flalign}
+where $\vec{q}=[ \theta\ \ x ]^{\mathrm{T}}$, $\vec{Q} = [\ -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c}\ \ \ \ \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c}\ ]^{\mathrm{T}}$ and $\cal{L}$ $ = T-U$, the dynamics of the system are found,
+\begin{flalign}
+    m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  &= -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} &  \unit{N \cdot m}  \\
+    ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ , &   \unit{N}
+  \label{eq:energyDerivedDynamicEquations}
+\end{flalign}
+where $\text{k}_\text{tanh}=250$ to approximate a sign-function using tanh.

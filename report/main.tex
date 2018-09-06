@@ -1,0 +1,90 @@
+\input{setup/preamble.tex}% package inclusion and set up of the document
+
+\input{setup/macros.tex}% my new macros
+
+\begin{document}
+%%% Prereport %%%
+\setlength\cftaftertoctitleskip{2pt}
+\setlength\cftafterloftitleskip{6pt}
+\setlength\cftafterlottitleskip{6pt}
+\selectlanguage{english}
+%\title{Cubli}
+
+%%% Frontmatter Settings %%%
+\pagestyle{empty} %disable headers and footers
+\pagenumbering{roman} %use roman page numbering in the frontmatter I II...
+\fancyfoot[RE,LO]{} %page number on all pages
+\fancyfoot[LE,RO]{\thepage}
+\fancyhead[LE,LO,RE,RO]{}
+
+%%% Introductory Formalities %%%
+%\includepdf[pages={1}]{formalities/frontpage.pdf}
+\include{contents/frontpage}
+\pagestyle{fancy}
+\include{formalities/kolofon}
+\input{formalities/titleSheet.tex}
+%%% Preface %%%
+%\cleardoublepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5\input{formalities/preface.tex}
+
+\pdfbookmark[0]{Table of Contents}{label: tableOfCentents}
+\tableofcontents
+\cleardoublepage
+
+
+%%% Mainmatter Settings %%%
+\pagenumbering{arabic} %use arabic page numbering in the mainmatter
+\fancyfoot[RO,LE]{\thepage \text{ of} \pageref{LastPage}}
+\fancyfoot[RE,LO]{}
+\fancyhead[RE,LO]{}
+\fancyhead[RE,LO]{\color{aaublue}\small\nouppercase\leftmark} %even page - chapter title
+\pagestyle{fancy}
+
+%---------- Chapter 1 ---------------------------------------- Introduction
+\input{contents/introduction.tex}
+
+%%% PART 1 %%%
+\part{Cart Pendulum}
+
+%---------- Chapter 2 ---------------------------------------- System and Model
+\input{contents/systemAndModel.tex}
+
+%---------- Chapter 3 ---------------------------------------- Stabilization
+
+
+%---------- Chapter 4 ---------------------------------------- Swing-Up
+
+
+%%% PART 2 %%%
+\part{Twin Pendulum}
+
+%---------- Chapter 1 ---------------------------------------- 
+
+
+
+%%% Setup for Appendix and Bibliography %%%
+\bookmarksetup{startatroot}
+\addtocontents{toc}{\bigskip}
+\newpage
+\fancyhead[RO]{\color{aaublue}\small Appendix \nouppercase\rightmark} %even page - chapter title
+\fancyhead[LE]{\color{aaublue}\small Appendix \nouppercase\rightmark} %uneven page - section title
+\fancyhead[RE,LO]{}
+\titleformat{\section}[hang]{\Large\bfseries}{\thesection\hsp\textcolor{aaublue}{|}\hsp}{0pt}{\Large\bfseries}
+\renewcommand{\thesection}{\Alph{section}}
+\setcounter{section}{0}
+
+%%% APPENDIX %%%
+
+\addcontentsline{toc}{chapter}{Appendix}
+
+%---------- Appendix A ---------------------------------------- Test Title
+%\input{appendix/.tex}
+
+
+%%% BIBLIOGRAPHY %%%
+\printbibliography
+
+%%% LIST OF CORRECTIONS %%%
+\listoffixmes
+
+\end{document}

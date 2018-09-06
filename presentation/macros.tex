@@ -1,0 +1,176 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%             UNITS, EQUATIONS AND TEXT             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%Macro for 'where'enviroment has been improved by Andrea :-)
+
+%Units:
+\newcommand{\unit}[1]{&& \left[\si{#1}\right]} %\newcommand{\unit}[1]{[\si{#1}]}             <<| Use these if you want equations to be
+\newcommand{\unitWh}[1]{[\si{#1}]}             %\newcommand{\eq}[2]{&&\si{#1} &= \si{#2}&&}  <<| centered.. .. will appear scrambled
+\newcommand{\numUnit}[1]{\ \si{#1}&}           %                                               | from one equation to the next though..
+%Equation:                                     %                                               | and does not work with long equations.. :/
+\newcommand{\eq}[2]{\si{#1} &= \si{#2}}
+\newcommand{\arw}{&& &\Updownarrow&&}
+\newcommand{\eqOne}[2]{\si{#1} &= \si{#2} &\nonumber\\}
+\newcommand{\eqTwo}[1]{&\ \ \ \ \si{#1}&}
+\newcommand{\eqThree}[1]{&\ \ \ \ \si{#1}&}
+%Text:
+\newcommand{\tx}[1]{\text{#1}}
+%Vectors
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+
+%Vertical line in equations ie. |_x=y (whereTwo stacks two equalities at the line)
+\newcommand{\whereOne}[1]{ \left.\rule{0cm}{.7cm}\right\vert\rule{0cm}{.7cm}_{\substack{\rule{0cm}{.28cm}\\ #1 }} }
+\newcommand{\whereTwo}[2]{ \left.\rule{0cm}{.7cm}\right\vert\rule{0cm}{.7cm}_{\substack{#1 \rule{0cm}{.2cm}\\\vspace{-.1cm}\\ #2}} }
+\newcommand{\whereThree}[3]{ \left.\rule{0cm}{1cm}\right\vert\rule{0cm}{1cm}_{\substack{\\\vspace{-.1cm}\\ #1 \rule{0cm}{.1cm}\\\vspace{-.1cm}\\ #2 \rule{0cm}{.1cm}\\\vspace{-.1cm}\\ #3}} }
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SETTING UP NOTE BOXES                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\specialcomment{note}{\[}{\]}
+%%{\begin{tcolorbox}
+%%                      [grow to right by  = 1.5 cm
+%%                      ]}{\vspace{-.3 cm}\end{tcolorbox}}
+%
+%\newcommand{\toggleNotes}[1]
+%{
+%  \ifthenelse{\equal{#1}{off}}{\excludecomment{note}}{}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 TIKZ SETTINGS                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usetikzlibrary{arrows.meta}
+\tikzset{
+  block/.style    = {draw, thick, rectangle,
+                     minimum height = 2.1em,
+                     minimum width = 1.7em},
+  sum/.style      = {draw, circle, inner sep=1.5pt},
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                  REFERENCES                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Chapter
+\newcommand{\Chapref}[1]{\emph{Chapter \ref{#1}}}
+\newcommand{\chapref}[1]{\emph{chapter \ref{#1}}}
+%Section
+\newcommand{\Secref}[1]{\emph{Section \ref{#1}}}
+\newcommand{\secref}[1]{\emph{section \ref{#1}}}
+%subSection
+\newcommand{\Subsecref}[1]{\emph{Subsection \ref{#1}}}
+\newcommand{\subsecref}[1]{\emph{subsection \ref{#1}}}
+%Appendix
+\newcommand{\Appref}[1]{\emph{Appendix \ref{#1}}}
+\newcommand{\appref}[1]{\emph{appendix \ref{#1}}}
+%Listings
+\newcommand{\Coderef}[1]{\emph{Listings: \ref{#1}}}
+\newcommand{\coderef}[1]{\emph{listings: \ref{#1}}}
+%Figure:
+\newcommand{\Figref}[1]{\emph{Figure \ref{#1}}}
+\newcommand{\figref}[1]{\emph{figure \ref{#1}}}
+%Table:
+\newcommand{\Tableref}[1]{\emph{Table \ref{#1}}}
+\newcommand{\tableref}[1]{\emph{table \ref{#1}}}
+
+%Expressions:
+\newcommand{\Expr}[1]{\emph{Expression (\ref{#1})}}
+\newcommand{\expr}[1]{\emph{expression (\ref{#1})}}
+
+%Equations:
+%1 equation:
+\newcommand{\Eqref}[1]{\emph{Equation (\ref{#1})}}
+\renewcommand{\eqref}[1]{\emph{equation (\ref{#1})}}
+%2 equations:
+\newcommand{\EqrefTwo}[2]{\emph{Equation (\ref{#1})} and \emph{(\ref{#2})}}
+\newcommand{\eqrefTwo}[2]{\emph{equation (\ref{#1})} and \emph{(\ref{#2})}}
+%3 equations:
+\newcommand{\EqrefThree}[3]{\emph{Equation (\ref{#1})}, \emph{(\ref{#2})} and \emph{(\ref{#3})}}
+\newcommand{\eqrefThree}[3]{\emph{equation (\ref{#1})}, \emph{(\ref{#2})} and \emph{(\ref{#3})}}
+%4 equations:
+\newcommand{\EqrefFour}[4]{\emph{Equation (\ref{#1})}, \emph{(\ref{#2})}, \emph{(\ref{#3})} and \emph{(\ref{#4})}}
+\newcommand{\eqrefFour}[4]{\emph{equation (\ref{#1})}, \emph{(\ref{#2})}, \emph{(\ref{#3})} and \emph{(\ref{#4})}}
+%5 equations:
+\newcommand{\EqrefFive}[5]{\emph{Equation (\ref{#1})}, \emph{(\ref{#2})}, \emph{(\ref{#3})}, \emph{(\ref{#4})} and \emph{(\ref{#5})}}
+\newcommand{\eqrefFive}[5]{\emph{equation (\ref{#1})}, \emph{(\ref{#2})}, \emph{(\ref{#3})}, \emph{(\ref{#4})} and \emph{(\ref{#5})}}
+%6 equations:
+\newcommand{\EqrefSix}[6]{\emph{Equation (\ref{#1})}, \emph{(\ref{#2})}, \emph{(\ref{#3})}, \emph{(\ref{#4})}, \emph{(\ref{#5})} and \emph{(\ref{#6})}}
+\newcommand{\eqrefSix}[6]{\emph{equation (\ref{#1})}, \emph{(\ref{#2})}, \emph{(\ref{#3})}, \emph{(\ref{#4})}, \emph{(\ref{#5})} and \emph{(\ref{#6})}}
+%7 equations:
+\newcommand{\EqrefSeven}[7]{\emph{Equation (\ref{#1})}, \emph{(\ref{#2})}, \emph{(\ref{#3})}, \emph{(\ref{#4})}, \emph{(\ref{#5})}, \emph{(\ref{#6})} and \emph{(\ref{#7})}}
+\newcommand{\eqrefSeven}[7]{\emph{equation (\ref{#1})}, \emph{(\ref{#2})}, \emph{(\ref{#3})}, \emph{(\ref{#4})}, \emph{(\ref{#5})}, \emph{(\ref{#6})} and \emph{(\ref{#7})}}
+
+
+\newcommand{\newpar}{\par \vspace{0.4cm}}
+
+
+%\usepackage{xifthen}
+%
+%\newenvironment{where}{\indent Where:\\}{}
+%\newcommand{\va}[3]
+%{
+%  \hspace{-18mm}
+%  \begin{tabular}{p{35pt} p{345pt} l}
+%    { $#1$ } & { #2 } & \ifthenelse{\isempty{ #3 }}  {}  {\si{[#3]}}
+%  \end{tabular}
+%}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\usetikzlibrary{calc}
+\usetikzlibrary{backgrounds}
+\newcommand{\showgrid}{%
+  \AtBeginShipoutNext{\AtBeginShipoutAddToBoxForeground{%
+      \begin{tikzpicture}
+        [
+          overlay,
+          remember picture,
+          inner sep=0pt,
+          outer sep=0pt,
+          minor line/.style={help lines, draw=gray!25, on background layer},
+          major line/.style={help lines, draw=gray},
+        ]
+        \foreach \step in {0,...,210} {
+          \pgfmathsetmacro\gridlineconfig{ifthenelse(equal(int(mod(\step,10)),0),"major line","minor line")}%
+          \draw [\gridlineconfig] ($(current page.north west) + (\step mm,0)$) -- ($(current page.south west) + (\step mm,0)$);
+        }
+        \foreach \step in {0,...,297} {
+          \pgfmathsetmacro\gridlineconfig{ifthenelse(equal(int(mod(\step,10)),0),"major line","minor line")}%
+          \draw [\gridlineconfig] ($(current page.north west) - (0,\step mm)$) -- ($(current page.north east) - (0,\step mm)$);
+          \node [anchor=north] at ($ (current page.north west) + (\step mm,0) $) {\fontsize{1}{2}\selectfont \step};
+          \node [anchor=west] at ($ (current page.north west) - (0,\step mm) $) {\fontsize{1}{2}\selectfont \step};
+        }
+      \end{tikzpicture}
+    }%
+  }%
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

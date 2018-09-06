@@ -1,0 +1,184 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.9 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{maxonMotor}{online}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{month}{8}
+      \field{title}{Maxon Motor}
+      \field{year}{2018}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.maxonmotor.com/maxon/view/product/motor/dcmotor/re/re50/370356
+      \endverb
+      \verb{url}
+      \verb https://www.maxonmotor.com/maxon/view/product/motor/dcmotor/re/re50/370356
+      \endverb
+    \endentry
+    \entry{avagoTechnologies}{online}{}
+      \name{author}{1}{}{%
+        {{hash=6e7d9c1eb7ebd093be40b8cafe239792}{%
+           family={Technologies},
+           familyi={T\bibinitperiod},
+           given={Avago},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{6e7d9c1eb7ebd093be40b8cafe239792}
+      \strng{fullhash}{6e7d9c1eb7ebd093be40b8cafe239792}
+      \strng{bibnamehash}{6e7d9c1eb7ebd093be40b8cafe239792}
+      \strng{authorbibnamehash}{6e7d9c1eb7ebd093be40b8cafe239792}
+      \strng{authornamehash}{6e7d9c1eb7ebd093be40b8cafe239792}
+      \strng{authorfullhash}{6e7d9c1eb7ebd093be40b8cafe239792}
+      \field{sortinit}{2}
+      \field{sortinithash}{cbff857e587bcb4635511624d773949e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{month}{8}
+      \field{title}{HEDM-55xx/560x \& HEDS-55xx/56xx}
+      \field{year}{2018}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.infineon.com/dgdl/Infineon-Encoder_HEDS-5540-A14-AP-v01_00-EN.pdf?fileId=5546d46147a9c2e40147d3d593970357
+      \endverb
+      \verb{url}
+      \verb https://www.infineon.com/dgdl/Infineon-Encoder_HEDS-5540-A14-AP-v01_00-EN.pdf?fileId=5546d46147a9c2e40147d3d593970357
+      \endverb
+    \endentry
+    \entry{maxonMotorController}{online}{}
+      \field{sortinit}{3}
+      \field{sortinithash}{a4b52e5432884761f50fb9571273b93e}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{month}{8}
+      \field{title}{Maxon Controller}
+      \field{year}{2018}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.maxonmotor.com/maxon/view/product/control/Servoverstaerker-4-Q-DC/201583
+      \endverb
+      \verb{url}
+      \verb https://www.maxonmotor.com/maxon/view/product/control/Servoverstaerker-4-Q-DC/201583
+      \endverb
+    \endentry
+    \entry{sprkfunTeensy}{online}{}
+      \field{sortinit}{4}
+      \field{sortinithash}{11cdaee3b18e01d77f3f428b13c1fc76}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{month}{8}
+      \field{title}{sparkfun Teensy 3.6}
+      \field{year}{2018}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.sparkfun.com/products/14057
+      \endverb
+      \verb{url}
+      \verb https://www.sparkfun.com/products/14057
+      \endverb
+    \endentry
+    \entry{avagoDataSheet}{online}{}
+      \field{sortinit}{5}
+      \field{sortinithash}{3c19c3776b658b3558e9e2e4840c01e2}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{month}{8}
+      \field{title}{HCTL-2021 PLC Avago Datasheet}
+      \field{year}{2018}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://datasheet.octopart.com/HCTL-2021-PLC-Avago-datasheet-7580518.pdf
+      \endverb
+      \verb{url}
+      \verb https://datasheet.octopart.com/HCTL-2021-PLC-Avago-datasheet-7580518.pdf
+      \endverb
+    \endentry
+    \entry{teensyDataSheet}{online}{}
+      \field{sortinit}{6}
+      \field{sortinithash}{57e57fb8451e7fcfa45d1e069f6d3136}
+      \field{labeltitlesource}{title}
+      \field{day}{15}
+      \field{month}{8}
+      \field{title}{K66 Sub-Family Reference Manual}
+      \field{year}{2018}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://cdn.sparkfun.com/datasheets/Dev/Arduino/Boards/K66P144M180SF5RMV2.pdf
+      \endverb
+      \verb{url}
+      \verb https://cdn.sparkfun.com/datasheets/Dev/Arduino/Boards/K66P144M180SF5RMV2.pdf
+      \endverb
+    \endentry
+    \entry{JHHorgensen}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=60ace5e8e7e0efd5b325396bf8876ea1}{%
+           family={Jesper\bibnamedelimb H.\bibnamedelimi Hørgensen},
+           familyi={J\bibinitperiod\bibinitdelim H\bibinitperiod\bibinitdelim H\bibinitperiod},
+           given={Jonas\bibnamedelima Ørndrup},
+           giveni={J\bibinitperiod\bibinitdelim Ø\bibinitperiod}}}%
+      }
+      \strng{namehash}{60ace5e8e7e0efd5b325396bf8876ea1}
+      \strng{fullhash}{60ace5e8e7e0efd5b325396bf8876ea1}
+      \strng{bibnamehash}{60ace5e8e7e0efd5b325396bf8876ea1}
+      \strng{authorbibnamehash}{60ace5e8e7e0efd5b325396bf8876ea1}
+      \strng{authornamehash}{60ace5e8e7e0efd5b325396bf8876ea1}
+      \strng{authorfullhash}{60ace5e8e7e0efd5b325396bf8876ea1}
+      \field{sortinit}{7}
+      \field{sortinithash}{c818dd9105a2852444fc9f5e145c294e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{subtitle}{Master Thesis}
+      \field{title}{Non-linear Control and Machine Learning on an Inverted Pendulum on a Cart}
+      \field{year}{2018}
+      \field{dateera}{ce}
+    \endentry
+    \entry{RWisniewski}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=a00489ea3bb0ced33e6b1718721f0467}{%
+           family={Wisniewski},
+           familyi={W\bibinitperiod},
+           given={Rafael},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Aalborg University}%
+      }
+      \strng{namehash}{a00489ea3bb0ced33e6b1718721f0467}
+      \strng{fullhash}{a00489ea3bb0ced33e6b1718721f0467}
+      \strng{bibnamehash}{a00489ea3bb0ced33e6b1718721f0467}
+      \strng{authorbibnamehash}{a00489ea3bb0ced33e6b1718721f0467}
+      \strng{authornamehash}{a00489ea3bb0ced33e6b1718721f0467}
+      \strng{authorfullhash}{a00489ea3bb0ced33e6b1718721f0467}
+      \field{sortinit}{1}
+      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{subtitle}{Lagrange Mechanics}
+      \field{title}{Mechanical Systems II}
+      \field{year}{2013}
+      \field{dateera}{ce}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
