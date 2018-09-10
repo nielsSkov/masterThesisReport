@@ -11,10 +11,10 @@
 %-----------------------------------------------------------
 
 %-----------WHERE ENVIRONMENT-------------------------------
-\newenvironment{where}{\leavevmode{\parindent=1em\indent} Where:\\}{}
+\newenvironment{where}{\leavevmode{\parindent=3.2cm\indent} where,\\}{}
 \newcommand{\va}[3]
 {
-  \begin{tabular}{p{20pt} p{40pt} p{290pt} l}
+  \begin{tabular}{p{3.4cm} p{40pt} p{290pt} l}
     & { $#1$ } & { #2 } & \ifthenelse{\isempty{ #3 }}  {}  {[{\si{#3}}]} \\
   \end{tabular}\\
 }

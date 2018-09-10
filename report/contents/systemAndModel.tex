@@ -1,32 +1,38 @@
 \chapter{System and Model}
-
+A brief overview of the relevant system for \textit{Part 1} is presented in this chapter along with a model of the system.
 
 \section{System}
-Test setup \fxnote{real picture of system with arrows}
+A setup is provided by the Control and Automation Department at Aalborg University (AAU), see \autoref{fig:systemSetup}.
 
-As seen on \fxnote{figRef here} the belt is attacted by pulleys one of which is driven by a brushed Maxon 370356 DC motor\cite{maxonMotor}. An other of these maxon motors is mounted on the pendulum but is disconnected and just used as a bearing in this project. Both motors are fitted with an HEDS 5540 optical quadrature encoder allowing for relative position and angle of the cart and pendulum respectively \cite{avagoTechnologies}.
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{systemSetup}
+  \caption{The setup provided by AAU. The motor controller in use is not directly visible in this picture as it is mounted behind the power supply.}
+  \label{fig:systemSetup}
+\end{figure}
 
-The motor driving the belt is controlled using a Maxon ADS 50/10 motor controller configured in current control mode. The motor controller takes a $\pm$\SI{10}{V} input signal which then determines the armature current, $I_a$. \cite{maxonMotorController} 
+As seen in \autoref{fig:systemSetup} the belt is attracted by pulleys one of which is driven by a brushed Maxon 370356 DC motor \cite{maxonMotor}. An other of these maxon motors is mounted on the pendulum but is disconnected and just used as a bearing in this project. Both motors are fitted with an HEDS 5540 optical quadrature encoder allowing for relative position and angle of the cart and pendulum respectively \cite{avagoTechnologies}.
 
-The primary control unit is a Teensy 3.6 microcontroller board. To program the board through the onboard USB connection a bootloader is used along with the Teensyduino add-on for the Arduino IDE. \cite{sprkfunTeensy}
+The motor driving the belt is controlled using a Maxon ADS 50/10 motor controller configured in current control mode. The motor controller takes a $\pm$\SI{10}{V} input signal which then determines the armature current, $i_a$, see \cite{maxonMotorController}.
 
-The encoders are decoded on a shield using Avago HCTL-2021-PLC decoders and read through an 8 bit parallel data bus on the microcontroller board resulting in 2000 tics pr. revolution. This ensures a resolution for the pendulum angle, $\theta$, of $2\pi/2000=$ \SI{\pi e-3} rad/tic and $2\pi r /2000=\nolinebreak 2\pi\cdot 0.028 /2000\approx$ \SI{0.088e-3} m/tic for the cart position, $x$.\cite{avagoDataSheet}
+The primary control unit is a Teensy 3.6 microcontroller board. To program the board through the onboard USB connection a bootloader is used along with the Teensyduino add-on for the Arduino IDE \cite{sprkfunTeensy}.
+
+The encoders are decoded on a shield using Avago HCTL-2021-PLC decoders and read through an 8 bit parallel data bus on the microcontroller board resulting in 2000 tics pr. revolution. This ensures a resolution for the pendulum angle, $\theta$, of $2\pi/2000=$ \SI{\pi e-3} rad/tic and $2\pi r /2000=\nolinebreak 2\pi\cdot 0.028 /2000\approx$ \SI{0.088e-3} m/tic for the cart position, $x$, see \cite{avagoDataSheet}.
 
 The supply circuit on the microcontroller board is powered by 5V which is regulated to \SI{3.3}{V} resulting in a $0-$\SI{3.3}{V} range for the 12 bit analog output \cite{teensyDataSheet}. This output is used to provide the motor controller with an armature current reference, thus, the microcontroller analog output is amplified through the shield to meet the $\pm$\SI{10}{V} input requirement of the motor controller \cite{JHHorgensen}.
 
-The following relation between analog 12 bit output values, $\text{bit}_\text{DAC}$, from the microcontroller and armature current in the motor was found by a previous project group, \cite{JHHorgensen} %linear regression
+The following relation between analog 12 bit output values, $\text{bit}_\text{DAC}$, from the microcontroller and armature current in the motor was found by a previous project group \cite{JHHorgensen}, %linear regression
 %
 \begin{flalign}
-  \text{bit}_\text{DAC} &= 105.78 \cdot i_{a} + 1970  \ \ \ . & 
+  && \text{bit}_\text{DAC} &= 105.78 \cdot i_{a} + 1970  \ \ \ , &&&
   \label{eq:Ia-bit}
 \end{flalign}
-
-The results of the force test \fxnote{vælg én?}
+%
+and as a result of a force test, see \cite{NSVestergaard}, \autoref{eq:Ia-bit} was corrected to,
 \begin{flalign}
-  \text{bit}_\text{DAC} &= 111.9 \cdot i_{a} + 1970  \ \ \ , & 
+  && \text{bit}_\text{DAC} &= 111.9 \cdot i_{a} + 1970  \ \ \ , &&&
   \label{eq:Ia-bit-corrected}
 \end{flalign}
-
+which is the relation used in this project.
 All the system parameters used in the design are listed in \autoref{table:systemParameters}. It is assumed that all frictions in the system can be modeled as a combination of Coulomb and viscous frictions. Wires hanging from the cart are unmodeled and their weight along with that of the belt are contained in the estimation of the cart mass. 
 
 \begin{table}[H]
@@ -61,34 +67,118 @@ All the system parameters used in the design are listed in \autoref{table:system
 \end{table}
 
 \section{Model}
-The model is based on the general coordinates presented in \autoref{fig:mechanicalDrawing}.
+The model is based on the generalized coordinates presented in \autoref{fig:mechanicalDrawing}.
 \begin{figure}[H]
   \includegraphics[scale=.8]{figures/mechanicalDrawing}
   \caption{Mechanical drawing of the system, where $\theta$ is the angle of the pendulum, $x$ is the position of the center of the cart along the rail, $F$ is the applied force and $g$ is the gravitational acceleration. It is indicated that friction is modeled between cart and rail as well as in the pendulum joint.}
   \label{fig:mechanicalDrawing}
 \end{figure}
-The hight of the center of the cart is $l$ such that the pendulum mass center is positioned at zero hight at rest. It is assumed that the pendulum rod is rigid and massless and that the pendulum weights are a point mass at the geometrical center of the weights.\\
+The pendulum mass center is positioned at zero hight at rest s.t. all energies in the system are positive. It is assumed that the pendulum rod is rigid and massless and that the pendulum weights are a point mass at the geometrical center of the weights.\\
 The motor torque is given by direct relation to the armature current by the motor constant, $\tau_m = k_\tau i_a $, such that,
 \begin{flalign}
-F &= \tfrac{1}{r} k_\tau i_a       & \unit{N}  
+&& F &= \tfrac{1}{r} k_\tau i_a   \hspace{.3\linewidth}    & \unit{N}  
 \label{eq:motorForce}
 \end{flalign}
+
+%\begin{flalign}
+%&& F &= \tfrac{1}{r} k_\tau i_a  &a
+%\label{eq:motorForce}
+%\end{flalign}
 %
 It is well known that the potential energy, $U$, and the kinetic energy, $T$, are given by, \cite{RWisniewski}
 \begin{flalign}
-    U &= mgl( 1 + \cos \theta )   &  \unit{J}  \\
-    T &= \frac{1}{2} ( M + m ) \dot{x}^2 - m \dot{x} l \cos \theta \dot{\theta} + \frac{1}{2} m l^2 \dot{\theta}^2 \ \ \ , & \unit{J}
+  &&  U &= mgl( 1 + \cos \theta )   &  \unit{J}  \\
+  &&  T &= \frac{1}{2} ( M + m ) \dot{x}^2 - m \dot{x} l \cos \theta \dot{\theta} + \frac{1}{2} m l^2 \dot{\theta}^2 \ \ \ . & \unit{J}
   \label{eq:generalizedPotentialAndKinetic}
 \end{flalign}
-and that, by use of, \cite{RWisniewski}
+The frictions, indicated in \autoref{fig:mechanicalDrawing}, are, as mentioned, comprised of Coulomb and viscous frictions with values stated in \autoref{table:systemParameters}. The viscous frictions are modeled as linear functions of velocities, \cite{CMClose, HOlsson}
 \begin{flalign}
-  \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \vec{\dot{q}}} - \frac{\partial \cal{L}}{\partial \vec{q}}  &=  \vec{Q} \ \ \ , &
-  \label{eq:energyMethodWith external forces}
+&&  b_{p,v} \dot{\theta} \ \ \ , & \ \ \ \ \ b_{c,v} \dot{x} \ \ \ , \hspace{.27\linewidth} &&&
+\label{eq:viscousFrictions}
 \end{flalign}
-where $\vec{q}=[ \theta\ \ x ]^{\mathrm{T}}$, $\vec{Q} = [\ -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c}\ \ \ \ \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c}\ ]^{\mathrm{T}}$ and $\cal{L}$ $ = T-U$, the dynamics of the system are found,
+for the rotational and linear case respectively.
+The coulomb frictions are modeled as a constant with its sign depending on the signs of the velocities, such that, \cite{CMClose, HOlsson}
 \begin{flalign}
-    m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  &= -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} &  \unit{N \cdot m}  \\
-    ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ , &   \unit{N}
-  \label{eq:energyDerivedDynamicEquations}
+&&  \mathrm{sgn}(\dot{\theta}) b_{p,c} \ \ \ , & \ \ \ \ \  \mathrm{sgn}(\dot{x}) b_{c,c} \ \ \ . \hspace{.19\linewidth} &&&
+\label{eq:coloumbFrictions}
 \end{flalign}
-where $\text{k}_\text{tanh}=250$ to approximate a sign-function using tanh.
+This, however, introduces discontinuities at zero velocities. Thus, tanh-functions are used to obtain a continues approximation of the sign-functions,
+\begin{flalign}
+&&  \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} \ \ \ , & \ \ \ \ \ b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ ,  &&&
+\label{eq:coloumbFrictionsTanh}
+\end{flalign}
+where $\text{k}_\text{tanh}=250$ to increase the steepness of the tanh-functions thereby obtaining a closer approximation of the sign-functions.
+Finally, by use of the Lagrange-d’Alembert Principle, \cite{RWisniewski}
+\begin{flalign}
+  && \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \vec{\dot{q}}} - \frac{\partial \cal{L}}{\partial \vec{q}}  &=  \vec{Q} \ \ \ , \hspace{.25\linewidth} &&&
+  \label{eq:energyMethodWithExternalForces}
+\end{flalign}
+where,
+\begin{flalign}
+  && \vec{q} &= 
+  \begin{bmatrix}
+    \theta    \\
+    x
+  \end{bmatrix} \ \ \ , \ \ \ 
+  \vec{Q} =
+  \begin{bmatrix}
+    -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c}    \\
+    \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c}
+  \end{bmatrix} \ \ \ , &
+  \label{eq:qAndQ}
+\end{flalign}
+and $\cal{L}$ $ = T-U$, the dynamics of the system are found,
+\begin{flalign}
+    && m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  &= -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} &  \unit{N \cdot m}   \label{eq:energyDerivedDynamicEquation2} \\
+    && ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ . &   \unit{N}
+  \label{eq:energyDerivedDynamicEquation1}
+\end{flalign}
+By setting up the dynamic equations, \autoref{eq:energyDerivedDynamicEquation1} and \ref{eq:energyDerivedDynamicEquation2}, in the following manner,
+%
+\begin{flalign}
+&&&
+\begin{split}
+  &
+  \begin{bmatrix}
+    m l^2              & -m l \cos \theta  \\
+    -m l \cos \theta   & M + m
+  \end{bmatrix}
+  \begin{bmatrix}
+    \ddot{\theta}  \\
+    \ddot{x}
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    0  \\
+    m l \sin \theta \dot{\theta}^2
+  \end{bmatrix}
+  +   \\
+  &+
+  \begin{bmatrix}
+    -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c}    \\
+    \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c}
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    -m g l \sin \theta  \\
+    0
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    0  \\
+    F
+  \end{bmatrix} \ \ \ , 
+\end{split} &&&
+\end{flalign}
+%
+the general form of an m-link robot is obtained, \cite{MWSpong, LSciavicco}
+\begin{flalign}
+  && \vec{M}(\vec{q})\vec{\ddot{q}} + \vec{C}(\vec{q},\vec{\dot{q}}) + \vec{B}(\vec{\dot{q}}) + \vec{G}(\vec{q}) &= \vec{F} \ \ \ , &&&
+\end{flalign}
+\begin{where}
+  \va{ \vec{M}(\vec{q})\vec{\ddot{q}}  }{is the inertia matrix}                    {}
+  \va{ \vec{C}(\vec{q},\vec{\dot{q}})  }{is the Coriolis and centrifugal effects}  {}
+  \va{ \vec{B}(\vec{\dot{q}})          }{is the friction}                          {}
+  \va{  \vec{G}(\vec{q})               }{is the force due to gravity}              {}
+  \va{  \vec{F}                        }{is the input force}                       {}
+\end{where}
