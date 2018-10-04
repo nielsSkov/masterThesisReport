@@ -1,8 +1,8 @@
-\chapter{System and Model}
+\chapter{System and Model}\label{chap:model}
 A brief overview of the relevant system for \textit{Part 1} is presented in this chapter along with a model of the system.
 
-\section{System}
-A setup is provided by the Control and Automation Department at Aalborg University (AAU), see \autoref{fig:systemSetup}.
+\section{System}\label{sec:system}
+A setup is provided by the Control and Automation Department at AAU, see \autoref{fig:systemSetup}.
 
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{systemSetup}
@@ -66,7 +66,7 @@ All the system parameters used in the design are listed in \autoref{table:system
   \caption{The motor parameters, $I_{\mathrm{N}}$ and $\tau_m$, are given by maxon in \cite{maxonMotor}. The rod length is measured from the pendulum pivot point to the geometrical center of the pendulum. Pendulum mass, rod length, pulley radius and rail length are measured parameters, while cart mass is estimated same as all frictions. The estimations are performed by a previous project group \cite{JHHorgensen}.\label{table:systemParameters}}
 \end{table}
 
-\section{Model}
+\section{Model}\label{sec:model}
 The model is based on the generalized coordinates presented in \autoref{fig:mechanicalDrawing}.
 \begin{figure}[H]
   \includegraphics[scale=.8]{figures/mechanicalDrawing}
@@ -130,13 +130,13 @@ where,
 and $\cal{L}$ $ = T-U$, the dynamics of the system are found,
 \begin{flalign}
     && m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  &= -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} &  \unit{N \cdot m}   \label{eq:energyDerivedDynamicEquation2} \\
-    && ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ . &   \unit{N}
+    && ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  F - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ . &   \unit{N}
   \label{eq:energyDerivedDynamicEquation1}
 \end{flalign}
 By setting up the dynamic equations, \autoref{eq:energyDerivedDynamicEquation1} and \ref{eq:energyDerivedDynamicEquation2}, in the following manner,
 %
 \begin{flalign}
-&&&
+&&
 \begin{split}
   &
   \begin{bmatrix}
@@ -155,8 +155,8 @@ By setting up the dynamic equations, \autoref{eq:energyDerivedDynamicEquation1} 
   +   \\
   &+
   \begin{bmatrix}
-    -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c}    \\
-    \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c}
+    b_{p,v} \dot{\theta} + \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c}    \\
+    b_{c,v} \dot{x} + \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c}
   \end{bmatrix}
   +
   \begin{bmatrix}
@@ -168,7 +168,7 @@ By setting up the dynamic equations, \autoref{eq:energyDerivedDynamicEquation1} 
     0  \\
     F
   \end{bmatrix} \ \ \ , 
-\end{split} &&&
+\end{split} &&
 \end{flalign}
 %
 the general form of an m-link robot is obtained, \cite{MWSpong, LSciavicco}
@@ -176,7 +176,7 @@ the general form of an m-link robot is obtained, \cite{MWSpong, LSciavicco}
   && \vec{M}(\vec{q})\vec{\ddot{q}} + \vec{C}(\vec{q},\vec{\dot{q}}) + \vec{B}(\vec{\dot{q}}) + \vec{G}(\vec{q}) &= \vec{F} \ \ \ , &&&
 \end{flalign}
 \begin{where}
-  \va{ \vec{M}(\vec{q})\vec{\ddot{q}}  }{is the inertia matrix}                    {}
+  \va{ \vec{M}(\vec{q})  }{is the inertia matrix}                    {}
   \va{ \vec{C}(\vec{q},\vec{\dot{q}})  }{is the Coriolis and centrifugal effects}  {}
   \va{ \vec{B}(\vec{\dot{q}})          }{is the friction}                          {}
   \va{  \vec{G}(\vec{q})               }{is the force due to gravity}              {}

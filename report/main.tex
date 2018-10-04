@@ -1,5 +1,10 @@
 \input{setup/preamble.tex}% package inclusion and set up of the document
 
+%this package must be included
+%in a file which is open during any session
+%otherwise \autoref will not autocomplete
+\usepackage{hyperref}
+
 \input{setup/macros.tex}% my new macros
 
 \begin{document}
@@ -49,11 +54,10 @@
 %---------- Chapter 2 ---------------------------------------- System and Model
 \input{contents/systemAndModel.tex}
 
-%---------- Chapter 3 ---------------------------------------- Stabilization
+%---------- Chapter 3 ---------------------------------------- Swing-Up
+\input{contents/swing-up.tex}
 
-
-%---------- Chapter 4 ---------------------------------------- Swing-Up
-
+%---------- Chapter 4 ---------------------------------------- Stabilization
 
 %%% PART 2 %%%
 \part{Twin Pendulum}
