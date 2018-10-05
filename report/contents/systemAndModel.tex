@@ -76,9 +76,11 @@ The model is based on the generalized coordinates presented in \autoref{fig:mech
 The pendulum mass center is positioned at zero hight at rest s.t. all energies in the system are positive. It is assumed that the pendulum rod is rigid and massless and that the pendulum weights are a point mass at the geometrical center of the weights.\\
 The motor torque is given by direct relation to the armature current by the motor constant, $\tau_m = k_\tau i_a $, such that,
 \begin{flalign}
-&& F &= \tfrac{1}{r} k_\tau i_a   \hspace{.3\linewidth}    & \unit{N}  
+&& F &= \tfrac{1}{r} k_\tau i_a   \hspace{.3\linewidth}    & \unit{N}  \ \ \ .
 \label{eq:motorForce}
 \end{flalign}
+%
+To avoid excessive notation $F$ is considered to be the control input in the remaining of this thesis, while keeping in mind the relation in \autoref{eq:motorForce} along with the knowledge that $F$ must be converted to armature current in implementation.
 
 %\begin{flalign}
 %&& F &= \tfrac{1}{r} k_\tau i_a  &a

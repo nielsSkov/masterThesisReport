@@ -24,7 +24,8 @@ The mechanical energy in this coordinate frame is then,
 && E_p &= m g l (\cos \theta +1) + \tfrac{1}{2} J (\cos^2 \theta  + \sin^2 \theta )\dot{\theta}^2  &  \unit{J}   \label{eq:pendulumEnergy3} \\
 && E_p &= \tfrac{1}{2} J \dot{\theta}^2 + m g l (\cos \theta +1) \ \ \ . &  \unit{J}   \label{eq:pendulumEnergy4}
 \end{flalign}
-%
+
+\subsection{Energy Control}
 A Lyapunov function candidate is proposed,
 \begin{flalign}
 && V &= \tfrac{1}{2} E_\Delta ^2 \ \ \ ,  \hspace{5cm}  &&&  \label{eq:lyapunovCandidate} 
@@ -43,6 +44,7 @@ The derivative of $E_\Delta$ from \autoref{eq:energyDelta3} along the system \au
 && \dot{E}_\Delta &= \dot{\theta} ( m l \cos \theta \ddot{x}_c + m g l \sin \theta )  - m g l \sin \theta \dot{\theta}    &&&   \label{eq:energyDeltaDerivative2} \\
 && \dot{E}_\Delta &=  m l \cos \theta \dot{\theta} \ddot{x}_c \ \ \ .   &&&   \label{eq:energyDeltaDerivative3}
 \end{flalign}
+%
 The Lyapunov function candidate, \autoref{eq:lyapunovCandidate}, is continuously differentiable in the entire $\mathbb{R} ^2$ \fxnote{brush up on stability criteries}. Its derivative is evaluated to find a stabilizing controller,
 %
 \begin{flalign}
@@ -59,6 +61,99 @@ further a tuning parameter, $k>0$, is introduced such that the control law for a
 \begin{flalign}
 && \ddot{x}_c &= -k E_\Delta \cos \theta \dot{\theta}  \ \ \ .  \hspace{4cm}  &&&  \label{eq:accControlLaw} 
 \end{flalign}
+If this control law is started at zero angular velocity, $\dot{\theta} = 0$, in a stable equilibrium, the computed control is maintained at zero and the pendulum never swings up. So for this control law to work, the pendulum must be started slightly away from a stable equilibrium. The control is also zero when $\cos\theta = 0$, however, when this occurs the system is not in a stable equilibrium and the zero value of $\ddot{x}_c$ is therefore not maintained in these cases.
+
+An extra step is needed to apply this control strategy. So far the control output is an acceleration, $\ddot{x}_c$, at the pivot point. in eqREF it is possible to input the desired acceleration, $\ddot{x}_c$, and solve for the force,
+
+F   dynam eq  .
+
+To calculate the force from this expression, eqREF, it is also necessary to know the angular acceleration of the pendulum, $\ddot{\theta}$, which can be solved for in the system dynamics, eqREF, inserting known states and control input applied in the previous step,
+
+theta dot dot   F previous   eq  .
+
+Finally the control law,
+
+u  eq .
+
+\fxnote{formulate properly from here and onward}
+Initializing the angle, $\theta$, at $\pi-0.1$ to avoid zero control output, simulation, the energy difference almost reaches its reference at zero, see \autoref{fig:Edelta_1_noConX}.
+%
+\begin{figure}[H]
+  \includegraphics[width=.5\textwidth]{figures/Edelta_1_noConX}
+  \caption{Edelta1noConX}
+  \label{fig:Edelta_1_noConX}
+\end{figure}
+%
+The pendulum also almost reaches the heteroclinic orbit, see \autoref{fig:phase_1_noConX}. \fxnote{include small section on heteroclinic orbit}
+Some energy is lost to friction in the pendulum while the cart is considered to be frictionless as it should be handled by the friction compensation.\fxnote{section on friction compensation}
+\begin{figure}[H]
+  \includegraphics[width=.5\textwidth]{figures/phase_1_noConX}
+  \caption{phase1noConX}
+  \label{fig:phase_1_noConX}
+\end{figure}
+%
+However, as the energy of the pendulum is not affected by the position or velocity of the cart, this control law, \autoref{eq:accControlLaw}, is not concerned controlling these. This becomes a problem in the physical setup as it has a rail length of one meter. A traced animation is used to demonstrate this problem in \autoref{fig:ani_1_noConX}.
+\begin{figure}[H]
+  \includegraphics[width=.6\textwidth]{figures/ani_1_noConX}
+  \caption{ani1noConX}
+  \label{fig:ani_1_noConX}
+\end{figure}
+%
+An other issue is the actuation which is limited in the real system by the maximum allowed continuous current, see \autoref{table:systemParameters}. \autoref{fig:ia_1_noConX} clearly shows how this controller violates the physical limitations of the motor.
+\begin{figure}[H]
+  \includegraphics[width=.5\textwidth]{figures/ia_1_noConX}
+  \caption{ia1noConX}
+  \label{fig:ia_1_noConX}
+\end{figure}
+
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/x_1_noConX}
+%  \caption{x1noConX}
+%  \label{fig:x_1_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/xDot_1_noConX}
+%  \caption{xDot1noConX}
+%  \label{fig:xDot_1_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/xDotDot_1_noConX}
+%  \caption{xDotDot1noConX}
+%  \label{fig:xDotDot_1_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/theta_1_noConX}
+%  \caption{theta1noConX}
+%  \label{fig:theta_1_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/thetaDot_1_noConX}
+%  \caption{thetaDot1noConX}
+%  \label{fig:thetaDot_1_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/thetaDotDot_1_noConX}
+%  \caption{thetaDotDot1noConX}
+%  \label{fig:thetaDotDot_1_noConX}
+%\end{figure}
+
+
+\subsection{Sign-Based Energy Control}
+
+
+
+
+\subsection{Sat-Based Energy Control}
+
+
+
+
+
+
+
+
+
+
 
 
 
