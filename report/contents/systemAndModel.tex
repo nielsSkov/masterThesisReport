@@ -80,7 +80,7 @@ The motor torque is given by direct relation to the armature current by the moto
 \label{eq:motorForce}
 \end{flalign}
 %
-To avoid excessive notation $F$ is considered to be the control input in the remaining of this thesis, while keeping in mind the relation in \autoref{eq:motorForce} along with the knowledge that $F$ must be converted to armature current in implementation.
+To avoid excessive notation $u=F$ is considered to be the control input in the remaining of this thesis, while keeping in mind the relation in \autoref{eq:motorForce} along with the knowledge that $u$ must be converted to armature current in implementation.
 
 %\begin{flalign}
 %&& F &= \tfrac{1}{r} k_\tau i_a  &a
@@ -132,7 +132,7 @@ where,
 and $\cal{L}$ $ = T-U$, the dynamics of the system are found,
 \begin{flalign}
     && m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  &= -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} &  \unit{N \cdot m}   \label{eq:energyDerivedDynamicEquation2} \\
-    && ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  F - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ . &   \unit{N}
+    && ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  u - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ . &   \unit{N}
   \label{eq:energyDerivedDynamicEquation1}
 \end{flalign}
 By setting up the dynamic equations, \autoref{eq:energyDerivedDynamicEquation1} and \ref{eq:energyDerivedDynamicEquation2}, in the following manner,
@@ -168,9 +168,10 @@ By setting up the dynamic equations, \autoref{eq:energyDerivedDynamicEquation1} 
   =
   \begin{bmatrix}
     0  \\
-    F
+    u
   \end{bmatrix} \ \ \ , 
 \end{split} &&
+\label{eq:thetaXdynamics}
 \end{flalign}
 %
 the general form of an m-link robot is obtained, \cite{MWSpong, LSciavicco}
@@ -182,5 +183,26 @@ the general form of an m-link robot is obtained, \cite{MWSpong, LSciavicco}
   \va{ \vec{C}(\vec{q},\vec{\dot{q}})  }{is the Coriolis and centrifugal effects}  {}
   \va{ \vec{B}(\vec{\dot{q}})          }{is the friction}                          {}
   \va{  \vec{G}(\vec{q})               }{is the force due to gravity}              {}
-  \va{  \vec{F}                        }{is the input force}                       {}
+  \va{  \vec{F}                        }{is the input force vector \ \ \ .}        {}
 \end{where}
+
+Choosing $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\theta}\ \ \dot{x}\ ]^\mathrm{T} $ as states results in the following nonlinear state space representation,
+%
+\begin{flalign}
+  &&
+  \begin{bmatrix}
+    \dot{x_1} \\
+    \dot{x_2} \\
+    \dot{x_3} \\
+    \dot{x_4}
+  \end{bmatrix}
+  &=
+  \begin{bmatrix}
+    x_3 \\
+    x_4 \\
+    \vec{M}^{-1}(x_1) ( \vec{F} - \vec{C}(x_1,x_3) - \vec{B}(x_3,x_4) - \vec{G}(x_1) )
+  \end{bmatrix}
+  \label{eq:nonlinearStateSpace} \ \ \ , &&&
+\end{flalign}
+%
+which is convenient when simulation the system. This representation is also used in the controller designs.

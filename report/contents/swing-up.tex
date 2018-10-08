@@ -63,20 +63,47 @@ further a tuning parameter, $k>0$, is introduced such that the control law for a
 \end{flalign}
 If this control law is started at zero angular velocity, $\dot{\theta} = 0$, in a stable equilibrium, the computed control is maintained at zero and the pendulum never swings up. So for this control law to work, the pendulum must be started slightly away from a stable equilibrium. The control is also zero when $\cos\theta = 0$, however, when this occurs the system is not in a stable equilibrium and the zero value of $\ddot{x}_c$ is therefore not maintained in these cases.
 
-An extra step is needed to apply this control strategy. So far the control output is an acceleration, $\ddot{x}_c$, at the pivot point. in eqREF it is possible to input the desired acceleration, $\ddot{x}_c$, and solve for the force,
+An extra step is needed to apply this control strategy. So far the control output is an acceleration, $\ddot{x}_c$, at the pivot point. It is possible to input the desired acceleration, $\ddot{x}_c$, into the second dynamic equation, \autoref{eq:energyDerivedDynamicEquation1}, and solve for the force needed to achieve this acceleration,
+%
+\begin{flalign}
+  && u &=  ( M + m )\ddot{x}_c + m l \sin x_1 x_3^2 - m l \cos x_1 \dot{x}_3  \ \ \ , &   \unit{N}
+  \label{eq:forceDynamics}
+\end{flalign}
+%
+where the cart friction coefficients are set to zero again.\\
+To calculate the force from this expression, \autoref{eq:forceDynamics}, it is also necessary to know the angular acceleration of the pendulum, $\dot{x}_3$, which can be solved for in the system dynamics, \autoref{eq:nonlinearStateSpace}, inserting known states and control input applied in the previous step,
+%
+\begin{flalign}
+  &&
+    \begin{bmatrix}
+      \dot{x}_3  \\
+      \dot{x}_4
+    \end{bmatrix}
+    &=
+    \begin{bmatrix}
+      m l^2           & -m l \cos x_1  \\
+      -m l \cos x_1   & M + m
+    \end{bmatrix}^{-1}
+    \begin{bmatrix}
+      - b_{p,v} x_3 - \tanh(\text{k}_\text{tanh}x_3) b_{p,c} + m g l \sin x_1 \\
+      u_{last} - m l \sin x_1 x_3^2
+    \end{bmatrix}
+     \ \ \ ,  &&
+  \label{eq:nonlinearStateSpaceQdotDot}
+\end{flalign}
+%
+where $u_{last}$ is the force applied in the previous step.\\
+From \autoref{eq:nonlinearStateSpaceQdotDot} the approximated angular acceleration is then,
+\begin{flalign}
+  && \dot{x}_3 &= \frac{ ( M + m )(- b_{p,v} x_3 - \tanh(\text{k}_\text{tanh}x_3) b_{p,c} + m g l \sin x_1) }{ l^2 m ( M + m - m \cos^2x_1 ) }
+                    + \frac{ \cos x_1 (u_{last} - m l \sin x_1 x_3^2) }{ l ( M + m - m \cos x_1^2 ) }
+  \ \ \ .  &&
+  \label{eq:thetaDotDotApprox}
+\end{flalign}
+%
+Inserting \autoref{eq:thetaDotDotApprox} into \autoref{eq:forceDynamics} results in the control input, $u$, necessary to achieve the desired acceleration, $\ddot{x}_c$, at the pivot point. This method is used for all swing-up controllers, so to avoid excessive notation the proceeding energy control laws are derived with $\ddot{x}_c$ as the control parameter.
 
-F   dynam eq  .
-
-To calculate the force from this expression, eqREF, it is also necessary to know the angular acceleration of the pendulum, $\ddot{\theta}$, which can be solved for in the system dynamics, eqREF, inserting known states and control input applied in the previous step,
-
-theta dot dot   F previous   eq  .
-
-Finally the control law,
-
-u  eq .
-
-\fxnote{formulate properly from here and onward}
-Initializing the angle, $\theta$, at $\pi-0.1$ to avoid zero control output, simulation, the energy difference almost reaches its reference at zero, see \autoref{fig:Edelta_1_noConX}.
+All simulations are performed using the nonlinear state space representation in \autoref{eq:nonlinearStateSpace} and the matlab ODE45 solver with relative tolerance of \SI{1e-7}{}. Initializing the angle, $\theta$, at $\pi-0.1$ to avoid zero control output as discussed, the energy difference struggles to reach its reference at zero, see \autoref{fig:Edelta_1_noConX}.
 %
 \begin{figure}[H]
   \includegraphics[width=.5\textwidth]{figures/Edelta_1_noConX}
@@ -84,27 +111,30 @@ Initializing the angle, $\theta$, at $\pi-0.1$ to avoid zero control output, sim
   \label{fig:Edelta_1_noConX}
 \end{figure}
 %
-The pendulum also almost reaches the heteroclinic orbit, see \autoref{fig:phase_1_noConX}. \fxnote{include small section on heteroclinic orbit}
-Some energy is lost to friction in the pendulum while the cart is considered to be frictionless as it should be handled by the friction compensation.\fxnote{section on friction compensation}
+The pendulum also falls short of reaching the heteroclinic orbit, see \autoref{fig:phase_1_noConX}. \fxnote{include small section on heteroclinic orbit}
+Some energy is lost to friction in the pendulum. The cart however is considered to be frictionless in both design and simulation for now.\fxnote{section on friction compensation}
 \begin{figure}[H]
   \includegraphics[width=.5\textwidth]{figures/phase_1_noConX}
   \caption{phase1noConX}
   \label{fig:phase_1_noConX}
 \end{figure}
 %
-However, as the energy of the pendulum is not affected by the position or velocity of the cart, this control law, \autoref{eq:accControlLaw}, is not concerned controlling these. This becomes a problem in the physical setup as it has a rail length of one meter. A traced animation is used to demonstrate this problem in \autoref{fig:ani_1_noConX}.
+However, as the energy of the pendulum is not affected by the position or velocity of the cart, this control law, \autoref{eq:accControlLaw}, is not concerned with controlling these. This becomes a problem in the physical setup as it has a rail length of one meter. A traced animation is used to demonstrate this problem in \autoref{fig:ani_1_noConX}.
 \begin{figure}[H]
-  \includegraphics[width=.6\textwidth]{figures/ani_1_noConX}
+  \includegraphics[width=.7\textwidth]{figures/ani_1_noConX}
   \caption{ani1noConX}
   \label{fig:ani_1_noConX}
 \end{figure}
 %
-An other issue is the actuation which is limited in the real system by the maximum allowed continuous current, see \autoref{table:systemParameters}. \autoref{fig:ia_1_noConX} clearly shows how this controller violates the physical limitations of the motor.
+An other issue is the actuation which is limited in the real system by the maximum allowed continuous current, see \autoref{table:systemParameters}. By tuning the parameter $k$ in \autoref{eq:accControlLaw}, better performance can be obtained, however at the cost of excessive actuation.
+%
 \begin{figure}[H]
-  \includegraphics[width=.5\textwidth]{figures/ia_1_noConX}
+  \includegraphics[width=.52\textwidth]{figures/ia_1_noConX}
   \caption{ia1noConX}
   \label{fig:ia_1_noConX}
 \end{figure}
+%
+For these graphs $k=1.3$ to keep the motor current at acceptable levels. The motor current is shown in \autoref{fig:ia_1_noConX} where the rolling RMS of $i_a$ is used to approximate the continuous current load on the motor.
 
 %\begin{figure}[H]
 %  \includegraphics[width=.6\textwidth]{figures/x_1_noConX}
@@ -141,11 +171,119 @@ An other issue is the actuation which is limited in the real system by the maxim
 \subsection{Sign-Based Energy Control}
 
 
+\begin{figure}[H]
+  \includegraphics[width=.5\textwidth]{figures/Edelta_2_noConX}
+  \caption{Edelta2noConX}
+  \label{fig:Edelta_2_noConX}
+\end{figure}
+%
+\begin{figure}[H]
+  \includegraphics[width=.5\textwidth]{figures/phase_2_noConX}
+  \caption{phase2noConX}
+  \label{fig:phase_2_noConX}
+\end{figure}
+%
+\begin{figure}[H]
+  \includegraphics[width=1\textwidth]{figures/ani_2_noConX}
+  \caption{ani2noConX}
+  \label{fig:ani_2_noConX}
+\end{figure}
+%
+\begin{figure}[H]
+  \includegraphics[width=.52\textwidth]{figures/ia_2_noConX}
+  \caption{ia2noConX}
+  \label{fig:ia_2_noConX}
+\end{figure}
 
+
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/x_2_noConX}
+%  \caption{x2noConX}
+%  \label{fig:x_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/xDot_2_noConX}
+%  \caption{xDot2noConX}
+%  \label{fig:xDot_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/xDotDot_2_noConX}
+%  \caption{xDotDot2noConX}
+%  \label{fig:xDotDot_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/theta_2_noConX}
+%  \caption{theta2noConX}
+%  \label{fig:theta_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/thetaDot_2_noConX}
+%  \caption{thetaDot2noConX}
+%  \label{fig:thetaDot_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/thetaDotDot_2_noConX}
+%  \caption{thetaDotDot2noConX}
+%  \label{fig:thetaDotDot_2_noConX}
+%\end{figure}
 
 \subsection{Sat-Based Energy Control}
 
-
+%\begin{figure}[H]
+%  \includegraphics[width=.5\textwidth]{figures/Edelta_2_noConX}
+%  \caption{Edelta1noConX}
+%  \label{fig:Edelta_2_noConX}
+%\end{figure}
+%%
+%\begin{figure}[H]
+%  \includegraphics[width=.5\textwidth]{figures/phase_2_noConX}
+%  \caption{phase1noConX}
+%  \label{fig:phase_2_noConX}
+%\end{figure}
+%%
+%\begin{figure}[H]
+%  \includegraphics[width=.7\textwidth]{figures/ani_2_noConX}
+%  \caption{ani1noConX}
+%  \label{fig:ani_2_noConX}
+%\end{figure}
+%%
+%\begin{figure}[H]
+%  \includegraphics[width=.52\textwidth]{figures/ia_2_noConX}
+%  \caption{ia1noConX}
+%  \label{fig:ia_2_noConX}
+%\end{figure}
+%
+%
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/x_2_noConX}
+%  \caption{x1noConX}
+%  \label{fig:x_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/xDot_2_noConX}
+%  \caption{xDot1noConX}
+%  \label{fig:xDot_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/xDotDot_2_noConX}
+%  \caption{xDotDot1noConX}
+%  \label{fig:xDotDot_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/theta_2_noConX}
+%  \caption{theta1noConX}
+%  \label{fig:theta_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/thetaDot_2_noConX}
+%  \caption{thetaDot1noConX}
+%  \label{fig:thetaDot_2_noConX}
+%\end{figure}
+%\begin{figure}[H]
+%  \includegraphics[width=.6\textwidth]{figures/thetaDotDot_2_noConX}
+%  \caption{thetaDotDot1noConX}
+%  \label{fig:thetaDotDot_2_noConX}
+%\end{figure}
 
 
 
