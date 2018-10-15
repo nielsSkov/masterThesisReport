@@ -1,11 +1,11 @@
 \chapter{Swing-Up Design}\label{sec:swing-upDesign}
-In this chapter four swing-up controllers are designed, all based on \cite{kjAastrom}. The pendulum is started at rest, $\theta = \pi$, angle convention is specified in \autoref{fig:mechanicalDrawing}. The idea of the swing-up controller is to increase the mechanical energy in the system until it matches that of the desired end state, which is the upright position at rest, that is, $\theta = 0$ and $\dot{\theta} = 0$. The minimum energy in the system is the starting position at rest, which is considered to be zero as mentioned in the \textit{Model} \autoref{sec:model}. So the target energy is $E_{\mathrm{eq}} = 2 m g l$, that is, the potential energy of the pendulum in the unstable equilibrium.
+In this chapter four swing-up controllers are designed, all based on \cite{kjAastrom}. The pendulum is started at rest, $\theta = \pi$, with the angle convention specified in \autoref{fig:mechanicalDrawing}. The idea of the swing-up controller is to increase the mechanical energy in the system until it matches that of the desired end state, $\theta = 0$ and $\dot{\theta} = 0$, that is, the upright position at rest. The minimum energy in the system occurs at the starting position at rest, which is considered to be zero as mentioned in the \textit{Model} \autoref{sec:model}. So the target energy is $E_{\mathrm{eq}} = 2 m g l$, that is, the potential energy of the pendulum in the unstable equilibrium.
 
-Consider the pendulum dynamics from \autoref{eq:energyDerivedDynamicEquation1},
+Consider the pendulum dynamics from \autoref{eq:energyDerivedDynamicEquation1}, where $J = m l^2$ is the pendulum inertia and frictions are assumed to be zero such that,
 \begin{flalign}
 && J \ddot{\theta} - m l \cos \theta \ddot{x}_c - m g l \sin \theta  &= 0 \ \ \ , &  \unit{N \cdot m}   \label{eq:pendulumDynamics}
 \end{flalign}
-where $J = m l^2$ is the inertia and the pendulum friction is assumed to be zero. This equation captures the behavior of the pendulum corresponding to some acceleration $\ddot{x}_c$ at the pivot point. This acceleration is viewed as the control input for now. The force needed to achieve this acceleration is considered in the end of the design. It is further convenient to describe the energy of the pendulum with the coordinate frame fixed at its pivot point, see \autoref{fig:fixedCooredinateSystem}.
+This equation captures the behavior of the pendulum corresponding to some acceleration $\ddot{x}_c$ at the pivot point. This acceleration is viewed as the control input for now. The force needed to achieve this acceleration is considered in the end of the design. It is further convenient to describe the energy of the pendulum with the coordinate frame fixed at its pivot point, see \autoref{fig:fixedCooredinateSystem}.
 %
 \begin{figure}[H]
   \includegraphics[width=.3\textwidth]{figures/fixedCooredinateSystem}
@@ -24,6 +24,7 @@ The mechanical energy in this coordinate frame is then,
 && E_p &= m g l (\cos \theta +1) + \tfrac{1}{2} J (\cos^2 \theta  + \sin^2 \theta )\dot{\theta}^2  &  \unit{J}   \label{eq:pendulumEnergy3} \\
 && E_p &= \tfrac{1}{2} J \dot{\theta}^2 + m g l (\cos \theta +1) \ \ \ . &  \unit{J}   \label{eq:pendulumEnergy4}
 \end{flalign}
+The following sections explores different approaches of controlling the pendulum energy specified in \autoref{eq:pendulumEnergy4} to its desired reference.
 
 \subsection{Energy Control}
 A Lyapunov function candidate is proposed,
@@ -45,7 +46,7 @@ The derivative of $E_\Delta$ from \autoref{eq:energyDelta3} along the system \au
 && \dot{E}_\Delta &=  m l \cos \theta \dot{\theta} \ddot{x}_c \ \ \ .   &&&   \label{eq:energyDeltaDerivative3}
 \end{flalign}
 %
-The Lyapunov function candidate, \autoref{eq:lyapunovCandidate}, is continuously differentiable in the entire $\mathbb{R} ^2$ \fxnote{brush up on stability criteries}. Its derivative is evaluated to find a stabilizing controller,
+The Lyapunov function candidate, \autoref{eq:lyapunovCandidate}, is continuously differentiable in the entire $\mathbb{R} ^2$. Its derivative is evaluated to find a stabilizing controller,
 %
 \begin{flalign}
 && \dot{V} &= E_\Delta \dot{E}_\Delta   \hspace{3cm}  &&&  \label{eq:lyapunovDerivative1}  \\
@@ -57,7 +58,7 @@ The acceleration, $\ddot{x}_c$, is then designed to satisfy the stability criter
 && \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} (-E_\Delta \cos \theta \dot{\theta})     \hspace{2cm}  &&&  \label{eq:lyapunovDerivativeControlled1} \\
 && \dot{V} &= -m l (E_\Delta \cos \theta \dot{\theta})^2  \leq 0  \ \ \ ,  \hspace{2cm}  &&&  \label{eq:lyapunovDerivativeControlled2} 
 \end{flalign}
-further a tuning parameter, $k>0$, is introduced such that the control law for acceleration of the pivot point is,
+further a tuning parameter, $k>0$, is introduced such that the control law for the acceleration of the pivot point is,
 \begin{flalign}
 && \ddot{x}_c &= -k E_\Delta \cos \theta \dot{\theta}  \ \ \ .  \hspace{4cm}  &&&  \label{eq:accControlLaw} 
 \end{flalign}
@@ -101,15 +102,15 @@ From \autoref{eq:nonlinearStateSpaceQdotDot} the approximated angular accelerati
   \label{eq:thetaDotDotApprox}
 \end{flalign}
 %
-Inserting \autoref{eq:thetaDotDotApprox} into \autoref{eq:forceDynamics} results in the control input, $u$, necessary to achieve the desired acceleration, $\ddot{x}_c$, at the pivot point. This method is used for all swing-up controllers, so to avoid excessive notation the proceeding energy control laws are derived with $\ddot{x}_c$ as the control parameter.
+Inserting \autoref{eq:thetaDotDotApprox} into \autoref{eq:forceDynamics} results in the control input, $u$, necessary to achieve the desired acceleration, $\ddot{x}_c$, at the pivot point. This method is used for all four swing-up controllers, so to avoid excessive notation the proceeding energy control laws are derived with $\ddot{x}_c$ as the control parameter.
 
-All simulations are performed using the nonlinear state space representation in \autoref{eq:nonlinearStateSpace} and the matlab ODE45 solver with relative tolerance of \SI{1e-7}{}. Initializing the angle, $\theta$, at $\pi-0.1$ to avoid zero control output as discussed, the energy difference struggles to reach its reference at zero, see \autoref{fig:Edelta_1_noConX}.
+All simulations are performed using the nonlinear state space representation in \autoref{eq:nonlinearStateSpace} and the matlab ODE45 solver with relative tolerance of \SI{1e-7}{}. Initializing the angle, $\theta$, at $\pi-0.1$ to avoid zero control output as discussed, the energy difference struggles to reach its reference at zero, see \autoref{fig:Edelta_1_noConX}. The pendulum friction and cart inertia are included in the calculation of the force needed to obtain the desired acceleration. This, however, is not concerned with what is needed to obtain the required energy. So the offset seen in \autoref{fig:Edelta_1_noConX} is caused by the control law, \autoref{eq:accControlLaw}, asking for insufficient acceleration.
 %
 \begin{figure}[H]
   \hspace{-10pt}
   \captionbox
   {
-    Edelta1noConX
+    Simulation of the first energy control method. The energy error struggles to maintain zero value, due to pendulum friction and cart inertia exchanging energy with the pendulum.
     \label{fig:Edelta_1_noConX}
   }
   {
@@ -119,7 +120,7 @@ All simulations are performed using the nonlinear state space representation in 
   \hspace{20pt}
   \captionbox 
   {
-    phase1noConX
+    This phase portrait shows the attempt to reach the heteroclinic orbit. It falls short due to the insufficient acceleration asked by the control law.
     \label{fig:phase_1_noConX}
   }
   {
@@ -128,13 +129,11 @@ All simulations are performed using the nonlinear state space representation in 
   }  
 \end{figure}
 %
-The pendulum also falls short of reaching the heteroclinic orbit, see \autoref{fig:phase_1_noConX}. \fxnote{include small section on heteroclinic orbit}
-Some energy is lost to friction in the pendulum. The cart however is considered to be frictionless in both design and simulation for now.\fxnote{remember a section on friction compensation}
-%
-However, as the energy of the pendulum is not affected by the position or velocity of the cart, this control law, \autoref{eq:accControlLaw}, is not concerned with controlling these. This becomes a problem in the physical setup as it has a rail length of one meter. A traced animation is used to demonstrate this problem in \autoref{fig:ani_1_noConX}.
+The pendulum also falls short of reaching the heteroclinic orbit, see \autoref{fig:phase_1_noConX}.
+Further, since the energy of the pendulum is not affected by the position or velocity of the cart, this control law, \autoref{eq:accControlLaw}, is not concerned with controlling these. This becomes a problem in the physical setup as it has a rail length of \SI{0.89}{m}, see \autoref{table:systemParameters}. A traced animation is used to demonstrate this problem in \autoref{fig:ani_1_noConX}.
 \begin{figure}[H]
   \includegraphics[width=.7\textwidth]{figures/ani_1_noConX}
-  \caption{ani1noConX}
+  \caption{The cart drifts beyond the bounds of the physical system. This might not be a problem if the catch controller catches the pendulum in first try, but there is no guarantee of this being the case.}
   \label{fig:ani_1_noConX}
 \end{figure}
 %
@@ -142,7 +141,7 @@ An other issue is the actuation which is limited in the real system by the maxim
 %
 \begin{figure}[H]
   \includegraphics[width=.52\textwidth]{figures/ia_1_noConX}
-  \caption{ia1noConX}
+  \caption{The motor current has high peaks in the beginning which likely exceeds the capabilities of the motor. The controller is tuned such that the RMS value of the current does not exceed the maximum continuous current requirement of the motor for a sustained period of time.}
   \label{fig:ia_1_noConX}
 \end{figure}
 %
