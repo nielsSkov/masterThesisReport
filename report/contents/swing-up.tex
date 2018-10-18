@@ -3,9 +3,9 @@ In this chapter four swing-up controllers are designed, all based on \cite{kjAas
 
 Consider the pendulum dynamics from \autoref{eq:energyDerivedDynamicEquation1}, where $J = m l^2$ is the pendulum inertia and frictions are assumed to be zero such that,
 \begin{flalign}
-&& J \ddot{\theta} - m l \cos \theta \ddot{x}_c - m g l \sin \theta  &= 0 \ \ \ , &  \unit{N \cdot m}   \label{eq:pendulumDynamics}
+&& J \ddot{\theta} - m l \cos \theta a_c - m g l \sin \theta  &= 0 \ \ \ , &  \unit{N \cdot m}   \label{eq:pendulumDynamics}
 \end{flalign}
-This equation captures the behavior of the pendulum corresponding to some acceleration $\ddot{x}_c$ at the pivot point. This acceleration is viewed as the control input for now. The force needed to achieve this acceleration is considered in the end of the design. It is further convenient to describe the energy of the pendulum with the coordinate frame fixed at its pivot point, see \autoref{fig:fixedCooredinateSystem}.
+This equation captures the behavior of the pendulum corresponding to some controlled acceleration $a_c$ at the pivot point. This acceleration is viewed as the control input for now. The force needed to achieve this acceleration is considered in the end of the design. It is further convenient to describe the energy of the pendulum with the coordinate frame fixed at its pivot point, see \autoref{fig:fixedCooredinateSystem}.
 %
 \begin{figure}[H]
   \includegraphics[width=.3\textwidth]{figures/fixedCooredinateSystem}
@@ -39,35 +39,97 @@ where $E_\Delta$ is the difference in energy in relation to the unstable equilib
 && E_\Delta &= \tfrac{1}{2} J \dot{\theta}^2 + m g l (\cos \theta -1)   \ \ \ .  & \unit{J} \label{eq:energyDelta3}
 \end{flalign}
 %
-The derivative of $E_\Delta$ from \autoref{eq:energyDelta3} along the system \autoref{eq:pendulumDynamics} is found to,
+The idea is to reach the reference $E_\Delta = 0$, which happens when,
 \begin{flalign}
-&& \dot{E}_\Delta &= J \dot{\theta} \ddot{\theta} - m g l \sin \theta \dot{\theta}  &&&   \label{eq:energyDeltaDerivative1} \\
-&& \dot{E}_\Delta &= \dot{\theta} ( m l \cos \theta \ddot{x}_c + m g l \sin \theta )  - m g l \sin \theta \dot{\theta}    &&&   \label{eq:energyDeltaDerivative2} \\
-&& \dot{E}_\Delta &=  m l \cos \theta \dot{\theta} \ddot{x}_c \ \ \ .   &&&   \label{eq:energyDeltaDerivative3}
+  &&& \tfrac{1}{2} J \dot{\theta}^2 + m g l (\cos \theta -1) = 0 && \label{eq:energyDeltaZero1} \\
+  &&& \dot{\theta} = \pm \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}}  \ \ \ .  && \label{eq:energyDeltaZero2}
 \end{flalign}
 %
-The Lyapunov function candidate, \autoref{eq:lyapunovCandidate}, is continuously differentiable in the entire $\mathbb{R} ^2$. Its derivative is evaluated to find a stabilizing controller,
+A plot of \autoref{eq:energyDeltaZero2} in the phase plane, see \autoref{fig:orbit}, reveals a set of solutions joining the two unstable equilibrium points.
 %
+\begin{figure}[H]
+  \includegraphics[width=.4\textwidth]{figures/orbit}
+  \caption{orbit}
+  \label{fig:orbit}
+\end{figure}
+%
+If the energy reference is successfully tracked, the system will be restricted to this set rather than a single equilibrium point. Such a trajectory joining two equilibrium points is called a heteroclinic orbit.\\
+Following \autoref{th:lyapunovStabilityTheorem}, the derivative of the Lyapunov function candidate, \autoref{eq:lyapunovCandidate},
 \begin{flalign}
-&& \dot{V} &= E_\Delta \dot{E}_\Delta   \hspace{3cm}  &&&  \label{eq:lyapunovDerivative1}  \\
-&& \dot{V} &= E_\Delta m l \cos \theta \dot{\theta} \ddot{x}_c  \leq 0  \ \ \ .  \hspace{3cm}  &&&  \label{eq:lyapunovDerivative2} 
+&& \dot{V} &= E_\Delta \dot{E}_\Delta  \ \ \ ,\ \ \ \ \dot{E}_\Delta = J \dot{\theta} \ddot{\theta} - m g l \sin \theta \dot{\theta}  \ \ \ , \hspace{3cm}  &&&  \label{eq:lyapunovDerivative1}
+\end{flalign}
+is $C^0$ and thus $V(x)$ is continuously differentiable, $C^1$. Further, $V(\vec{0}) = 0$ and $V(\vec{x})>0$ in the entire state space, excluding zero.
+%The Lyapunov function candidate, \autoref{eq:lyapunovCandidate}, is continuously differentiable in the entire $\mathbb{R} ^2$. Its derivative is evaluated to find a stabilizing controller,
+%
+\begin{theorem}[Lyapunov Stability Theorem]
+  \label{th:lyapunovStabilityTheorem}
+  Consider the autonomous system, $f(\vec{x}) = \dot{\vec{x}}$, where $f : \mathbb{D} \rightarrow \mathbb{R} ^n$ is locally Lipschitz and $\vec{x}=\vec{0}$ is an equilibrium point. Then if $\exists\ V : \mathbb{D} \rightarrow \mathbb{R}$ and \vspace{-12pt}
+  \begin{enumerate}
+    \item $V(\vec{x})$ is $C^1$
+    \item $V(\vec{x}) > 0$ $\forall x \in \mathbb{D}\backslash 0$ and $V(\vec{0}) = 0$
+    \item $\dot{V}(\vec{x}) \leq 0$ in $\mathbb{D}$
+  \end{enumerate} \vspace{-12pt}
+  then $\vec{x} = \vec{0}$ is stable. Further, if,
+  \begin{flalign}
+    && \dot{V}(\vec{x}) &< 0\ \mathrm{in}\ \mathbb{D}\backslash 0  \ \ \ ,  \hspace{3cm}  &&&  \nonumber
+  \end{flalign}
+  then $\vec{x} = \vec{0}$ is asymptotically stable \cite{HKKhalil}.
+\end{theorem}\vspace{-12pt}
+%
+The third condition states that the derivative of the Lyapunov function candidate along trajectories of the system must be less than or equal to zero in the entire state space. In this case, from \autoref{eq:lyapunovDerivative1}, if the energy error goes to zero, so does the derivative of the Lyapunov function.\\
+Without checking for definiteness, it is known that in cases where $V(\vec{x}) = 0$, trajectories neither approach nor diverge from the equilibrium, but rather stay in some orbit. While \autoref{th:lyapunovStabilityTheorem} has the potential to promise stability of the desired orbit once there, it does not guarantee convergence to said orbit.\\
+However, by instead studying LaSalle's \autoref{th:lasallesTheorem}, analysis of convergence to sets is made possible.
+\begin{theorem}[LaSalle's Theorem]
+  \label{th:lasallesTheorem}
+  Consider again the system from \autoref{th:lyapunovStabilityTheorem}. Then if there exist some function $V : \mathbb{D} \rightarrow \mathbb{R}$ and \vspace{-12pt}
+  \begin{enumerate}
+    \item $V(\vec{x})$ is $C^1$
+    \item $\exists\ c > 0$ s.t. $\Omega_c = \{\vec{x} \in \mathbb{R}^n \ | \ V(\vec{x}) \leq c \} \subset \mathbb{D}$ is bounded
+    \item $\dot{V}(\vec{x}) \leq 0 \ \ \forall \ \vec{x} \in \Omega_c$
+  \end{enumerate} \vspace{-12pt}
+  then $\vec{x}(0) \in \Omega_c \Rightarrow \vec{x}(t) \xrightarrow[]{t \to \infty} M \ ,$  where $M$ is the largest invariant set in\vspace{-12pt}
+  \begin{itemize}
+    \item[] $E = \{ \vec{x} \in \Omega_c \ | \ \dot{V}(\vec{x}) = 0 \} \ \ $ \cite{HKKhalil}.
+  \end{itemize}\vspace{-12pt}
+\end{theorem}
+%
+Though the function $V(\vec{x})$ is not required to be positive definite by \autoref{th:lasallesTheorem}, the same function candidate, \autoref{eq:lyapunovCandidate}, is used, thereby satisfying the first condition.\\
+The second condition states that some bounded set, $\Omega_c$, of solutions for which $V(x)$ is less than or equal to some constant $c$ must exist.\\
+This ties into the third condition stating that the derivative of the function candidate must be negative semi-definite along trajectories of the system for all solutions in said set.\\
+To find $\Omega_c$, the derivative of the function candidate,  \autoref{eq:lyapunovDerivative1}, is evaluated along the trajectories of the system, \autoref{eq:pendulumDynamics},
+\begin{flalign}
+&& \dot{V} &= E_\Delta ( J \dot{\theta} \ddot{\theta} - m g l \sin \theta \dot{\theta} ) \hspace{3cm}  &&&  \label{eq:lyapunovDerivative2} \\
+&& \dot{V} &= E_\Delta ( \dot{\theta} ( m l \cos \theta a_c + m g l \sin \theta )  - m g l \sin \theta \dot{\theta} )  &&&  \label{eq:lyapunovDerivative3} \\
+&& \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} a_c   \ \ \ ,  \label{eq:lyapunovDerivative4}
 \end{flalign}
 %
-The acceleration, $\ddot{x}_c$, is then designed to satisfy the stability criterion in \autoref{eq:lyapunovDerivative2},
+The controlled acceleration at the pivot point, $a_c$, is then designed to satisfy the third condition in \autoref{th:lasallesTheorem},
 \begin{flalign}
-&& \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} (-E_\Delta \cos \theta \dot{\theta})     \hspace{2cm}  &&&  \label{eq:lyapunovDerivativeControlled1} \\
-&& \dot{V} &= -m l (E_\Delta \cos \theta \dot{\theta})^2  \leq 0  \ \ \ ,  \hspace{2cm}  &&&  \label{eq:lyapunovDerivativeControlled2} 
+&& \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} (-k E_\Delta \cos \theta \dot{\theta})     \hspace{2cm}  &&&  \label{eq:lyapunovDerivativeControlled1} \\
+&& \dot{V} &= -k m l (E_\Delta \cos \theta \dot{\theta})^2  \leq 0  \ \ \ ,  \hspace{2cm}  &&&  \label{eq:lyapunovDerivativeControlled2} 
 \end{flalign}
-further a tuning parameter, $k>0$, is introduced such that the control law for the acceleration of the pivot point is,
+the tuning parameter, $k>0$, is introduced to allow scaling the control output to fit the capabilities of the actuator. The control law for the acceleration of the pivot point is,
 \begin{flalign}
-&& \ddot{x}_c &= -k E_\Delta \cos \theta \dot{\theta}  \ \ \ .  \hspace{4cm}  &&&  \label{eq:accControlLaw} 
+&& a_c &= -k E_\Delta \cos \theta \dot{\theta}  \ \ \ .  \hspace{4cm}  &&&  \label{eq:accControlLaw}
 \end{flalign}
-If this control law is started at zero angular velocity, $\dot{\theta} = 0$, in a stable equilibrium, the computed control is maintained at zero and the pendulum never swings up. So for this control law to work, the pendulum must be started slightly away from a stable equilibrium. The control is also zero when $\cos\theta = 0$, however, when this occurs the system is not in a stable equilibrium and the zero value of $\ddot{x}_c$ is therefore not maintained in these cases.
+This control law satisfies the third condition of \autoref{th:lasallesTheorem} not only in $\Omega_c$ but in the entire state space. This means any $c>0$ will satisfy the second condition. It also satisfies the first stability criterion of \autoref{th:lyapunovStabilityTheorem}, indicating the control law has caused stability of equilibrium. However, the equilibrium points are not the only stable points using this control strategy, and, as stated, \autoref{th:lyapunovStabilityTheorem} does not guarantee convergence to a set.\\
+All conditions of LaSalle's \autoref{th:lasallesTheorem} are satisfied, thus, if starting in $\Omega_c$, trajectories of the system will converge to $M$ as time goes to infinity. As this set, $M$, is the largest invariant set in $E$, which can be described as the union of sets for which \autoref{eq:lyapunovDerivativeControlled2} is zero,
+\begin{flalign}
+&& E  &= \{ \vec{x} \in \Omega_c \ | \ E_\Delta = 0 \} \cup  \{ \vec{x} \in \Omega_c \ | \  \cos \theta = 0 \} \cup  \{ \vec{x} \in \Omega_c \ | \ \dot{\theta} = 0 \} \ \ \ .   &&&  \label{eq:E}
+\end{flalign}
+\fxnote{Kan man skrive sæt på den måde? Er der en bedre måde?}
+\fxnote{Hvordan ved jeg at E Delta er invariant?}
+The only way $\cos \theta = 0$ is part of an invariant set, is in situations where it is contained in the set for which $E_\Delta = 0$, any other values of the angular velocity will cause it to leave the set. The same argument is used for $\dot{\theta} = 0$, however, in this case if $\theta = \pm \pi n , \ n = 1, 3, 5, ...$, the system stays. So the largest invariant set in $E$ is,
+\begin{flalign}
+&& M  &= \{ \vec{x} \in \Omega_c \ | \ E_\Delta = 0 \} \cup  \{ \vec{x} \in \Omega_c \ | \ \dot{\theta} = 0 \ | \ \theta = \pm \pi n , \ n = 1, 3, 5, ... \} \ \ \ .    &&&  \label{eq:M}
+\end{flalign}
+%
+If this control law is started at zero angular velocity, $\dot{\theta} = 0$, in a stable equilibrium, the computed control is maintained at zero and the pendulum never swings up. So for this control law to work, the pendulum must be started slightly away from a stable equilibrium.
 
-An extra step is needed to apply this control strategy. So far the control output is an acceleration, $\ddot{x}_c$, at the pivot point. It is possible to input the desired acceleration, $\ddot{x}_c$, into the second dynamic equation, \autoref{eq:energyDerivedDynamicEquation1}, and solve for the force needed to achieve this acceleration,
+An extra step is needed to apply this control strategy. So far the control output is an acceleration, $a_c$, at the pivot point. It is possible to input the desired acceleration, $a_c$, into the second dynamic equation, \autoref{eq:energyDerivedDynamicEquation1}, and solve for the force needed to achieve this acceleration,
 %
 \begin{flalign}
-  && u &=  ( M + m )\ddot{x}_c + m l \sin x_1 x_3^2 - m l \cos x_1 \dot{x}_3  \ \ \ , &   \unit{N}
+  && u &=  ( M + m )a_c + m l \sin x_1 x_3^2 - m l \cos x_1 \dot{x}_3  \ \ \ , &   \unit{N}
   \label{eq:forceDynamics}
 \end{flalign}
 %
@@ -102,7 +164,7 @@ From \autoref{eq:nonlinearStateSpaceQdotDot} the approximated angular accelerati
   \label{eq:thetaDotDotApprox}
 \end{flalign}
 %
-Inserting \autoref{eq:thetaDotDotApprox} into \autoref{eq:forceDynamics} results in the control input, $u$, necessary to achieve the desired acceleration, $\ddot{x}_c$, at the pivot point. This method is used for all four swing-up controllers, so to avoid excessive notation the proceeding energy control laws are derived with $\ddot{x}_c$ as the control parameter.
+Inserting \autoref{eq:thetaDotDotApprox} into \autoref{eq:forceDynamics} results in the control input, $u$, necessary to achieve the desired acceleration, $a_c$, at the pivot point. This method is used for all four swing-up controllers, so to avoid excessive notation the proceeding energy control laws are derived with $a_c$ as the control parameter.
 
 All simulations are performed using the nonlinear state space representation in \autoref{eq:nonlinearStateSpace} and the matlab ODE45 solver with relative tolerance of \SI{1e-7}{}. Initializing the angle, $\theta$, at $\pi-0.1$ to avoid zero control output as discussed, the energy difference struggles to reach its reference at zero, see \autoref{fig:Edelta_1_noConX}. The pendulum friction and cart inertia are included in the calculation of the force needed to obtain the desired acceleration. This, however, is not concerned with what is needed to obtain the required energy. So the offset seen in \autoref{fig:Edelta_1_noConX} is caused by the control law, \autoref{eq:accControlLaw}, asking for insufficient acceleration.
 %
@@ -182,14 +244,14 @@ For these graphs $k=1.3$ to keep the motor current at acceptable levels. The mot
 \subsection{Sign-Based Energy Control}
 There are other ways to satisfy \autoref{eq:lyapunovDerivativeControlled2} than the control law suggested in \autoref{eq:accControlLaw}. To achieve maximal actuation a sign-function can be used to determine the direction of actuation along with a gain $k$ to adjust for the limits of the actuator,
 \begin{flalign}
-  && \ddot{x}_c &= k\ \mathrm{sgn}(-E_\Delta \cos \theta \dot{\theta})  \ \ \ ,  \hspace{4cm}  &&&  \label{eq:accControlLaw2} 
+  && a_c &= k\ \mathrm{sgn}(-E_\Delta \cos \theta \dot{\theta})  \ \ \ ,  \hspace{4cm}  &&&  \label{eq:accControlLaw2} 
 \end{flalign}
 where sgn is redefined to be one if it outputs zero, to avoid no actuation when starting at stable equilibrium. The gain is tuned to $k = 2.7$ in the following simulation. Looking at the energy in \autoref{fig:Edelta_2_noConX} this strategy seems to work really well. From the phase plot in \autoref{fig:phase_2_noConX} it is evident that a near perfect heteroclinic orbit is reached.
 \begin{figure}[H]
   \hspace{-10pt}
   \captionbox
   {
-    Edelta2noConX
+    Using maximum actuation in the appropriate direction drives the energy error to zero and keeps it there.
     \label{fig:Edelta_2_noConX}
   }
   {
@@ -199,7 +261,7 @@ where sgn is redefined to be one if it outputs zero, to avoid no actuation when 
   \hspace{20pt}
   \captionbox 
   {
-    phase2noConX
+    The heteroclinic orbit is reached very accurately.
     \label{fig:phase_2_noConX}
   }
   {
@@ -212,7 +274,7 @@ In \autoref{fig:ani_2_noConX} however, while the angle reaches the equilibrium a
 %
 \begin{figure}[H]
   \includegraphics[width=1\textwidth]{figures/ani_2_noConX}
-  \caption{ani2noConX}
+  \caption{The cart drifts as before, since the controller is only concerned with the energy of the pendulum.}
   \label{fig:ani_2_noConX}
 \end{figure}
 %
@@ -220,7 +282,7 @@ However, the bigger problem with this control law is obvious from \autoref{fig:i
 %
 \begin{figure}[H]
   \includegraphics[width=.52\textwidth]{figures/ia_2_noConX}
-  \caption{ia2noConX}
+  \caption{The sign-function in the control law causes excessive switching in the output, thus, the design is not feasible for a real system implementation.}
   \label{fig:ia_2_noConX}
 \end{figure}
 %
@@ -259,7 +321,7 @@ However, the bigger problem with this control law is obvious from \autoref{fig:i
 %
 It is possible to implement a less aggressive version of this idea by using a saturation function to approximate the sign function around zero,
 \begin{flalign}
-  && \ddot{x}_c &= k\ \mathrm{sat}(-\tfrac{1}{\varepsilon}E_\Delta \cos \theta \dot{\theta})  \ \ \ ,  \hspace{4cm}  &&&  \label{eq:accControlLaw2_2} 
+  && a_c &= k\ \mathrm{sat}(-\tfrac{1}{\varepsilon}E_\Delta \cos \theta \dot{\theta})  \ \ \ ,  \hspace{4cm}  &&&  \label{eq:accControlLaw2_2} 
 \end{flalign}
 where $\varepsilon$ decides the slope of the saturation function around zero,
 \begin{flalign}
@@ -277,7 +339,7 @@ In the simulation $k = 2.7$ as before and $\varepsilon = 0.01$ to avoid excessiv
   \hspace{-10pt}
   \captionbox
   {
-    Edelta3noConX
+    The approximation of the sign approach using a saturation function shows no loss in performance when comparing the energy error.
     \label{fig:Edelta_3_noConX}
   }
   {
@@ -287,7 +349,7 @@ In the simulation $k = 2.7$ as before and $\varepsilon = 0.01$ to avoid excessiv
   \hspace{20pt}
   \captionbox 
   {
-    phase3noConX
+    The heteroclinic orbit is still reached, however, with a more realistic trajectory at the approach of the equilibrium points.
     \label{fig:phase_3_noConX}
   }
   {
@@ -296,11 +358,11 @@ In the simulation $k = 2.7$ as before and $\varepsilon = 0.01$ to avoid excessiv
   }  
 \end{figure}
 %
-The cart still drifts as expected, see \autoref{fig:ani_3_noConX}.
+The cart still drifts as expected, see \autoref{fig:ani_3_noConX}, and the equilibrium points are maintained for shorter durations, which is expected with less control switching.
 %
 \begin{figure}[H]
   \includegraphics[width=.7\textwidth]{figures/ani_3_noConX}
-  \caption{ani3noConX}
+  \caption{This strategy performs well. The drifting problem is solved later.}
   \label{fig:ani_3_noConX}
 \end{figure}
 %
@@ -308,9 +370,10 @@ The excessive switching on the control output is successfully avoided, see \auto
 %
 \begin{figure}[H]
   \includegraphics[width=.52\textwidth]{figures/ia_3_noConX}
-  \caption{ia3noConX}
+  \caption{The control signal using the saturation approximation of the sign-function is much more realistic for implementation.}
   \label{fig:ia_3_noConX}
 \end{figure}
+The next section explores an other approach based on the same general idea and motivation.
 %
 %
 %\begin{figure}[H]
@@ -344,17 +407,16 @@ The excessive switching on the control output is successfully avoided, see \auto
 %  \label{fig:thetaDotDot_3_noConX}
 %\end{figure}
 
-
-\subsection{Sat-Based Energy Control}
-An other strategy to avoid the excessive switching of the sign-controller is presented here,
+\subsection{Saturation Based Energy Control}
+An other strategy to avoid the excessive switching of the sign-controller is to combine saturation and sign functions in the following manner,
 \begin{flalign}
-  && \ddot{x}_c &= \mathrm{sat}(-k E_\Delta \mathrm{sgn}(\cos \theta \dot{\theta}))  \ \ \ ,  \hspace{4cm}  &&&  \label{eq:accControlLaw3} 
+  && a_c &= \mathrm{sat}(-k E_\Delta \mathrm{sgn}(\cos \theta \dot{\theta}))  \ \ \ ,  \hspace{4cm}  &&&  \label{eq:accControlLaw3} 
 \end{flalign}
-where the saturation function is saturates at the maximum/minimum allowed acceleration. The known limitation is $i_{max} = 4.58$ as stated in \autoref{table:systemParameters}, from which the maximum control, $u$, can be calculated,
+where the sat-function saturates at the maximum/minimum allowed acceleration. The known limitation is $i_{max} = 4.58$ as stated in \autoref{table:systemParameters}, from which the maximum control, $u$, can be calculated,
 \begin{flalign}
   && u_{max} &=  \frac{k_{\tau}}{r} \ \ \ ,  \hspace{4cm}  &&&  \label{eq:maxU} 
 \end{flalign}
-and finally by disregarding the pendulum behavior and cart friction from the dynamics in \autoref{eq:energyDerivedDynamicEquation1},
+and finally, by disregarding the pendulum behavior and cart friction from the dynamics in \autoref{eq:energyDerivedDynamicEquation1},
 \begin{flalign}
   && a_{max} &= \frac{u_{max}}{M+m} \ \ \ .  \hspace{4cm}  &&&  \label{eq:maxAcc} 
 \end{flalign}
@@ -368,14 +430,14 @@ As this is a crude estimation $0.2$ is subtracted from the estimated $a_{max}$ i
   \label{eq:satuationFunction2}
 \end{flalign}
 where $c$ is the input to the sat-function. Again, the sign function is redefined to one in cases where it obtains a zero value.
-Choice of $k$ in \autoref{eq:accControlLaw3} decides how aggressive the controller should be. Larger values of $k$ drives the control into saturation faster thus actuating more like the sign-based controller in \autoref{eq:accControlLaw2}. At lower values of $k$ the operation will not reach saturation as fast thus behaving more like the first energy based controller in \autoref{eq:accControlLaw}. For an effective swing up behavior $k=200$ is used putting the control closer to that of the sign-based controller, which makes sense as this was the theoretically ideal option.\\
+Choice of $k$ in \autoref{eq:accControlLaw3} decides how aggressive the controller should be. Larger values of $k$ drives the control into saturation faster thus actuating more like the sign-based controller in \autoref{eq:accControlLaw2}. At lower values of $k$ the operation will not reach saturation as fast thus behaving more like the first energy based controller in \autoref{eq:accControlLaw}. For an effective swing up behavior $k=200$ is used, thus approaching the behavior of the sign-based controller, which makes sense as this is the theoretically ideal solution.\\
 The performance in \autoref{fig:Edelta_4_noConX} is similar to that in \autoref{fig:Edelta_3_noConX} and again the system reaches a near perfect heteroclinic orbit in \autoref{fig:phase_4_noConX}.
 %
 \begin{figure}[H]
   \hspace{-10pt}
   \captionbox
   {
-    Edelta4noConX
+    This strategy is closely related to the saturation approximation of the sign approach. This fact shows here in the energy error plot where the performances of the two approaches are almost indistinguishable.
     \label{fig:Edelta_4_noConX}
   }
   {
@@ -385,7 +447,7 @@ The performance in \autoref{fig:Edelta_4_noConX} is similar to that in \autoref{
   \hspace{20pt}
   \captionbox 
   {
-    phase4noConX
+    In the phase portrait the heteroclinic orbit is still reached, however a small difference is seen in the trajectory right before reaching orbit.
     \label{fig:phase_4_noConX}
   }
   {
@@ -397,18 +459,18 @@ The performance in \autoref{fig:Edelta_4_noConX} is similar to that in \autoref{
 The overall behavior also closely mimics that of \autoref{fig:ani_3_noConX} as seen in \autoref{fig:ani_4_noConX}.
 \begin{figure}[H]
   \includegraphics[width=.7\textwidth]{figures/ani_4_noConX}
-  \caption{ani4noConX}
+  \caption{The cart drifts as expected and the overall behavior is very similar to the approximated sign approach.}
   \label{fig:ani_4_noConX}
 \end{figure}
 %
 There is however a slight difference in the control signal. In \autoref{fig:ia_4_noConX} less switching occurs compared to \autoref{fig:ia_3_noConX}. 
 \begin{figure}[H]
   \includegraphics[width=.52\textwidth]{figures/ia_4_noConX}
-  \caption{ia4noConX}
+  \caption{Slightly less switching occurs when compared to the previous approach, making this approach a viable candidate.}
   \label{fig:ia_4_noConX}
 \end{figure}
 %
-Two of the four investigated controller designs are deemed good candidates, namely \autoref{eq:accControlLaw2_2} and \autopageref{eq:accControlLaw3}. The problem of controlling the cart position still remains. The performances of the two control law candidates are compared as they are subjected to the disturbance caused by added control on the cart position and velocity.
+Two of the four investigated controller designs are deemed good candidates, namely \autoref{eq:accControlLaw2_2} and \autopageref{eq:accControlLaw3}. The problem of controlling the cart position still remains. In the following, performances of the two control law candidates are compared as they are subjected to the disturbance caused by added control on the cart position and velocity.
 %
 %
 %\begin{figure}[H]
@@ -445,10 +507,10 @@ Two of the four investigated controller designs are deemed good candidates, name
 \subsection{Cart Position and Velocity Control}
 To solve the cart drifting problem along $x$ a linear controller is designed and added to the control law,
 \begin{flalign}
-  && \ddot{x}_c &= \psi(x_1,x_3) + v(x_2,x_4) \ \ \ ,  \hspace{4cm}  &&&  \label{eq:combiControl} 
+  && a_c &= \psi(x_1,x_3) + v(x_2,x_4) \ \ \ ,  \hspace{4cm}  &&&  \label{eq:combiControl} 
 \end{flalign}
-where $\psi(x_1,x_3)$ is the energy controller and $v(x_2,x_4)$ is the linear controller. While these two controllers depend on different states, they still influence and act as unmodeled disturbances to each other. The position and velocity control, $v(x_2,x_4)$, adds and subtracts energy and therefore could cause the energy controller, $\psi(x_1,x_3)$, to overshoot. One solution to this potential problem could be to slightly lower the energy reference. However, swing-up is often designed with a slightly higher energy reference such that the catch controller has some entry velocity at the unstable equilibrium.\\
-With these considerations in mind, the design of $v(x_2,x_4)$ is proceeded. Considering the cart without friction and assuming that any influence of the pendulum and the energy control to be unmodeled disturbances of the system. This reduces the system to the mechanical drawing seen in \autoref{fig:mechanicalDrawingSimple}.
+where $\psi(x_1,x_3)$ is the energy controller and $v(x_2,x_4)$ is the linear controller. While these two controllers depend on different states, they still influence and act as unmodeled disturbances on one another. The position and velocity control, $v(x_2,x_4)$, adds and subtracts energy to the pendulum, therefore could cause the energy controller, $\psi(x_1,x_3)$, to overshoot. One solution to this potential problem could be to slightly lower the energy reference. However, swing-up is often designed with a slightly higher energy reference such that the catch controller has some entry velocity at the unstable equilibrium.\\
+With these considerations in mind, the design of $v(x_2,x_4)$ is proceeded. Considering the cart without friction and assuming any influence of the pendulum dynamics and the energy control to be unmodeled disturbances of the system. This reduces the model to the mechanical drawing seen in \autoref{fig:mechanicalDrawingSimple}.
 %
 \begin{figure}[H]
   \includegraphics[width=.35\textwidth]{figures/mechanicalDrawingSimple}
@@ -497,14 +559,14 @@ where $\vec{x} = [\ x\ \ \dot{x}\ ]^\mathrm{T}$, such that,
 \begin{flalign}
   && v(x_2,x_4) &= -\vec{k_1}  [\ x_2\ \ x_4\ ]^\mathrm{T} \ \ \ ,  \hspace{4cm}  &&&  \label{eq:linearFeedbackSimple2} 
 \end{flalign}
-in therms of the full system. This control is added to both of the considered energy control approaches and simulations are run without changing any previously designed gains.
+in therms of the full system. This control is added to both of the considered energy control approaches and simulations are run without changing any previously designed gains.\\
 \autoref{fig:Edelta_3_conX} shows the energy difference in the approximated sign approach while \autoref{fig:Edelta_4_conX} shows the sat-based approach. The approximated sign control approaches the reference slightly faster, however both reaches the reference at the same time.
 %
 \begin{figure}[H]
   \hspace{-10pt}
   \captionbox
   {
-    Edelta3ConX
+    The sign approximation approach still reaches zero energy error, however a second slower due to the disturbance form the linear control.
     \label{fig:Edelta_3_conX}
   }
   {
@@ -514,7 +576,7 @@ in therms of the full system. This control is added to both of the considered en
   \hspace{20pt}
   \captionbox 
   {
-    Edelta4ConX
+    The saturation based controller reaches the reference in about four seconds as well. However, the curve is steeper as it approaches the reference, indicating less energy before reaching orbit.
     \label{fig:Edelta_4_conX}
   }
   {
@@ -528,7 +590,7 @@ In the phase portraits, see \autoref{fig:phase_3_conX} and \ref{fig:phase_4_conX
   \hspace{-10pt}
   \captionbox
   {
-    phase3ConX
+    As indicated by the energy error, extra time and thus swing is needed to reach orbit when influenced by the linear control.
     \label{fig:phase_3_conX}
   }
   {
@@ -538,7 +600,7 @@ In the phase portraits, see \autoref{fig:phase_3_conX} and \ref{fig:phase_4_conX
   \hspace{20pt}
   \captionbox 
   {
-    phase4ConX
+    In the phase plane, the behavior of the two approaches are again very similar. However, the tendency of the saturation based controller to approach equilibrium slower is amplified after influence of the linear control.
     \label{fig:phase_4_conX}
   }
   {
@@ -553,7 +615,7 @@ This fact is also seen in \autoref{fig:ani_3_conX} where the trace of the swing 
   \hspace{-10pt}
   \captionbox
   {
-    ani3ConX
+    The linear control successfully keeps the cart around zero while the energy control approaches the unstable equilibrium.
     \label{fig:ani_3_conX}
   }
   {
@@ -563,7 +625,7 @@ This fact is also seen in \autoref{fig:ani_3_conX} where the trace of the swing 
   \hspace{20pt}
   \captionbox 
   {
-    ani4ConX
+    The performance of the approximated sign is slightly better in the swing prior to reaching the heteroclinic orbit.
     \label{fig:ani_4_conX}
   }
   {
@@ -578,7 +640,7 @@ This fact is also seen in \autoref{fig:ani_3_conX} where the trace of the swing 
   \hspace{-10pt}
   \captionbox
   {
-    ia3ConX
+    The control signal for the approximated sign approach switches less after the added linear control.
     \label{fig:ia_3_conX}
   }
   {
@@ -588,7 +650,7 @@ This fact is also seen in \autoref{fig:ani_3_conX} where the trace of the swing 
   \hspace{20pt}
   \captionbox 
   {
-    ia4ConX
+    The two approaches share very similar control signals, which is to be expected as both methods are very similar at large control values.
     \label{fig:ia_4_conX}
   }
   {
@@ -603,7 +665,7 @@ This fact is also seen in \autoref{fig:ani_3_conX} where the trace of the swing 
   \hspace{-10pt}
   \captionbox
   {
-    x3ConX
+    This shows the added linear feedback control oscilating around zero, allowing the energy controller room to operate.
     \label{fig:x_3_conX}
   }
   {
@@ -613,7 +675,7 @@ This fact is also seen in \autoref{fig:ani_3_conX} where the trace of the swing 
   \hspace{20pt}
   \captionbox 
   {
-    x4ConX
+    The saturation based controller keeps the cart closer to zero, suggesting less actuation from the energy control.
     \label{fig:x_4_conX}
   }
   {
@@ -626,7 +688,7 @@ The same is seen for the velocity in \autoref{fig:xDot_3_conX} and \ref{fig:xDot
   \hspace{-10pt}
   \captionbox
   {
-    xDot3ConX
+    Zero velocity is obtained quite effectively after the energy reference is reached.
     \label{fig:xDot_3_conX}
   }
   {
@@ -636,7 +698,7 @@ The same is seen for the velocity in \autoref{fig:xDot_3_conX} and \ref{fig:xDot
   \hspace{20pt}
   \captionbox 
   {
-    xDot4ConX
+    Again, both control strategies behave very similarly.
     \label{fig:xDot_4_conX}
   }
   {
@@ -645,12 +707,7 @@ The same is seen for the velocity in \autoref{fig:xDot_3_conX} and \ref{fig:xDot
   }  
 \end{figure}
 
-
-
-
-
-
-
+This concludes the design of swing-up control. Though some small advantages are seen in the approximated sign control over the saturation based, both strategies are still viable options, therefore both are eventually implemented and tested.
 %
 %
 %
@@ -697,8 +754,3 @@ The same is seen for the velocity in \autoref{fig:xDot_3_conX} and \ref{fig:xDot
 %  \caption{thetaDotDot4ConX}
 %  \label{fig:thetaDotDot_4_conX}
 %\end{figure}
-
-
-
-
-

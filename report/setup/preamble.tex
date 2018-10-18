@@ -84,6 +84,10 @@
 \usepackage[framed,amsmath,thmmarks]{ntheorem}
 \usepackage{xifthen}%<--enables ifthenelse which is used in macros
 
+%enable begin/end theorem environment
+\newtheorem{theorem}{Theorem}[section]
+\newcommand{\theoremautorefname}{Theorem}
+
 \usepackage{siunitx} 
 \sisetup{decimalsymbol=period}%<--\num{} will swich commas with periods
 \sisetup{detect-weight}
