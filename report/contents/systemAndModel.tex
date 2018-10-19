@@ -22,16 +22,16 @@ The supply circuit on the microcontroller board is powered by 5V which is regula
 
 The following relation between analog 12 bit output values, $\text{bit}_\text{DAC}$, from the microcontroller and armature current in the motor was found by a previous project group \cite{JHHorgensen}, %linear regression
 %
-\begin{flalign}
-  && \text{bit}_\text{DAC} &= 105.78 \cdot i_{a} + 1970  \ \ \ , &&&
+\begin{align}
+  \text{bit}_\text{DAC} &= 105.78 \cdot i_{a} + 1970  \ \ \ , 
   \label{eq:Ia-bit}
-\end{flalign}
+\end{align}
 %
 and as a result of a force test, see \cite{NSVestergaard}, \autoref{eq:Ia-bit} was corrected to,
-\begin{flalign}
-  && \text{bit}_\text{DAC} &= 111.9 \cdot i_{a} + 1970  \ \ \ , &&&
+\begin{align}
+  \text{bit}_\text{DAC} &= 111.9 \cdot i_{a} + 1970  \ \ \ ,
   \label{eq:Ia-bit-corrected}
-\end{flalign}
+\end{align}
 which is the relation used in this project.
 All the system parameters used in the design are listed in \autoref{table:systemParameters}. It is assumed that all frictions in the system can be modeled as a combination of Coulomb and viscous frictions. Wires hanging from the cart are unmodeled and their weight along with that of the belt are contained in the estimation of the cart mass. 
 
@@ -75,49 +75,48 @@ The model is based on the generalized coordinates presented in \autoref{fig:mech
 \end{figure}
 The pendulum mass center is positioned at zero hight at rest s.t. all energies in the system are positive. It is assumed that the pendulum rod is rigid and massless and that the pendulum weights are a point mass at the geometrical center of the weights.\\
 The motor torque is given by direct relation to the armature current by the motor constant, $\tau_m = k_\tau i_a $, such that,
-\begin{flalign}
-&& F &= \tfrac{1}{r} k_\tau i_a   \hspace{.3\linewidth}    & \unit{N}  \ \ \ .
+\begin{align}
+  F &= \tfrac{1}{r} k_\tau i_a  \ \ \ .
 \label{eq:motorForce}
-\end{flalign}
+\end{align}
 %
 To avoid excessive notation $u=F$ is considered to be the control input in the remaining of this thesis, while keeping in mind the relation in \autoref{eq:motorForce} along with the knowledge that $u$ must be converted to armature current in implementation.
 
-%\begin{flalign}
+%\begin{align}
 %&& F &= \tfrac{1}{r} k_\tau i_a  &a
 %\label{eq:motorForce}
-%\end{flalign}
+%\end{align}
 %
 It is well known that the potential energy, $U$, and the kinetic energy, $T$, are given by, \cite{RWisniewski}
-\begin{flalign}
-  &&  U &= mgl( 1 + \cos \theta )   &  \unit{J}  \\
-  &&  T &= \frac{1}{2} ( M + m ) \dot{x}^2 - m \dot{x} l \cos \theta \dot{\theta} + \frac{1}{2} m l^2 \dot{\theta}^2 \ \ \ . & \unit{J}
+\begin{align}
+  U &= mgl( 1 + \cos \theta )   \\
+  T &= \frac{1}{2} ( M + m ) \dot{x}^2 - m \dot{x} l \cos \theta \dot{\theta} + \frac{1}{2} m l^2 \dot{\theta}^2 \ \ \ .
   \label{eq:generalizedPotentialAndKinetic}
-\end{flalign}
+\end{align}
 The frictions, indicated in \autoref{fig:mechanicalDrawing}, are, as mentioned, comprised of Coulomb and viscous frictions with values stated in \autoref{table:systemParameters}. The viscous frictions are modeled as linear functions of velocities, \cite{CMClose, HOlsson}
-\begin{flalign}
-&&  b_{p,v} \dot{\theta} \ \ \ , & \ \ \ \ \ b_{c,v} \dot{x} \ \ \ , \hspace{.27\linewidth} &&&
+\begin{align}
+  b_{p,v} \dot{\theta} \ \ \ , & \ \ \ \ \ b_{c,v} \dot{x} \ \ \ , 
 \label{eq:viscousFrictions}
-\end{flalign}
+\end{align}
 for the rotational and linear case respectively.
 The coulomb frictions are modeled as a constant with its sign depending on the signs of the velocities, such that, \cite{CMClose, HOlsson}
-\begin{flalign}
-&&  \mathrm{sgn}(\dot{\theta}) b_{p,c} \ \ \ , & \ \ \ \ \  \mathrm{sgn}(\dot{x}) b_{c,c} \ \ \ . \hspace{.19\linewidth} &&&
+\begin{align}
+  \mathrm{sgn}(\dot{\theta}) b_{p,c} \ \ \ , & \ \ \ \ \  \mathrm{sgn}(\dot{x}) b_{c,c} \ \ \ .
 \label{eq:coloumbFrictions}
-\end{flalign}
+\end{align}
 This, however, introduces discontinuities at zero velocities. Thus, tanh-functions are used to obtain a continues approximation of the sign-functions,
-\begin{flalign}
-&&  \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} \ \ \ , & \ \ \ \ \ b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ ,  &&&
+\begin{align}
+  \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} \ \ \ , & \ \ \ \ \ b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ ,
 \label{eq:coloumbFrictionsTanh}
-\end{flalign}
+\end{align}
 where $\text{k}_\text{tanh}=250$ to increase the steepness of the tanh-functions thereby obtaining a closer approximation of the sign-functions.
 Finally, by use of the Lagrange-d’Alembert Principle, \cite{RWisniewski}
-\begin{flalign}
-  && \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \vec{\dot{q}}} - \frac{\partial \cal{L}}{\partial \vec{q}}  &=  \vec{Q} \ \ \ , \hspace{.25\linewidth} &&&
+\begin{align}
+  \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \vec{\dot{q}}} - \frac{\partial \cal{L}}{\partial \vec{q}}  &=  \vec{Q} \ \ \ ,
   \label{eq:energyMethodWithExternalForces}
-\end{flalign}
-where,
-\begin{flalign}
-  && \vec{q} &= 
+\end{align}
+\begin{align}
+  \vec{q} &= 
   \begin{bmatrix}
     \theta    \\
     x
@@ -126,19 +125,18 @@ where,
   \begin{bmatrix}
     -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c}    \\
     \tfrac{1}{r} k_\tau i_a - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c}
-  \end{bmatrix} \ \ \ , &
+  \end{bmatrix} \ \ \ ,
   \label{eq:qAndQ}
-\end{flalign}
+\end{align}
 and $\cal{L}$ $ = T-U$, the dynamics of the system are found,
-\begin{flalign}
-    && m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  &= -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} &  \unit{N \cdot m}   \label{eq:energyDerivedDynamicEquation2} \\
-    && ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  u - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ . &   \unit{N}
+\begin{align}
+  m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  &= -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} \label{eq:energyDerivedDynamicEquation2} \\
+  ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  u - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ .
   \label{eq:energyDerivedDynamicEquation1}
-\end{flalign}
+\end{align}
 By setting up the dynamic equations, \autoref{eq:energyDerivedDynamicEquation1} and \ref{eq:energyDerivedDynamicEquation2}, in the following manner,
 %
-\begin{flalign}
-&&
+\begin{align}
 \begin{split}
   &
   \begin{bmatrix}
@@ -170,14 +168,14 @@ By setting up the dynamic equations, \autoref{eq:energyDerivedDynamicEquation1} 
     0  \\
     u
   \end{bmatrix} \ \ \ , 
-\end{split} &&
+\end{split}
 \label{eq:thetaXdynamics}
-\end{flalign}
+\end{align}
 %
 the general form of an m-link robot is obtained, \cite{MWSpong, LSciavicco}
-\begin{flalign}
-  && \vec{M}(\vec{q})\vec{\ddot{q}} + \vec{C}(\vec{q},\vec{\dot{q}}) + \vec{B}(\vec{\dot{q}}) + \vec{G}(\vec{q}) &= \vec{F} \ \ \ , &&&
-\end{flalign}
+\begin{align}
+  \vec{M}(\vec{q})\vec{\ddot{q}} + \vec{C}(\vec{q},\vec{\dot{q}}) + \vec{B}(\vec{\dot{q}}) + \vec{G}(\vec{q}) &= \vec{F} \ \ \ , \hspace{3.3cm}
+\end{align}
 \begin{where}
   \va{ \vec{M}(\vec{q})  }{is the inertia matrix}                    {}
   \va{ \vec{C}(\vec{q},\vec{\dot{q}})  }{is the Coriolis and centrifugal effects}  {}
@@ -188,8 +186,7 @@ the general form of an m-link robot is obtained, \cite{MWSpong, LSciavicco}
 
 Choosing $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\theta}\ \ \dot{x}\ ]^\mathrm{T} $ as states results in the following nonlinear state space representation,
 %
-\begin{flalign}
-  &&
+\begin{align}
   \begin{bmatrix}
     \dot{x_1} \\
     \dot{x_2} \\
@@ -202,7 +199,7 @@ Choosing $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\t
     x_4 \\
     \vec{M}^{-1}(x_1) ( \vec{F} - \vec{C}(x_1,x_3) - \vec{B}(x_3,x_4) - \vec{G}(x_1) )
   \end{bmatrix}
-  \label{eq:nonlinearStateSpace} \ \ \ , &&&
-\end{flalign}
+  \label{eq:nonlinearStateSpace} \ \ \ ,
+\end{align}
 %
-which is convenient when simulation the system. This representation is also used in the controller designs.
+which is convenient when simulating the system. This representation is also used in the controller designs.
