@@ -27,18 +27,33 @@ The mechanical energy in this coordinate frame is then,
 The following sections explores different approaches of controlling the pendulum energy specified in \autoref{eq:pendulumEnergy4} to its desired reference.
 
 \subsection{Energy Control}
-A Lyapunov function candidate is proposed,
+A function candidate is proposed,
 \begin{align}
-  V &= \tfrac{1}{2} E_\Delta ^2 \ \ \ ,   \label{eq:lyapunovCandidate} 
+  V(\theta, \dot{\theta}) &= \tfrac{1}{2} E_\Delta ^2 \ \ \ ,   \label{eq:lyapunovCandidate} 
 \end{align}
 where $E_\Delta$ is the difference in energy in relation to the unstable equilibrium,
 %
 \begin{align}
   E_\Delta &= E_p  - E_{\mathrm{eq}}   \label{eq:energyDelta1} \\
   E_\Delta &= \tfrac{1}{2} J \dot{\theta}^2 + m g l (\cos \theta +1) - 2 m g l  \label{eq:energyDelta2} \\
-  E_\Delta &= \tfrac{1}{2} J \dot{\theta}^2 + m g l (\cos \theta -1)   \ \ \ .  \label{eq:energyDelta3}
+  E_\Delta &= \tfrac{1}{2} J \dot{\theta}^2 + m g l (\cos \theta -1)   \ \ \ ,  \label{eq:energyDelta3}
 \end{align}
-%
+hence,
+\begin{align}
+  V &= \tfrac{1}{2}( \tfrac{1}{2} J \dot{\theta}^2 + m g l (\cos \theta -1)  ) ^2 \\ 
+  V &= \tfrac{1}{2} (\tfrac{1}{2} J \dot{\theta}^2)^2 + \tfrac{1}{2} (m g l (\cos \theta -1)  ) ^2  +  \tfrac{1}{2} J \dot{\theta}^2  m g l (\cos \theta -1) \\
+  V &= \tfrac{1}{8} J^2 \dot{\theta}^4 + \tfrac{1}{2} m^2 g^2 l^2 ( \cos^2 \theta + 1 -2\cos \theta )  +  \tfrac{1}{2} J \dot{\theta}^2  m g l (\cos \theta -1)  \ \ \ , \label{eq:lyapunovCandidate2}
+\end{align}
+further,
+%\begin{align}
+%  \frac{\partial^2 V}{\partial^2 \theta\dot{\theta}} &= -J \dot{\theta} m g l \sin \theta \ \ \ .  \label{eq:lyapunovCandidateDiff}
+%\end{align}
+\begin{align}
+\frac{\partial V}{\partial \theta}       &= -m^2 g^2 l^2 \cos \theta \sin \theta + m^2 g^2 l^2 \sin \theta - \tfrac{1}{2} J \dot{\theta}^2 m g l \sin \theta \label{eq:lyapnovCandidateDiff_theta} \\
+\frac{\partial V}{\partial \dot{\theta}} &=  \tfrac{1}{2} J^2 \dot{\theta}^3 + J m g l ( \cos \theta - 1 ) \dot{\theta} \ \ \ ,  \label{eq:lyapnovCandidateDiff_thetaDot}
+\end{align}
+where both \autoref{eq:lyapnovCandidateDiff_theta} and \ref{eq:lyapnovCandidateDiff_thetaDot} are continuous, $C^0$, so $V(\theta,\dot{\theta})$ is continuously differentiable, $C^1$, in the entire $\mathbb{R}^2$.
+
 The idea is to reach the reference $E_\Delta = 0$, which happens when,
 \begin{align}
   \tfrac{1}{2} J &\dot{\theta}^2 + m g l (\cos \theta -1) = 0 \label{eq:energyDeltaZero1} \\
@@ -54,77 +69,155 @@ A plot of \autoref{eq:energyDeltaZero2} in the phase plane, see \autoref{fig:orb
 \end{figure}
 %
 If the energy reference is successfully tracked, the system will be restricted to this set rather than a single equilibrium point. Such a trajectory joining two equilibrium points is called a heteroclinic orbit.\\
-Following \autoref{th:lyapunovStabilityTheorem}, the derivative of the Lyapunov function candidate, \autoref{eq:lyapunovCandidate},
+Recall the system from \autoref{eq:pendulumDynamics},
 \begin{align}
-  \dot{V} &= E_\Delta \dot{E}_\Delta  \ \ \ ,\ \ \ \ \dot{E}_\Delta = J \dot{\theta} \ddot{\theta} - m g l \sin \theta \dot{\theta}  \ \ \ ,  \label{eq:lyapunovDerivative1}
+  J \ddot{\theta} &= m l \cos \theta a_c + m g l \sin \theta \ \ \ ,  \label{eq:pendulumDynamics2}
 \end{align}
-is $C^0$ and thus $V(x)$ is continuously differentiable, $C^1$. Further, $V(\vec{0}) = 0$ and $V(\vec{x})>0$ in the entire state space, excluding zero.
-%The Lyapunov function candidate, \autoref{eq:lyapunovCandidate}, is continuously differentiable in the entire $\mathbb{R} ^2$. Its derivative is evaluated to find a stabilizing controller,
-%
-\begin{theorem}[Lyapunov Stability Theorem]
-  \label{th:lyapunovStabilityTheorem}
-  Consider the autonomous system, $f(\vec{x}) = \dot{\vec{x}}$, where $f : \mathbb{D} \rightarrow \mathbb{R} ^n$ is locally Lipschitz and $\vec{x}=\vec{0}$ is an equilibrium point. Then if $\exists\ V : \mathbb{D} \rightarrow \mathbb{R}$ and \vspace{-12pt}
-  \begin{enumerate}
-    \item $V(\vec{x})$ is $C^1$
-    \item $V(\vec{x}) > 0$ $\forall \vec{x} \in \mathbb{D}\backslash 0$ and $V(\vec{0}) = 0$
-    \item $\dot{V}(\vec{x}) \leq 0$ in $\mathbb{D}$
-  \end{enumerate} \vspace{-12pt}
-  then $\vec{x} = \vec{0}$ is stable. Further, if,
-  \vspace{-12pt}
-  \begin{itemize}
-    \item[] $ \dot{V}(\vec{x}) < 0\ \mathrm{in}\ \mathbb{D}\backslash 0  \ \ \ ,  $
-  \end{itemize}\vspace{-12pt}
-  then $\vec{x} = \vec{0}$ is asymptotically stable \cite{HKKhalil}.
-\end{theorem}\vspace{-12pt}
-%
-The third condition states that the derivative of the Lyapunov function candidate along trajectories of the system must be less than or equal to zero in the entire state space. In this case, from \autoref{eq:lyapunovDerivative1}, if the energy error goes to zero, so does the derivative of the Lyapunov function.\\
-Without checking for definiteness, it is known that in cases where $V(\vec{x}) = 0$, trajectories neither approach nor diverge from the equilibrium, but rather stay in some orbit. While \autoref{th:lyapunovStabilityTheorem} has the potential to promise stability of the desired orbit once there, it does not guarantee convergence to said orbit.\\
-However, by instead studying LaSalle's \autoref{th:lasallesTheorem}, analysis of convergence to sets is made possible.
-\begin{theorem}[LaSalle's Theorem]
-  \label{th:lasallesTheorem}
-  Consider again the system from \autoref{th:lyapunovStabilityTheorem}. Then if there exist some function $V : \mathbb{D} \rightarrow \mathbb{R}$ and \vspace{-12pt}
-  \begin{enumerate}
-    \item $V(\vec{x})$ is $C^1$
-    \item $\exists\ c > 0$ s.t. $\Omega_c = \{\vec{x} \in \mathbb{R}^n \ | \ V(\vec{x}) \leq c \} \subset \mathbb{D}$ is bounded
-    \item $\dot{V}(\vec{x}) \leq 0 \ \ \forall \ \vec{x} \in \Omega_c$
-  \end{enumerate} \vspace{-12pt}
-  then $\vec{x}(0) \in \Omega_c \Rightarrow \vec{x}(t) \xrightarrow[]{t \to \infty} M \ ,$  where $M$ is the largest invariant set in
-  \vspace{-12pt}
-  \begin{itemize}
-    \item[] $E = \{ \vec{x} \in \Omega_c \ | \ \dot{V}(\vec{x}) = 0 \} \ \ $ \cite{HKKhalil}.
-  \end{itemize}\vspace{-12pt}
-\end{theorem}
-%
-Though the function $V(\vec{x})$ is not required to be positive definite by \autoref{th:lasallesTheorem}, the same function candidate, \autoref{eq:lyapunovCandidate}, is used, thereby also satisfying the first condition.\\
-The second condition states that some bounded set, $\Omega_c$, of solutions for which $V(x)$ is less than or equal to some constant $c$ must exist.\\
-This ties into the third condition stating that the derivative of the function candidate must be negative semi-definite along trajectories of the system for all solutions in said set.\\
-To find $\Omega_c$, the derivative of the function candidate,  \autoref{eq:lyapunovDerivative1}, is evaluated along the trajectories of the system, \autoref{eq:pendulumDynamics},
+the derivative of $V$ is then evaluated along trajectories of the system,
 \begin{align}
+  \dot{V} &= E_\Delta \dot{E}_\Delta % \ \ \ ,\ \ \ \ \dot{E}_\Delta = J \dot{\theta} \ddot{\theta} - m g l \sin \theta \dot{\theta}
+  \label{eq:lyapunovDerivative1} \\ 
   \dot{V} &= E_\Delta ( J \dot{\theta} \ddot{\theta} - m g l \sin \theta \dot{\theta} )   \label{eq:lyapunovDerivative2} \\
   \dot{V} &= E_\Delta ( \dot{\theta} ( m l \cos \theta a_c + m g l \sin \theta )  - m g l \sin \theta \dot{\theta} )   \label{eq:lyapunovDerivative3} \\
-  \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} a_c   \ \ \ ,  \label{eq:lyapunovDerivative4}
+  \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} a_c   \ \ \ .  \label{eq:lyapunovDerivative4}
 \end{align}
+The idea is to find a control law, $a_c$, which allows trajectories of the system to reach the desired heteroclinic orbit.
+%is $C^0$ and thus $V(x)$ is continuously differentiable, $C^1$. Further, $V(\vec{0}) = 0$ and $V(\vec{x})>0$ in the entire state space, excluding zero.
+%
+%The Lyapunov function candidate, \autoref{eq:lyapunovCandidate}, is continuously differentiable in the entire $\mathbb{R} ^2$. Its derivative is evaluated to find a stabilizing controller,
+%
+%\begin{theorem}[Lyapunov Stability Theorem]
+%  \label{th:lyapunovStabilityTheorem}
+%  Consider the autonomous system, $f(\vec{x}) = \dot{\vec{x}}$, where $f : \mathbb{D} \rightarrow \mathbb{R} ^n$ is locally Lipschitz and $\vec{x}=\vec{0}$ is an equilibrium point. Then if $\exists\ V : \mathbb{D} \rightarrow \mathbb{R}$ and \vspace{-12pt}
+%  \begin{enumerate}
+%    \item $V(\vec{x})$ is $C^1$
+%    \item $V(\vec{x}) > 0$ $\forall \vec{x} \in \mathbb{D}\backslash 0$ and $V(\vec{0}) = 0$
+%    \item $\dot{V}(\vec{x}) \leq 0$ in $\mathbb{D}$
+%  \end{enumerate} \vspace{-12pt}
+%  then $\vec{x} = \vec{0}$ is stable. Further, if,
+%  \vspace{-12pt}
+%  \begin{itemize}
+%    \item[] $ \dot{V}(\vec{x}) < 0\ \mathrm{in}\ \mathbb{D}\backslash 0  \ \ \ ,  $
+%  \end{itemize}\vspace{-12pt}
+%  then $\vec{x} = \vec{0}$ is asymptotically stable \cite{HKKhalil}.
+%\end{theorem}\vspace{-12pt}
+%
+%The third condition states that the derivative of the Lyapunov function candidate along trajectories of the system must be less than or equal to zero in the entire state space. In this case, from \autoref{eq:lyapunovDerivative1}, if the energy error goes to zero, so does the derivative of the Lyapunov function.\\
+%Without checking for definiteness, it is known that in cases where $V(\vec{x}) = 0$, trajectories neither approach nor diverge from the equilibrium, but rather stay in some orbit. While \autoref{th:lyapunovStabilityTheorem} has the potential to promise stability of the desired orbit once there, it does not guarantee convergence to said orbit.\\
+By studying LaSalle's \autoref{th:lasallesTheorem}, analysis of convergence to sets is made possible.
+
+\begin{minipage}[]{\linewidth}
+  \begin{theorem}[LaSalle's Theorem]
+    \label{th:lasallesTheorem}
+    %Consider again the system from \autoref{th:lyapunovStabilityTheorem}.
+    Consider the autonomous system, $f(\vec{x}) = \dot{\vec{x}}$, where $f : \mathbb{D} \rightarrow \mathbb{R} ^n$ is locally Lipschitz and $\vec{x}=\vec{0}$ is an equilibrium point. Then if there exist some function $V : \mathbb{D} \rightarrow \mathbb{R}$ and
+    \begin{enumerate}
+      \item $V(\vec{x})$ is $C^1$
+      \item $\exists\ c > 0$ s.t. $\Omega_c = \{\vec{x} \in \mathbb{R}^n \ | \ V(\vec{x}) \leq c \} \subset \mathbb{D}$ is bounded
+      \item $\dot{V}(\vec{x}) \leq 0 \ \ \forall \ \vec{x} \in \Omega_c$
+    \end{enumerate}
+    then $\vec{x}(0) \in \Omega_c \Rightarrow \vec{x}(t) \xrightarrow[]{t \to \infty} M \ ,$  where $M$ is the largest invariant set in
+    \begin{itemize}
+      \item[] $E = \{ \vec{x} \in \Omega_c \ | \ \dot{V}(\vec{x}) = 0 \} \ \ $ \cite{HKKhalil}.
+    \end{itemize}
+  \end{theorem}
+\end{minipage}
+%
+%Further, $V(\vec{0}) = 0$ and $V(\theta, \dot{\theta})>0$ in the domain $ [\ 0 ; 2\pi \ )$.
+The first condition in LaSalle's \autoref{th:lasallesTheorem} is already satisfied. Notice that the function candidate, $V(\vec{x})$, is not required to be positive definite.\\
+The second condition states that some bounded set, $\Omega_c$, of solutions for which $V(\vec{x})$ is less than or equal to some constant $c$ must exist.\\
+This ties into the third condition stating that the derivative of the function candidate must be negative semi-definite along trajectories of the system for all solutions in said set.\\
+%To find $\Omega_c$, the derivative of the function candidate,  \autoref{eq:lyapunovDerivative1}, is evaluated along the trajectories of the system, \autoref{eq:pendulumDynamics},
+%\begin{align}
+%  \dot{V} &= E_\Delta ( J \dot{\theta} \ddot{\theta} - m g l \sin \theta \dot{\theta} )   \label{eq:lyapunovDerivative2} \\
+%  \dot{V} &= E_\Delta ( \dot{\theta} ( m l \cos \theta a_c + m g l \sin \theta )  - m g l \sin \theta \dot{\theta} )   \label{eq:lyapunovDerivative3} \\
+%  \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} a_c   \ \ \ ,  \label{eq:lyapunovDerivative4}
+%\end{align}
 %
 The controlled acceleration at the pivot point, $a_c$, is then designed to satisfy the third condition in \autoref{th:lasallesTheorem},
 \begin{align}
+  a_c &= -k E_\Delta \cos \theta \dot{\theta}  \ \ \ ,  \label{eq:accControlLaw}
+\end{align}
+where the tuning parameter, $k>0$, is introduced to allow scaling the control output to fit the capabilities of the actuator. Inserting the control law yields,
+\begin{align}
+  \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} a_c  \\
   \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} (-k E_\Delta \cos \theta \dot{\theta})     \label{eq:lyapunovDerivativeControlled1} \\
   \dot{V} &= -k m l (E_\Delta \cos \theta \dot{\theta})^2  \leq 0  \ \ \ ,   \label{eq:lyapunovDerivativeControlled2} 
 \end{align}
-the tuning parameter, $k>0$, is introduced to allow scaling the control output to fit the capabilities of the actuator. The control law for the acceleration of the pivot point is then,
+satisfying the third condition of \autoref{th:lasallesTheorem} not only in $\Omega_c$ but in the entire state space. This means any $\infty>c>0$ will satisfy the second condition. However, looking at the function candidate,
 \begin{align}
-  a_c &= -k E_\Delta \cos \theta \dot{\theta}  \ \ \ .  \label{eq:accControlLaw}
+V &= \tfrac{1}{8} J^2 \dot{\theta}^4 + \tfrac{1}{2} m^2 g^2 l^2 ( \cos^2 \theta + 1 -2\cos \theta )  +  \tfrac{1}{2} J \dot{\theta}^2  m g l (\cos \theta -1)  \ \ \ , \label{eq:functionCandidate3}
 \end{align}
-This control law satisfies the third condition of \autoref{th:lasallesTheorem} not only in $\Omega_c$ but in the entire state space. This means any $\infty>c>0$ will satisfy the second condition. It also satisfies the first stability criterion of \autoref{th:lyapunovStabilityTheorem}, indicating the control law has caused stability of the previously unstable equilibrium. However, the stability is not asymptotical and $\vec{x} = \vec{0}$ is not the only stable point when using this control strategy. Further, as stated, \autoref{th:lyapunovStabilityTheorem} does not guarantee convergence to a set.\\
+the angle is only present in periodic functions. Hence no value of $c$ can bound the angle. If starting some arbitrary place in the state space, the energy reference is eventually tracked, but the heteroclinic orbit could happen between any two saddle points. To constrain further analysis and design to the desired region of operation, $\Omega_c$ is defined as the set containing all points within and on the set in \autoref{fig:orbit}, that is,
+\begin{align}
+  \Omega_c &=  \{ \vec{x} \ | \ \dot{\theta} \leq \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}} , \ 0 \leq \theta \leq 2 \pi  \} \ \ \ . \label{eq:omegaC}
+\end{align}
+%
+%It also satisfies the first stability criterion of \autoref{th:lyapunovStabilityTheorem}, indicating the control law has caused stability of the previously unstable equilibrium. However, the stability is not asymptotical and $\vec{x} = \vec{0}$ is not the only stable point when using this control strategy. Further, as stated, \autoref{th:lyapunovStabilityTheorem} does not guarantee convergence to a set.\\
 All conditions of LaSalle's \autoref{th:lasallesTheorem} are satisfied, thus, if starting in $\Omega_c$, trajectories of the system will converge to $M$ as time goes to infinity. $M$ is the largest invariant set in $E$, which can be described as the union of sets for which \autoref{eq:lyapunovDerivativeControlled2} is zero,
 \begin{align}
-  E  &= \{ \vec{x} \in \Omega_c \ | \ E_\Delta = 0 \} \cup  \{ \vec{x} \in \Omega_c \ | \  \cos \theta = 0 \} \cup  \{ \vec{x} \in \Omega_c \ | \ \dot{\theta} = 0 \} \ \ \ . \label{eq:E}
+  A &=  \{ \vec{x} \in \Omega_c \ | \ E_\Delta     = 0 \}      \\
+  B &=  \{ \vec{x} \in \Omega_c \ | \ \cos \theta  = 0 \}  \\
+  C &=  \{ \vec{x} \in \Omega_c \ | \ \dot{\theta} = 0 \}  \\
+  E &= A \cup B \cup C \ \ \ . \label{eq:E}
 \end{align}
-\fxnote{Kan man skrive sæt på den måde? Er der en bedre måde?}
-\fxnote{Hvordan beviser jeg at E Delta lig nul er invariant?}
-The only way $\cos \theta = 0$ is part of an invariant set, is in situations where it is contained in the set for which $E_\Delta = 0$, any other values of the angular velocity will cause it to leave the set. A similar argument can be used for $\dot{\theta} = 0$, however, in this case if $\theta = \pm \pi n , \ n = 1, 3, 5, ...$, the system stays. So the largest invariant set in $E$ is,
+To construct set $M$ it is necessary to evaluate each set for invariance with respect to the controlled system. A proof is constructed to show invariance of the first set.
+\begin{proof}[Invariance of Set A]
+  \label{pr:invariantA}
+  Recall the relation between $\dot{\theta}$ and $\theta$ for $E_\Delta = 0$,
+  \begin{align}
+    &\dot{\theta}_z = \pm \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}}  \ \ \ ,  \label{eq:thetaDotForEDeltaZero}
+  \end{align}
+  where $\dot{\theta}_z$ is the angular velocity for which the energy error is zero. Further, consider the model in the following form,
+  \begin{align}
+    \ddot{\theta} &= \tfrac{1}{J} ( m l \cos \theta a_c + m g l \sin \theta ) \ \ \ .  \label{eq:pendulumDynamics3}
+  \end{align}
+  To prove that $A$ is invariant with respect to \autoref{eq:pendulumDynamics3}, the slope of $\dot{\theta}_z$ along $\theta$ is compared to the slope of the controlled system trajectories in the set. If the slopes are equal, then no trajectory can leave the set $A$, thus proving $A$ is invariant with respect to the controlled system. The slope of $\dot{\theta}_z$ along $\theta$ is,
+  \begin{align}
+    \frac{\partial \dot{\theta}_z}{\partial \theta} &= \pm \frac{m g l \sin\theta}{ J } \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{-\tfrac{1}{2}} \\
+    \frac{\partial \dot{\theta}_z}{\partial \theta} &= \frac{m g l \sin\theta}{ J \rule{0pt}{12pt}\dot{\theta}_z}  \ \ \ .  \label{eq:thetaDotForEDeltaZero_dTheta}
+  \end{align}
+  The slope of the trajectories of the controlled system, \autoref{eq:pendulumDynamics3}, in set $A$ is then,
+  \begin{align}
+    b &= \frac{\ddot{\theta}_z}{\rule{0pt}{12pt}\dot{\theta}_z} \\
+    b &= \frac{- m l \cos \theta a_c( \theta, \dot{\theta}_z ) + m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+    b &= \frac{- k m l \cos^2 \theta E_\Delta( \theta, \dot{\theta}_z ) \dot{\theta}_z + m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+    b &= \frac{- k m l \cos^2 \theta ( \tfrac{1}{2} J \dot{\theta}_z^2 + m g l (\cos \theta -1)  ) \dot{\theta}_z}{ J \rule{0pt}{12pt}\dot{\theta}_z}  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+    b &= - k m l \cos^2 \theta \tfrac{1}{2} \dot{\theta}_z^2 - \tfrac{1}{J} k m l \cos^2 \theta m g l (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+    %b &= - k m l \cos^2 \theta \tfrac{1}{2} \left( \pm \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}} \right)^2 \\
+    %  &- \tfrac{1}{l^2 m} k m^2 l^2 g \cos^2 \theta (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+    b &= - k m l \cos^2 \theta \tfrac{1}{2} \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)  - \tfrac{1}{l^2 m} k m^2 l^2 g \cos^2 \theta (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+    b &= - k m l \cos^2 \theta \tfrac{1}{2} \frac{-2 m g l (\cos \theta -1)}{l^2 m} - k \cos^2 \theta m g (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z}  \\
+    b &= k \cos^2 \theta m g (\cos \theta -1) - k \cos^2 \theta m g (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+    b &= \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \ \ \ ,  \label{eq:systemTrajSlopeInSetA}
+  \end{align}
+  where $\ddot{\theta}_z$ is the angular acceleration of the controlled system in set $A$.\\
+  Finally, since,
+  \begin{align}
+    \frac{\partial \dot{\theta}_z}{\partial \theta} &= b \ \ \ ,  \label{eq:slopesEqual}
+  \end{align}
+  the set $A$ is invariant with respect to the controlled system, \autoref{eq:pendulumDynamics3}.\vspace{-4pt}
+  \begin{align}
+    \tag*{$\blacksquare\ $}
+  \end{align}
+\end{proof}
+%
+\vspace{-8pt}
+The set $B$ is invariant only for the intersection $B \cap A$, any other values of the angular velocity will cause it to leave the set since $\cos \theta = 0$ corresponds to a horizontal position of the pendulum. A similar argument can be made for set $C$, however, in this case if $\theta = \pi$, the system stays in the set. So, the invariant part of set $C$ is,
 \begin{align}
-  M  &= \{ \vec{x} \in \Omega_c \ | \ E_\Delta = 0 \} \cup  \{ \vec{x} \in \Omega_c \ | \ \dot{\theta} = 0 \ | \ \theta = \pm \pi n , \ n = 1, 3, 5, ... \} \ \ \ .  \label{eq:M}
+  F &=  \{ \vec{x} \in \Omega_c \ | \ \dot{\theta} = 0 \ , \ \theta = \pi \}  \ \ \ ,  \label{eq:F}
 \end{align}
+thus the largest invariant set in $E$ is,
+\begin{align}
+M &= A \cup F \ \ \ .  \label{eq:M}
+\end{align}
+%
+The sets are visualized in \autoref{fig:setPlot}.
+\begin{figure}[H]
+  \includegraphics[width=.65\textwidth]{figures/setPlot}
+  \caption{The set $\Omega_c$ along with sets in $\Omega_c$ for which $V(\vec{x}) = 0$, where $A$ and $F$ together form the largest invariant set $M$ in $E$. The phase portrait of the controlled system shows how the trajectories line up with $A$ as stated by \autoref{pr:invariantA}.}
+  \label{fig:setPlot}
+\end{figure}
 %
 If this control law is started at zero angular velocity, $\dot{\theta} = 0$, in a stable equilibrium, the computed control is maintained at zero and the pendulum never swings up. So for this control law to work, the pendulum must be started slightly away from a stable equilibrium.
 
@@ -209,6 +302,7 @@ An other issue is the actuation which is limited in the real system by the maxim
 \end{figure}
 %
 For these graphs $k=1.3$ to keep the motor current at acceptable levels. The motor current is shown in \autoref{fig:ia_1_noConX} where the rolling RMS of $i_a$ is used to approximate the continuous current load on the motor.
+\fxnote{Inkluder vektor-felt på alle theta plane figurer}
 
 %\begin{figure}[H]
 %  \includegraphics[width=.6\textwidth]{figures/x_1_noConX}
@@ -247,7 +341,17 @@ There are other ways to satisfy \autoref{eq:lyapunovDerivativeControlled2} than 
 \begin{align}
   a_c &= k\ \mathrm{sgn}(-E_\Delta \cos \theta \dot{\theta})  \ \ \ ,  \label{eq:accControlLaw2} 
 \end{align}
-where sgn is redefined to be one if it outputs zero, to avoid no actuation when starting at stable equilibrium. This adjustment reduces the set,
+where,
+\begin{align}
+\text{sgn}( s(\theta,\dot{\theta}) ) &=
+\begin{cases}
+\ \ \phantom{-} 1  & \ \ s  > 0 \ \lor   \ \cos \theta \dot{\theta} \ =    0 \\
+\ \ \phantom{-} 0  & \ \ s  = 0 \ \land  \ \cos \theta \dot{\theta} \ \neq 0 \\
+\ \            -1  & \ \ s  < 0 \hspace{3cm} ,
+\end{cases}
+\label{eq:sgnFunction}
+\end{align}
+to avoid no actuation when starting at stable equilibrium. This adjustment reduces the set,
 \begin{align}
   M  &= \{ \vec{x} \in \Omega_c \ | \ E_\Delta = 0 \}  \ \ \ ,  \label{eq:M2}
 \end{align}
@@ -325,63 +429,72 @@ However, the bigger problem with this control law is obvious from \autoref{fig:i
 %
 %
 %
-It is possible to implement a less aggressive version of this idea by using a saturation function to approximate the sign function around zero,
-\begin{align}
-  a_c &= k\ \mathrm{sat}(-\tfrac{1}{\varepsilon}E_\Delta \cos \theta \dot{\theta})  \ \ \ ,   \label{eq:accControlLaw2_2} 
-\end{align}
-where $\varepsilon$ decides the slope of the saturation function around zero,
-\begin{align}
-  \text{sat}\left( \frac{f}{\varepsilon} \right) &=
-  \begin{cases}
-    \ \ \frac{f}{\varepsilon}                             &, \ \ \ \ \mathrm{if} \ | \frac{f}{\varepsilon} |  < 1 \\
-    \ \ \mathrm{sgn}\left( \frac{f}{\varepsilon} \right)  &, \ \ \ \ \mathrm{if} \ | \frac{f}{\varepsilon} |  > 1 \\
-    \ \ 1                                                 &, \ \ \ \ \mathrm{if} \ | \frac{f}{\varepsilon} | = 0 \ \ \ ,
-  \end{cases}
-  \label{eq:satuationFunction1}
-\end{align}
-where $f$ is some input to the sat-function.
-In the simulation $k = 2.7$ as before and $\varepsilon = 0.01$ to avoid excessive switching while maintaining a relatively close approximation of the sign-function.\\
-This control strategy achieves the energy reference in about three seconds, \autoref{fig:Edelta_3_noConX}, as is the case of the sign strategy, \autoref{fig:Edelta_2_noConX}. Further, from \autoref{fig:phase_3_noConX}, the system still reaches a near perfect heteroclinic orbit.
-%
-\begin{figure}[H]
-  \hspace{-10pt}
-  \captionbox
-  {
-    The approximation of the sign approach using a saturation function shows no loss in performance when comparing the energy error.
-    \label{fig:Edelta_3_noConX}
-  }
-  {
-    \hspace{-1cm}
-    \includegraphics[width=.448\textwidth]{figures/Edelta_3_noConX}
-  }
-  \hspace{20pt}
-  \captionbox 
-  {
-    The heteroclinic orbit is still reached, however, with a more realistic trajectory at the approach of the equilibrium points.
-    \label{fig:phase_3_noConX}
-  }
-  {
-    \hspace{-1cm}
-    \includegraphics[width=.46\textwidth]{figures/phase_3_noConX}
-  }  
-\end{figure}
-%
-The cart still drifts as expected, see \autoref{fig:ani_3_noConX}, and the equilibrium points are maintained for shorter durations, which is expected with less control switching.
-%
-\begin{figure}[H]
-  \includegraphics[width=.7\textwidth]{figures/ani_3_noConX}
-  \caption{This strategy performs well. The drifting problem is solved later.}
-  \label{fig:ani_3_noConX}
-\end{figure}
-%
-The excessive switching on the control output is successfully avoided, see \autoref{fig:ia_3_noConX}, resulting in a much more realistic control signal compared to that in \autoref{fig:ia_2_noConX}.
-%
-\begin{figure}[H]
-  \includegraphics[width=.52\textwidth]{figures/ia_3_noConX}
-  \caption{The control signal using the saturation approximation of the sign-function is much more realistic for implementation.}
-  \label{fig:ia_3_noConX}
-\end{figure}
-The next section explores an other approach based on the same general idea and motivation.
+
+%------------------------------------------------------------------------------------------
+%-------------------My Sat-based solution--------------------------------------------------
+%------------------------------------------------------------------------------------------
+
+%It is possible to implement a less aggressive version of this idea by using a saturation function to approximate the sign function around zero,
+%\begin{align}
+%  a_c &= k\ \mathrm{sat}(-\tfrac{1}{\varepsilon}E_\Delta \cos \theta \dot{\theta})  \ \ \ ,   \label{eq:accControlLaw2_2} 
+%\end{align}
+%where $\varepsilon$ decides the slope of the saturation function around zero,
+%\begin{align}
+%  \text{sat}\left( \frac{f}{\varepsilon} \right) &=
+%  \begin{cases}
+%    \ \ \frac{f}{\varepsilon}                             &, \ \ \ \ \mathrm{if} \ | \frac{f}{\varepsilon} |  < 1 \\
+%    \ \ \mathrm{sgn}\left( \frac{f}{\varepsilon} \right)  &, \ \ \ \ \mathrm{if} \ | \frac{f}{\varepsilon} |  > 1 \\
+%    \ \ 1                                                 &, \ \ \ \ \mathrm{if} \ \cos \theta \dot{\theta} = 0 \ \ \ ,
+%  \end{cases}
+%  \label{eq:satuationFunction1}
+%\end{align}
+%where $f$ is some input to the sat-function.
+%In the simulation $k = 2.7$ as before and $\varepsilon = 0.01$ to avoid excessive switching while maintaining a relatively close approximation of the sign-function.\\
+%This control strategy achieves the energy reference in about three seconds, \autoref{fig:Edelta_3_noConX}, as is the case of the sign strategy, \autoref{fig:Edelta_2_noConX}. Further, from \autoref{fig:phase_3_noConX}, the system still reaches a near perfect heteroclinic orbit.
+%%
+%\begin{figure}[H]
+%  \hspace{-10pt}
+%  \captionbox
+%  {
+%    The approximation of the sign approach using a saturation function shows no loss in performance when comparing the energy error.
+%    \label{fig:Edelta_3_noConX}
+%  }
+%  {
+%    \hspace{-1cm}
+%    \includegraphics[width=.448\textwidth]{figures/Edelta_3_noConX}
+%  }
+%  \hspace{20pt}
+%  \captionbox 
+%  {
+%    The heteroclinic orbit is still reached, however, with a more realistic trajectory at the approach of the equilibrium points.
+%    \label{fig:phase_3_noConX}
+%  }
+%  {
+%    \hspace{-1cm}
+%    \includegraphics[width=.46\textwidth]{figures/phase_3_noConX}
+%  }  
+%\end{figure}
+%%
+%The cart still drifts as expected, see \autoref{fig:ani_3_noConX}, and the equilibrium points are maintained for shorter durations, which is expected with less control switching.
+%%
+%\begin{figure}[H]
+%  \includegraphics[width=.7\textwidth]{figures/ani_3_noConX}
+%  \caption{This strategy performs well. The drifting problem is solved later.}
+%  \label{fig:ani_3_noConX}
+%\end{figure}
+%%
+%The excessive switching on the control output is successfully avoided, see \autoref{fig:ia_3_noConX}, resulting in a much more realistic control signal compared to that in \autoref{fig:ia_2_noConX}.
+%%
+%\begin{figure}[H]
+%  \includegraphics[width=.52\textwidth]{figures/ia_3_noConX}
+%  \caption{The control signal using the saturation approximation of the sign-function is much more realistic for implementation.}
+%  \label{fig:ia_3_noConX}
+%\end{figure}
+%The next section explores an other approach based on the same general idea and motivation.
+
+%------------------------------------------------------------------------------------------
+%------------------------------------------------------------------------------------------
+%------------------------------------------------------------------------------------------
 %
 %
 %\begin{figure}[H]
@@ -420,7 +533,16 @@ An other strategy to avoid the excessive switching of the sign-controller is to 
 \begin{align}
   a_c &= \mathrm{sat}(-k E_\Delta \mathrm{sgn}(\cos \theta \dot{\theta}))  \ \ \ ,   \label{eq:accControlLaw3} 
 \end{align}
-where the sat-function saturates at the minimum/maximum allowed acceleration. The known limitation is $i_{max} = 4.58$ as stated in \autoref{table:systemParameters}, from which the maximum control, $u$, can be calculated,
+where 
+\begin{align}
+\mathrm{sgn}( s ) &=
+\begin{cases}
+\ \ \phantom{-}1 & \ \  | s |  \geq 0 \\
+\ \           -1 & \ \  | s |  <    0 \ \ \ ,
+\end{cases}
+\label{eq:sgnFunction1}
+\end{align}
+and the sat-function saturates at the minimum/maximum allowed acceleration. The known limitation is $i_{max} = 4.58$ as stated in \autoref{table:systemParameters}, from which the maximum control, $u$, can be calculated,
 \begin{align}
   u_{max} &=  \frac{k_{\tau}}{r} \ \ \ ,    \label{eq:maxU} 
 \end{align}
@@ -430,14 +552,15 @@ and finally, by disregarding the pendulum behavior and cart friction from the dy
 \end{align}
 As this is a crude estimate \SI{0.2}{m\cdot s^{-2}} is subtracted from the estimated $a_{max}$ in following simulations to stay within the actuation limits. The saturation function is then,
 \begin{align}
-  \text{sat}(f) &=
+  \text{sat}(s) &=
   \begin{cases}
-    \ \ f                           &, \ \ \ \ \mathrm{if} \ | f |  \leq a_{max} \\
-    \ \ \mathrm{sgn}( f )\ a_{max}  &, \ \ \ \ \mathrm{if} \ | f |  >  a_{max} \ \ \ ,
+    \ \ s                           & \ \  | s |  \leq a_{max} \\
+    \ \ \mathrm{sgn}( s )\ a_{max}  & \ \  | s |  >  a_{max} \ \ \ .
   \end{cases}
-  \label{eq:satuationFunction2}
+  \label{eq:satuationFunction}
 \end{align}
-where $f$ is the input to the sat-function. Again, the sign function in \autoref{eq:accControlLaw3} is redefined to one in cases where it obtains a zero value.
+Notice how the sgn-function in this control law, \autoref{eq:accControlLaw3}, only takes $\cos \theta \dot{\theta}$ as input. Contrary to the sign-based controller which also included $E_\Delta$ causing the need for complicated restrictions in the definition of the sgn-function.
+
 Choice of $k$ decides how aggressive the controller should be. Larger values of $k$ drives the control into saturation faster thus actuating more like the sign-based controller in \autoref{eq:accControlLaw2}. At lower values of $k$ the operation will not reach saturation as fast thus behaving more like the first energy based controller in \autoref{eq:accControlLaw}. For an effective swing up behavior $k=200$ is used, thus approaching the behavior of the sign-based controller, which makes sense as this is the theoretically ideal solution.\\
 The performance in \autoref{fig:Edelta_4_noConX} is similar to that in \autoref{fig:Edelta_3_noConX} and again the system reaches a near perfect heteroclinic orbit in \autoref{fig:phase_4_noConX}.
 %
@@ -522,7 +645,7 @@ With these considerations in mind, the design of $v(x_2,x_4)$ is proceeded. Cons
 %
 \begin{figure}[H]
   \includegraphics[width=.35\textwidth]{figures/mechanicalDrawingSimple}
-  \caption{mechanicalDrawingSimple}
+  \caption{Mechanical drawing of the reduced model used for position control.}
   \label{fig:mechanicalDrawingSimple}
 \end{figure}
 %
@@ -530,11 +653,11 @@ The dynamics are then,
 \begin{align}
   M \ddot{x} &=  v \ \ \ ,  \label{eq:simpleDynamics} 
 \end{align}
-and selecting new states $ [\ x_1\ \ x_2\ ]^\mathrm{T} = [\ x\ \ \dot{x}\ ]^\mathrm{T} $, the linear state space is,\vspace{6pt}
+and selecting new states $ [\ z_1\ \ z_2\ ]^\mathrm{T} = [\ x\ \ \dot{x}\ ]^\mathrm{T} $, the linear state space is,\vspace{6pt}
 \begin{align}
   \begin{bmatrix}
-    \dot{x_1} \\
-    \dot{x_2}
+    \dot{z_1} \\
+    \dot{z_2}
   \end{bmatrix}
   &=
   \underbrace{
@@ -544,8 +667,8 @@ and selecting new states $ [\ x_1\ \ x_2\ ]^\mathrm{T} = [\ x\ \ \dot{x}\ ]^\mat
     \end{bmatrix}
   }_{A}
   \begin{bmatrix}
-    x_1 \\
-    x_2
+    z_1 \\
+    z_2
   \end{bmatrix}
   +
   \underbrace{
@@ -560,9 +683,9 @@ and selecting new states $ [\ x_1\ \ x_2\ ]^\mathrm{T} = [\ x\ \ \dot{x}\ ]^\mat
 %
 The closed loop poles are placed in $p = [\ -1\ -2 \ ] $ using matlab \textit{place()}-command to obtain linear feedback gains, $\vec{k_1} = [\ 10.5460\ \ 15.8190\ ]$, resulting in the controller,
 \begin{align}
-  v &= -\vec{k_1} \vec{x} \ \ \ ,  \label{eq:linearFeedbackSimple} 
+  v &= -\vec{k_1} \vec{z} \ \ \ ,  \label{eq:linearFeedbackSimple} 
 \end{align}
-where $\vec{x} = [\ x\ \ \dot{x}\ ]^\mathrm{T}$, such that,
+where $\vec{z} = [\ x\ \ \dot{x}\ ]^\mathrm{T}$, such that,
 \begin{align}
   v(x_2,x_4) &= -\vec{k_1}  [\ x_2\ \ x_4\ ]^\mathrm{T} \ \ \ ,    \label{eq:linearFeedbackSimple2} 
 \end{align}
