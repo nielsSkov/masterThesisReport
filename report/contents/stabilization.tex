@@ -1,1 +1,229 @@
 \chapter{Stabilization}
+In this section the idea is to stabilize the pendulum in the unstable equilibrium. Ultimately this controller should be able to take over from the swing-up controller when some minimum catch angle is reached.\\
+A sliding mode control strategy is employed to accomplish these goals. The design is based on \cite{HKKhalil}.\\
+Firstly, the model of the system, from \autoref{eq:nonlinearStateSpace}, is considered in following form,
+\begin{align}
+  \begin{bmatrix}
+    \dot{x_1} \\
+    \dot{x_2} \\
+    \dot{x_3} \\
+    \dot{x_4}
+  \end{bmatrix}
+  &=
+  \underbrace{
+    \begin{bmatrix}
+      x_3 \\
+      x_4 \\
+      \vec{M}^{-1}(x_1) ( - \vec{C}(x_1,x_3) - \vec{B}(x_3,x_4) - \vec{G}(x_1) )
+    \end{bmatrix}
+  }_{\vec{f}(\vec{x})}
+  +
+  \underbrace{ 
+    \begin{bmatrix}
+      0 \\
+      0 \\
+      \vec{M}^{-1}(x_1) \vec{F} 
+    \end{bmatrix}
+  }_{\vec{g}(\vec{x}) u}
+  \label{eq:nonlinearStateSpace2} \ \ \ ,
+\end{align}
+where
+\begin{align}
+  \vec{M}^{-1}
+  &=
+  \begin{bmatrix}
+    \frac{(M + m)}{l^2 m ( M + m - m \cos^2 x_1 )}  &  \frac{\cos x_1}{l (M + m - m \cos^2 x_1)} \\
+    \frac{\cos x_1}{l (M + m - m \cos^2 x_1)}       &  \frac{1}{M + m - m \cos^2 x_1}
+  \end{bmatrix}  \ \ \ ,
+\end{align}
+%
+and states $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\theta}\ \ \dot{x}\ ]^\mathrm{T} $ and input vector $F = [\ 0 \ \ u \ ]^\mathrm{T}$ as before.
+
+In \autoref{eq:nonlinearStateSpace2} the input, $u$, appear in two of the four state equations. To design a sliding mode controller for the system, it is transformed into \textit{regular form}, 
+\begin{align}
+\dot{\vec{\eta}} &=  \vec{f_a}(\vec{\eta},\xi) \nonumber   \\
+\dot{\xi}        &=  f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u    \ \ \ ,
+\label{eq:regularForm}
+\end{align}
+%
+where the input only appears on one state equation.
+The transform is then given by,
+\begin{align}
+  \vec{T}(\vec{x}) &=
+  \begin{bmatrix}
+    \vec{\eta} \\
+    \xi
+  \end{bmatrix}
+  \ \Rightarrow \ 
+  \frac{\partial}{\partial t}\vec{T}(\vec{x})
+  =
+  \begin{bmatrix}
+    \dot{\vec{\eta}} \\
+    \dot{\xi}
+  \end{bmatrix}
+  \ \Rightarrow \ 
+  \frac{\partial}{\partial t}\vec{T}(\vec{x})
+  =
+  \begin{bmatrix}
+    \vec{f_a}(\vec{\eta},\xi)         \\
+    f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u
+  \end{bmatrix}
+   \ \ \ ,
+  \label{eq:transformAndDerivative}
+\end{align}
+further,
+\begin{align}
+  \frac{\partial \vec{T}}{\partial t} &= \frac{\partial \vec{T}}{\partial \vec{x}}  \dot{\vec{x}} \\
+  \begin{bmatrix}
+    \vec{f_a}(\vec{\eta},\xi)         \\
+    f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u
+  \end{bmatrix}
+  &=
+  \frac{\partial \vec{T}}{\partial \vec{x}} \vec{f}(\vec{x}) + \frac{\partial \vec{T}}{\partial \vec{x}} \vec{g}(\vec{x}) u
+  \ \ \ ,
+  \label{eq:transformDerivative}
+\end{align}
+such that,
+\begin{align}
+  \frac{\partial \vec{T}}{\partial \vec{x}} \vec{f}(\vec{x})    
+  &= 
+  \begin{bmatrix}
+    \vec{f_a}(\vec{\eta},\xi)       \\
+    f_b(\vec{\eta},\xi)
+  \end{bmatrix} \\
+  \frac{\partial \vec{T}}{\partial \vec{x}} \vec{g}(\vec{x})
+  &= 
+  \begin{bmatrix}
+    \vec{0}        \\
+    g_b(\vec{\eta},\xi)
+  \end{bmatrix}
+  \ \ \ .
+  \label{eq:transformXDerivative}
+\end{align}
+\autoref{eq:transformXDerivative} results in the following four equations,
+\begin{align}
+    \frac{\partial \eta_1}{\partial x_3} g_1 + \frac{\partial \eta_1}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta1}  \\
+    \frac{\partial \eta_2}{\partial x_3} g_1 + \frac{\partial \eta_2}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta2}  \\
+    \frac{\partial \eta_3}{\partial x_3} g_1 + \frac{\partial \eta_3}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta3}  \\
+    \frac{\partial \xi   }{\partial x_3} g_1 + \frac{\partial \xi   }{\partial x_4} g_2 &= g_b(\vec{\eta},\xi)  \label{eq:chooseXi} 
+\ \ \ ,
+\end{align}
+where,
+\begin{align}
+g_1 = \frac{\cos x_1}{l (M + m - m \cos^2 x1)}\\
+g_2 = \frac{1}{M + m - m \cos^2 x_1 }
+\end{align}
+
+Det er her jeg går fast, jeg har ingen framework til at vælge kooredinaterne.\\
+De kriterier jeg lige kan finde er at \autoref{eq:chooseEta1}-\ref{eq:chooseXi} skal være opfyldt og at $\vec{T}$ ikke må miste rang.
+
+Jeg har skrevet ned her hvordan jeg har brugt en metode fra Khalil, som man bruger i forbindelse med input-output linearisering, men som jeg fik at vide jeg ikke skulle bruges til det her. Jeg får to mulige resultater, og begge opfylder de kriterier jeg kan se der måtte være. Det eneste der rigtig er til forskel så vidt jeg kan se, er hvorhenne man ender med noget andet end en state, $x_{1-4}$, direkte i transformen. Det kan være jeg bare kigger de forkerte steder i bogen? Selv hvis der er en anden metode vil jeg også gerne prøve at forstå hvorfor det her ikke er en måde at vælge transformen på.
+
+Hvis jeg vælger input $h(x) = \theta$ eller $h(x) = x$, så får jeg relative degree $\rho = 2$ fordi\\
+$\ddot{\theta} = \dot{x}_3 = f_1 + g_1 u$ \\
+og\\
+$\ddot{x} = \dot{x}_4 = f_2 + g_2 u$ \\
+så kan jeg sige at 
+\begin{align}
+  \begin{bmatrix}
+    \eta_1   \\
+    \eta_2   \\
+    \eta_3   \\
+    \xi
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    \eta_1   \\
+    \eta_2   \\
+    h(x)   \\
+    L_f h(x)
+  \end{bmatrix} \ \ \mathrm{så\ enten,} \ \ \ 
+  \begin{bmatrix}
+  \eta_1   \\
+  \eta_2   \\
+  \eta_3   \\
+  \xi
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  \eta_1   \\
+  \eta_2   \\
+  x_1   \\
+  x_3
+  \end{bmatrix} \ \ \ \mathrm{eller,} \ \ \
+  \begin{bmatrix}
+  \eta_1   \\
+  \eta_2   \\
+  \eta_3   \\
+  \xi
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  \eta_1   \\
+  \eta_2   \\
+  x_2   \\
+  x_4
+  \end{bmatrix}
+\end{align}
+det reducerer \autoref{eq:chooseEta1}-\ref{eq:chooseXi} til
+\begin{align}
+\frac{\partial \eta_1}{\partial x_3} g_1 + \frac{\partial \eta_1}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta12}  \\
+\frac{\partial \eta_2}{\partial x_3} g_1 + \frac{\partial \eta_2}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta22}  \\
+0 &= 0                    \label{eq:chooseEta32}  \\
+g_1 &= g_b(\vec{\eta},\xi)  \ \ \mathrm{eller} \ \ \ g_2 = g_b(\vec{\eta},\xi)  \label{eq:chooseXi2} 
+\ \ \ .
+\end{align}
+hvis $h(x) = x_1$ så kan jeg vælge $\eta_1 = x_2$ for opfylde \ref{eq:chooseEta12} uden at miste rang i $\vec{T}$, og \\
+hvis $h(x) = x_2$ så kan jeg vælge $\eta_1 = x_1$
+
+For til sidst at opfylde
+\begin{align}
+ \frac{\partial \eta_2}{\partial x_3} g_1 + \frac{\partial \eta_2}{\partial x_4} g_2 = 0
+\end{align}
+hvor,
+\begin{align}
+  g_1 = \frac{\cos x_1}{l (M + m - m \cos^2 x1)}\\
+  g_2 = \frac{1}{M + m - m \cos^2 x_1 }
+\end{align}
+kan det vælges at
+\begin{align}
+\frac{\partial \eta_2}{\partial x_4} = \frac{\cos x_1}{l}  \ \ , \ \ \ \frac{\partial \eta_2}{\partial x_3}  = -1
+\end{align}
+så
+\begin{align}
+\eta_2 =  \frac{\cos x_1}{l} x_4 - x_3
+\end{align}
+
+\begin{align}
+\mathrm{så\ enten,} \ \ \ 
+\begin{bmatrix}
+\eta_1   \\
+\eta_2   \\
+\eta_3   \\
+\xi
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_2   \\
+\frac{\cos x_1}{l} x_4 - x_3  \\
+x_1   \\
+x_3
+\end{bmatrix} \ \ \ \mathrm{eller,} \ \ \
+\begin{bmatrix}
+\eta_1   \\
+\eta_2   \\
+\eta_3   \\
+\xi
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_1   \\
+\frac{\cos x_1}{l} x_4 - x_3   \\
+x_2   \\
+x_4
+\end{bmatrix}
+\end{align}
+
+
+
+
