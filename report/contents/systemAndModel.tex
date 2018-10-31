@@ -69,7 +69,7 @@ All the system parameters used in the design are listed in \autoref{table:system
 \section{Model}\label{sec:model}
 The model is based on the generalized coordinates presented in \autoref{fig:mechanicalDrawing}.
 \begin{figure}[H]
-  \includegraphics[scale=.8]{figures/mechanicalDrawing}
+  \includegraphics[width=.35\textwidth]{figures/mechanicalDrawing}
   \caption{Mechanical drawing of the system, where $\theta$ is the angle of the pendulum, $x$ is the position of the center of the cart along the rail, $F$ is the applied force and $g$ is the gravitational acceleration. It is indicated that friction is modeled between cart and rail as well as in the pendulum joint.}
   \label{fig:mechanicalDrawing}
 \end{figure}
@@ -112,7 +112,7 @@ This, however, introduces discontinuities at zero velocities. Thus, tanh-functio
 where $\text{k}_\text{tanh}=250$ to increase the steepness of the tanh-functions thereby obtaining a closer approximation of the sign-functions.
 Finally, by use of the Lagrange-d’Alembert Principle, \cite{RWisniewski}
 \begin{align}
-  \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \vec{\dot{q}}} - \frac{\partial \cal{L}}{\partial \vec{q}}  &=  \vec{Q} \ \ \ ,
+  \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \dot{\vec{q}}} - \frac{\partial \cal{L}}{\partial \vec{q}}  &=  \vec{Q} \ \ \ ,
   \label{eq:energyMethodWithExternalForces}
 \end{align}
 \begin{align}
@@ -128,7 +128,7 @@ Finally, by use of the Lagrange-d’Alembert Principle, \cite{RWisniewski}
   \end{bmatrix} \ \ \ ,
   \label{eq:qAndQ}
 \end{align}
-and $\cal{L}$ $ = T-U$, the dynamics of the system are found,
+and $\cal{L} = T-U$, the dynamics of the system are found,
 \begin{align}
   m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  &= -b_{p,v} \dot{\theta} - \tanh(\text{k}_\text{tanh}\dot{\theta}) b_{p,c} \label{eq:energyDerivedDynamicEquation2} \\
   ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  &=  u - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ .
