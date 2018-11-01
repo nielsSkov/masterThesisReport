@@ -231,6 +231,8 @@ An extra step is needed to apply this control strategy. So far the control outpu
 where the cart friction coefficients are set to zero again.\\
 To calculate the force from this expression, \autoref{eq:forceDynamics}, it is also necessary to know the angular acceleration of the pendulum, $\dot{x}_3$, which can be solved for in the system dynamics, \autoref{eq:nonlinearStateSpace}, inserting known states and control input applied in the previous step,
 %
+\begingroup\makeatletter\def\f@size{10}\check@mathfonts
+\def\maketag@@@#1{\hbox{\m@th\normalsize\normalfont#1}}%
 \begin{align}
   \begin{bmatrix}
     \dot{x}_3  \\
@@ -245,18 +247,23 @@ To calculate the force from this expression, \autoref{eq:forceDynamics}, it is a
     - b_{p,v} x_3 - \tanh(\text{k}_\text{tanh}x_3) b_{p,c} + m g l \sin x_1 \\
     u_{last} - m l \sin x_1 x_3^2
   \end{bmatrix}
-   \ \ \ ,
-  \label{eq:nonlinearStateSpaceQdotDot}
+  \ \ \ ,
+  \label{eq:nonlinearStateSpaceQdotDot} \\ \nonumber
 \end{align}
+\endgroup \vspace{-44pt}
+
 %
 where $u_{last}$ is the force applied in the previous step.\\
 From \autoref{eq:nonlinearStateSpaceQdotDot} the approximated angular acceleration is then,
+\begingroup\makeatletter\def\f@size{10}\check@mathfonts
+\def\maketag@@@#1{\hbox{\m@th\normalsize\normalfont#1}}%
 \begin{align}
-  \dot{x}_3 &= \frac{ ( M + m )(- b_{p,v} x_3 - \tanh(\text{k}_\text{tanh}x_3) b_{p,c} + m g l \sin x_1) }{ l^2 m ( M + m - m \cos^2 x_1 ) } \nonumber \\
-            &+ \frac{ \cos x_1 (u_{last} - m l \sin x_1 x_3^2) }{ l ( M + m - m \cos^2 x_1 ) }
-  \ \ \ . 
-  \label{eq:thetaDotDotApprox}
+\dot{x}_3 &= \frac{ ( M + m )(- b_{p,v} x_3 - \tanh(\text{k}_\text{tanh}x_3) b_{p,c} + m g l \sin x_1) }{ l^2 m ( M + m - m \cos^2 x_1 ) } + \frac{ \cos x_1 (u_{last} - m l \sin x_1 x_3^2) }{ l ( M + m - m \cos^2 x_1 ) }
+\ \ \ .
+\label{eq:thetaDotDotApprox} \\ \nonumber
 \end{align}
+\endgroup \vspace{-44pt}
+
 %
 Inserting \autoref{eq:thetaDotDotApprox} into \autoref{eq:forceDynamics} results in the control input, $u$, necessary to achieve the desired acceleration, $a_c$, at the pivot point. This method is used for all three swing-up controllers, so to avoid excessive notation the proceeding energy control laws are derived with $a_c$ as the control parameter.
 

@@ -193,13 +193,18 @@ Choosing $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\t
     \dot{x_3} \\
     \dot{x_4}
   \end{bmatrix}
-  &=
-  \begin{bmatrix}
-    x_3 \\
-    x_4 \\
-    \vec{M}^{-1}(x_1) ( \vec{F} - \vec{C}(x_1,x_3) - \vec{B}(x_3,x_4) - \vec{G}(x_1) )
-  \end{bmatrix}
+&=
+  \left[
+    \begin{array}{c}
+      x_3 \\
+      x_4 \\
+      \multirow{2}{*}{$ \vec{M}^{-1}(x_1) ( \vec{F} - \vec{C}(x_1,x_3) - \vec{B}(x_3,x_4) - \vec{G}(x_1) ) $}\\
+      \phantom{eq}
+    \end{array}
+  \right]
   \label{eq:nonlinearStateSpace} \ \ \ ,
 \end{align}
 %
 which is convenient when simulating the system. This representation is also used in the controller designs.
+
+
