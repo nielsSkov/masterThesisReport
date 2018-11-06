@@ -110,18 +110,8 @@ such that,
 \end{align}
 where,
 \begin{align}
-  \begin{bmatrix}
-    g_1  \\
-    g_2
-  \end{bmatrix} = \vec{M}^{-1}(x_1) 
-    \begin{bmatrix}
-      0  \\
-      1
-    \end{bmatrix} \ \ \ \Rightarrow \ \ \ \ 
-  \begin{cases}
-    g_1 = \frac{\cos x_1}{l (M + m - m \cos^2 x1)}\\
-    g_2 = \frac{1}{M + m - m \cos^2 x_1 }
-  \end{cases}
+g_1 = \frac{\cos x_1}{l (M + m - m \cos^2 x1)}\\
+g_2 = \frac{1}{M + m - m \cos^2 x_1 }
 \end{align}
 
 Det er her jeg går fast, jeg har ingen framework til at vælge kooredinaterne.\\
@@ -236,7 +226,7 @@ x_4
 
 
 
-final transform, inverse transform,
+final transform
 \begin{align}
   T
   = 
@@ -252,8 +242,12 @@ final transform, inverse transform,
   \frac{\cos x_1}{l} x_4 - x_3  \\
   x_1   \\
   x_3
-  \end{bmatrix} \ \ \ , \ \ \ \
-%
+  \end{bmatrix} \ \ \ .
+  \label{eq:transform}
+\end{align}
+
+inverse transform
+\begin{align}
   T^{-1} = 
   \begin{bmatrix}
     x_1  \\
@@ -268,24 +262,13 @@ final transform, inverse transform,
   %\eta_3   \\
   %\xi
   %\end{bmatrix} \ \ \ .
-  \label{eq:transform and inverse}
+  \label{eq:inverseTransform}
 \end{align}
+
 transform derivative,
 \begin{align}
-  \begin{bmatrix}
-    \dot{\eta}_1   \\
-    \dot{\eta}_2   \\
-    \dot{\eta}_3   \\
-    \dot{\xi}
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-    \dot{x_2}   \\
-    \tfrac{d}{dt}(\frac{\cos x_1}{l} x_4) - \dot{x_3}  \\
-    \dot{x_1}   \\
-    \dot{x_3}
-    \end{bmatrix} \ \ \ .
-  \label{eq:transform_dt}
+\\
+:transform_dt}
 \end{align}
 
 from this the regular form \autoref{eq:regularForm} is achieved using the inverse transform to obtain full change of variables,
@@ -318,26 +301,26 @@ from this the regular form \autoref{eq:regularForm} is achieved using the invers
       \begin{picture} (0,0)(0,0) \multiput(4,14)(4,0){17}{\line(2,0){2}} \end{picture}
       \frac{\cos x_1}{l (M + m - m \cos^2 x_1)}
     \end{bmatrix}
-  }_{g_b} u  \ \ \ ,
+  }_{g_b} F  \ \ \ , &
   \label{eq:regularFormMatrix}
 \end{align}
 
 
-\begin{align}
-s &=   \xi - \phi(\vec{\eta}) = 0     \ \ \ ,
-\end{align}
+\begin{flalign}
+s &=   \xi - \phi(\vec{\eta}) = 0     \ \ \ , &
+\end{flalign}
 design $\phi(\vec{\eta})$
 
 if $s = 0$ then $\xi = \phi(\vec{\eta})$, that is, the reduced-order system,
-\begin{align}
-  \vec{\dot{\eta}} &=  f_a(\vec{\eta},\phi(\vec{\eta}))     \ \ \ ,
+\begin{flalign}
+  \vec{\dot{\eta}} &=  f_a(\vec{\eta},\phi(\vec{\eta}))     \ \ \ , &
   \label{eq:asymStabOrigReducedOrder}
-\end{align}
+\end{flalign}
 is asymptotically stable in the origin.
 
 linearization of reduced-order system,
 %
-\begin{align}
+\begin{flalign}
 A &= \frac{\partial \vec{\dot{\eta}}}{\partial \vec{\eta}} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
 =
 \begin{bmatrix}
@@ -351,55 +334,62 @@ B = \frac{\partial \vec{\dot{\eta}}}{\partial \xi} \whereThree{\vec{\eta}=\vec{0
 l  \\
 \frac{-b_{p,v}-b_{p,c}}{l m}  \\
 1  
-\end{bmatrix}   \ \ \ ,
+\end{bmatrix}   \ \ \ , & 
 \label{eq:linearReducedOrder_A}
-\end{align}
+\end{flalign}
 
 stabilize reduced order system by,
-\begin{align}
-\phi(\vec{\eta}) &=   - \vec{k} \vec{\eta}  \ \ \ ,
-\end{align}
+\begin{flalign}
+\phi(\vec{\eta}) &=   - \vec{k} \vec{\eta}  \ \ \ , &
+\end{flalign}
 
 design $u$ to bring $s$ to zero.\\
 Lyapunov function candidate, $V = \frac{1}{2}s^2$,
 derivative along trajectories of system
-\begin{align}
-\dot{V} &= s\dot{s} \\
-\dot{V} &= s ( \dot{\xi} + \vec{k}\vec{\dot{\eta}}  ) \\
-\dot{V} &= s ( f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u +\vec{k}f_a(\vec{\eta},\xi) )  \\
-\dot{V} &= (\vec{k}f_a +  f_b) s + g_b s u \\
-\dot{V} &= g_b s (\vec{k}f_a  +  f_b) g_b^{-1} + g_b s u   \\
-\dot{V} &\leq g_b |s| \left|\vec{k}f_a g_b^{-1} +  f_b \right| + g_b s u  \ \ \ .
+\begin{flalign}
+\dot{V} &= s\dot{s} & \\
+\dot{V} &= s ( \dot{\xi} + \vec{k}\vec{\dot{\eta}}  ) & \\
+\dot{V} &= s ( f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) F +\vec{k}f_a(\vec{\eta},\xi) )  & \\
+\dot{V} &= ( \vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi) )s + g_b(\vec{\eta},\xi) s F  & \\
+\dot{V} &= g_b(\vec{\eta},\xi) s (\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)) g_b^{-1}(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) s F  &  \\
+\dot{V} &\leq g_b(\vec{\eta},\xi) |s| \left|\vec{k}f_a(\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) +  f_b(\vec{\eta},\xi) \right| + g_b(\vec{\eta},\xi) s F  \ \ \ . &
 \label{eq:lyapunov}
-\end{align}
+\end{flalign}
 
-using $|s| = \text{sgn}(s) s$ and introducing tuning parameter $\beta_0$ to design $u$,
-\begin{align}
-u = -\text{sgn}(s)\beta (\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \mathrm{where}, \ \ \ \beta(\vec{\eta},\xi)  &= \varrho(\vec{\eta},\xi) + \beta_0 \\
-\mathrm{and}, \ \ \  \varrho(\vec{\eta},\xi) &= \left|\vec{k}f_a  +  f_b \right| \ \ \ .
-\label{eq:ssControlBeta0}
-\end{align}
-s.t.
-\begin{align}
-\dot{V} &\leq g_b |s| \left|\vec{k}f_a +  f_b \right|  g_b^{-1} - g_b\  \mathrm{sgn}(s) s \left|\vec{k}f_a  +  f_b + \beta_0 \right| g_b^{-1}
+$|s| = \text{sgn}(s) s$
+ 
+\begin{flalign}
+\dot{V} &\leq g_b(\vec{\eta},\xi) |s| \left|\vec{k}f_a(\vec{\eta},\xi) +  f_b(\vec{\eta},\xi) \right|  g_b^{-1}(\vec{\eta},\xi)  & \nonumber \\
+&- g_b(\vec{\eta},\xi) \text{sgn}(s) s \left|\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi) \right| g_b^{-1}(\vec{\eta},\xi)  &
 \label{eq:lyapunov2}
-\end{align}
+\end{flalign}
+s.t.
+\begin{flalign}
+u &= -\text{sgn}(s)\varrho(\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \text{where}, \ \ \ \varrho(\vec{\eta},\xi)  \geq \left|\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi) \right|   \ \ \ , &
+\label{eq:ssControlBeta}
+\end{flalign}
 
+tuning parameter, $\beta_0$
+
+\begin{flalign}
+  u &= -\text{sgn}(s)\beta (\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \text{where}, \ \ \ \beta(\vec{\eta},\xi) = \varrho(\vec{\eta},\xi) + \beta_0  \ \ \ . &
+\label{eq:ssControlBeta0}
+\end{flalign}
 
 sign-function discontinuity\\
 sat-function used
-\begin{align}
+\begin{flalign}
 \text{sat}\left( \tfrac{s}{\varepsilon} \right) &=
 \begin{cases}
 \ \ \frac{s}{\varepsilon},                           & \ \text{if} \ | \frac{s}{\varepsilon} | \leq 1 \\
 \ \ \text{sgn}\left( \tfrac{s}{\varepsilon} \right), & \ \text{if} \ | \frac{s}{\varepsilon} |  >   1 \ \ \ ,
-\end{cases}
+\end{cases} & 
 \label{eq:satuationFunction2}
-\end{align}
+\end{flalign}
 where $\frac{1}{\varepsilon}$ slope
-\begin{align}
-u &= -\text{sat}(\tfrac{s}{\varepsilon})\beta (\vec{\eta},\xi)  g_b^{-1}(\vec{\eta},\xi)  \ \ \ .
+\begin{flalign}
+u &= -\text{sat}(\tfrac{s}{\varepsilon})\beta (\vec{\eta},\xi)  g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \text{where}, \ \ \ \beta(\vec{\eta},\xi) = \varrho(\vec{\eta},\xi) + \beta_0  \ \ \ . &
 \label{eq:ssControlSat}
-\end{align}
+\end{flalign}
 %
 

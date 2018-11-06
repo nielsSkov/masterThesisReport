@@ -26,7 +26,7 @@ The mechanical energy in this coordinate frame is then,
 \end{align}
 The following sections explores different approaches of controlling the pendulum energy specified in \autoref{eq:pendulumEnergy4} to its desired reference.
 
-\subsection{Energy Control}
+\section{Energy Control}
 A function candidate is proposed,
 \begin{align}
   V(\theta, \dot{\theta}) &= \tfrac{1}{2} E_\Delta ^2 \ \ \ ,   \label{eq:lyapunovCandidate} 
@@ -342,7 +342,7 @@ For these graphs $k=1.3$ to keep the motor current at acceptable levels. The mot
 %\end{figure}
 
 
-\subsection{Sign-Based Energy Control}
+\section{Sign-Based Energy Control}
 There are other ways to satisfy \autoref{eq:lyapunovDerivativeControlled2} than the control law suggested in \autoref{eq:accControlLaw}. To achieve maximal actuation a sign-function can be used to determine the direction of actuation along with a gain $k$ to adjust for the limits of the actuator as before,
 \begin{align}
   a_c &= k\ \mathrm{sgn}(-E_\Delta \cos \theta \dot{\theta})  \ \ \ ,  \label{eq:accControlLaw2} 
@@ -536,7 +536,7 @@ This actuation behavior is not feasible in a real system and attempted implement
 %  \label{fig:thetaDotDot_3_noConX}
 %\end{figure}
 
-\subsection{Sat-Based Energy Control}
+\section{Sat-Based Energy Control}
 To avoid the excessive switching of the sign-based controller a different strategy using a saturation function is investigated,
 \begin{align}
   a_c &= \mathrm{sat}(-k E_\Delta \mathrm{sgn}(\cos \theta \dot{\theta}))  \ \ \ ,   \label{eq:accControlLaw3} 
@@ -646,7 +646,7 @@ The design of the energy based control law, \autoref{eq:accControlLaw3}, is conc
 %  \label{fig:thetaDotDot_4_noConX}
 %\end{figure}
 
-\subsection{Cart Position and Velocity Control}
+\section{Cart Position and Velocity Control}
 To solve the cart drifting problem along $x$ a linear controller is designed and added to the control law,
 \begin{align}
   a_c &= \psi(x_1,x_3) + v(x_2,x_4) \ \ \ ,   \label{eq:combiControl} 
