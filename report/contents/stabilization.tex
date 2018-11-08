@@ -4,10 +4,10 @@ A sliding mode control strategy is employed to accomplish these goals. The desig
 Firstly, the model of the system, from \autoref{eq:nonlinearStateSpace}, is considered in following form,
 \begin{align}
   \begin{bmatrix}
-    \dot{x_1} \\
-    \dot{x_2} \\
-    \dot{x_3} \\
-    \dot{x_4}
+    \dot{x}_1 \\
+    \dot{x}_2 \\
+    \dot{x}_3 \\
+    \dot{x}_4
   \end{bmatrix}
   &=
   \underbrace{
@@ -37,7 +37,7 @@ where
   \end{bmatrix}  \ \ \ ,
 \end{align}
 %
-and states $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\theta}\ \ \dot{x}\ ]^\mathrm{T} $ and input vector $F = [\ 0 \ \ u \ ]^\mathrm{T}$ as before.
+and states $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\theta}\ \ \dot{x}\ ]^\mathrm{T} $ and input vector $\vec{F} = [\ 0 \ \ u \ ]^\mathrm{T}$ as before.
 
 In \autoref{eq:nonlinearStateSpace2} the input, $u$, appear in two of the four state equations. To design a sliding mode controller for the system, it is transformed into \textit{regular form}, 
 \begin{align}
@@ -90,9 +90,9 @@ such that,
   \begin{bmatrix}
     \vec{f_a}(\vec{\eta},\xi)       \\
     f_b(\vec{\eta},\xi)
-  \end{bmatrix} \\
+  \end{bmatrix}  \ \ \ \ ,\ \ \ \ 
   \frac{\partial \vec{T}}{\partial \vec{x}} \vec{g}(\vec{x})
-  &= 
+  = 
   \begin{bmatrix}
     \vec{0}        \\
     g_b(\vec{\eta},\xi)
@@ -102,52 +102,51 @@ such that,
 \end{align}
 \autoref{eq:transformXDerivative} results in the following four equations,
 \begin{align}
-    \frac{\partial \eta_1}{\partial x_3} g_1 + \frac{\partial \eta_1}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta1}  \\
-    \frac{\partial \eta_2}{\partial x_3} g_1 + \frac{\partial \eta_2}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta2}  \\
-    \frac{\partial \eta_3}{\partial x_3} g_1 + \frac{\partial \eta_3}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta3}  \\
-    \frac{\partial \xi   }{\partial x_3} g_1 + \frac{\partial \xi   }{\partial x_4} g_2 &= g_b(\vec{\eta},\xi)  \label{eq:chooseXi} 
+    \frac{\partial \eta_1}{\partial x_3} g_3 + \frac{\partial \eta_1}{\partial x_4} g_4 &= 0                    \ \ \ \ ,\ \ \ \ % \label{eq:chooseEta1}  \\
+    \frac{\partial \eta_2}{\partial x_3} g_3 + \frac{\partial \eta_2}{\partial x_4} g_4 = 0         \nonumber   \\ %\label{eq:chooseEta1Eta2}  \\
+    \frac{\partial \eta_3}{\partial x_3} g_3 + \frac{\partial \eta_3}{\partial x_4} g_4 &= 0                    \ \ \ \ ,\ \ \ \ %\label{eq:chooseEta3}  \\
+    \frac{\partial \xi   }{\partial x_3} g_3 + \frac{\partial \xi   }{\partial x_4} g_4 = g_b(\vec{\eta},\xi)  \label{eq:chooseEta1Eta2Eta3Xi} 
 \ \ \ ,
 \end{align}
 where,
 \begin{align}
   \begin{bmatrix}
-    g_1  \\
-    g_2
-  \end{bmatrix} = \vec{M}^{-1}(x_1) 
+    g_3  \\
+    g_4
+  \end{bmatrix} u = \vec{M}^{-1}(x_1) 
     \begin{bmatrix}
       0  \\
-      1
+      u
     \end{bmatrix} \ \ \ \Rightarrow \ \ \ \ 
   \begin{cases}
-    g_1 = \frac{\cos x_1}{l (M + m - m \cos^2 x1)}\\
-    g_2 = \frac{1}{M + m - m \cos^2 x_1 }
+    g_3 = \frac{\cos x_1}{l (M + m - m \cos^2 x1)}\\
+    g_4 = \frac{1}{M + m - m \cos^2 x_1 }
   \end{cases}
+  \label{eq:g_3_and_4} 
 \end{align}
-
-Det er her jeg går fast, jeg har ingen framework til at vælge kooredinaterne.\\
-De kriterier jeg lige kan finde er at \autoref{eq:chooseEta1}-\ref{eq:chooseXi} skal være opfyldt og at $\vec{T}$ ikke må miste rang.
-
-Jeg har skrevet ned her hvordan jeg har brugt en metode fra Khalil, som man bruger i forbindelse med input-output linearisering, men som jeg fik at vide jeg ikke skulle bruges til det her. Jeg får to mulige resultater, og begge opfylder de kriterier jeg kan se der måtte være. Det eneste der rigtig er til forskel så vidt jeg kan se, er hvorhenne man ender med noget andet end en state, $x_{1-4}$, direkte i transformen. Det kan være jeg bare kigger de forkerte steder i bogen? Selv hvis der er en anden metode vil jeg også gerne prøve at forstå hvorfor det her ikke er en måde at vælge transformen på.
-
-Hvis jeg vælger input $h(x) = \theta$ eller $h(x) = x$, så får jeg relative degree $\rho = 2$ fordi\\
-$\ddot{\theta} = \dot{x}_3 = f_1 + g_1 u$ \\
-og\\
-$\ddot{x} = \dot{x}_4 = f_2 + g_2 u$ \\
-så kan jeg sige at 
+%
+The following choice of coordinates to satisfy \autoref{eq:chooseEta1Eta2Eta3Xi} without loss of rank in $\vec{T}$, is based on the transform used for input-output linearization in \cite{HKKhalil}.\\
+Choosing output, $h(x) = \theta$ or $h(x) = x$, both results in the relative degree, $\rho = 2$, since the output appears on the second derivatives,
 \begin{align}
-  \begin{bmatrix}
-    \eta_1   \\
-    \eta_2   \\
-    \eta_3   \\
-    \xi
-  \end{bmatrix}
+  \ddot{\theta} &= \dot{x}_3 = f_3 + g_3 u
+  \label{eq:thetaRelativeDeg} \\
+  \ddot{x} &= \dot{x}_4 = f_4 + g_4 u \ \ \ .
+  \label{eq:xRelativeDeg} 
+\end{align}
+The suggested transform is then,
+\begin{align}
+  \vec{T}(\vec{x})
   =
   \begin{bmatrix}
-    \eta_1   \\
-    \eta_2   \\
-    h(x)   \\
-    L_f h(x)
-  \end{bmatrix} \ \ \mathrm{så\ enten,} \ \ \ 
+    \phi_1(\vec{x})         \\
+    \vdots                  \\
+    \phi_{n-\rho}(\vec{x})  \\
+    h(\vec{x})              \\
+    L_f h(\vec{x})          \\
+    \vdots                  \\
+    L_f^{\rho-1} h(\vec{x})
+  \end{bmatrix}
+  \ \ \Rightarrow \ \ 
   \begin{bmatrix}
   \eta_1   \\
   \eta_2   \\
@@ -156,11 +155,32 @@ så kan jeg sige at
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \eta_1   \\
-  \eta_2   \\
-  x_1   \\
+  \phi_1(\vec{x})   \\
+  \phi_2(\vec{x})   \\
+  h(\vec{x})        \\
+  L_f h(\vec{x})
+  \end{bmatrix} \ \ \ ,
+  \label{eq:transformPhi} 
+\end{align}
+%
+where $L_f h(\vec{x})$ is the \textit{Lie derivative} of $h(\vec{x})$ along $f(\vec{x})$. This results in two possible transforms, 
+\begin{align}
+h = \theta \ \ \Rightarrow \ \ 
+  \vec{T}_1 =
+  \begin{bmatrix}
+  \eta_1  \\
+  \eta_2  \\
+  \eta_3  \\
+  \xi
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+  \phi_1  \\
+  \phi_2  \\
+  x_1     \\
   x_3
-  \end{bmatrix} \ \ \ \mathrm{eller,} \ \ \
+  \end{bmatrix} \ \ \ \mathrm{and}\ \ h = x \ \ \Rightarrow \ \
+  \vec{T}_2 =
   \begin{bmatrix}
   \eta_1   \\
   \eta_2   \\
@@ -169,76 +189,86 @@ så kan jeg sige at
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \eta_1   \\
-  \eta_2   \\
-  x_2   \\
+  \phi_1  \\
+  \phi_2  \\
+  x_2     \\
   x_4
-  \end{bmatrix}
+  \end{bmatrix} \ \ \ ,
 \end{align}
-det reducerer \autoref{eq:chooseEta1}-\ref{eq:chooseXi} til
+leaving $\phi_1$ and $\phi_2$ to be determined. This is done by satisfying,
 \begin{align}
-\frac{\partial \eta_1}{\partial x_3} g_1 + \frac{\partial \eta_1}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta12}  \\
-\frac{\partial \eta_2}{\partial x_3} g_1 + \frac{\partial \eta_2}{\partial x_4} g_2 &= 0                    \label{eq:chooseEta22}  \\
-0 &= 0                    \label{eq:chooseEta32}  \\
-g_1 &= g_b(\vec{\eta},\xi)  \ \ \mathrm{eller} \ \ \ g_2 = g_b(\vec{\eta},\xi)  \label{eq:chooseXi2} 
+\frac{\partial \eta_1}{\partial x_3} g_3 + \frac{\partial \eta_1}{\partial x_4} g_4 &= 0       \label{eq:chooseEta1}  \\
+\frac{\partial \eta_2}{\partial x_3} g_3 + \frac{\partial \eta_2}{\partial x_4} g_4 &= 0       \label{eq:chooseEta2}  
 \ \ \ .
 \end{align}
-hvis $h(x) = x_1$ så kan jeg vælge $\eta_1 = x_2$ for opfylde \ref{eq:chooseEta12} uden at miste rang i $\vec{T}$, og \\
-hvis $h(x) = x_2$ så kan jeg vælge $\eta_1 = x_1$
-
-For til sidst at opfylde
+from \autoref{eq:chooseEta1Eta2Eta3Xi}. For $\vec{T}_1$ the choice $\phi_1 = x_2$ satisfies \autoref{eq:chooseEta1} with no loss of rank in the transform. Conversely for $\vec{T}_2$ the choice $\phi_1 = x_1$ satisfies \autoref{eq:chooseEta1} again with no loss of rank. This leaves $\phi_2$ which, for both transforms, is determined by finding a solution to \autoref{eq:chooseEta2},
 \begin{align}
- \frac{\partial \eta_2}{\partial x_3} g_1 + \frac{\partial \eta_2}{\partial x_4} g_2 = 0
+ \frac{\partial \eta_2}{\partial x_3} \frac{\cos x_1}{l (M + m - m \cos^2 x1)} + \frac{\partial \eta_2}{\partial x_4} \frac{1}{M + m - m \cos^2 x_1 } = 0 \ \ \ ,
 \end{align}
-hvor,
+choosing,
 \begin{align}
-  g_1 = \frac{\cos x_1}{l (M + m - m \cos^2 x1)}\\
-  g_2 = \frac{1}{M + m - m \cos^2 x_1 }
+\frac{\partial \eta_2}{\partial x_4} = \frac{\cos x_1}{l}  \ \ , \ \ \ \frac{\partial \eta_2}{\partial x_3}  = -1 \ \ \ ,
 \end{align}
-kan det vælges at
+such that,
 \begin{align}
-\frac{\partial \eta_2}{\partial x_4} = \frac{\cos x_1}{l}  \ \ , \ \ \ \frac{\partial \eta_2}{\partial x_3}  = -1
+\eta_2 =  \frac{\cos x_1}{l} x_4 - x_3 \ \ \ .
 \end{align}
-så
+%
+This results in the following two transform candidates,
 \begin{align}
-\eta_2 =  \frac{\cos x_1}{l} x_4 - x_3
-\end{align}
-
-\begin{align}
-\mathrm{så\ enten,} \ \ \ 
-\begin{bmatrix}
-\eta_1   \\
-\eta_2   \\
-\eta_3   \\
-\xi
-\end{bmatrix}
-=
+%\begin{bmatrix}
+%\eta_1   \\
+%\eta_2   \\
+%\eta_3   \\
+%\xi
+%\end{bmatrix} \left.\rule{0cm}{1.7cm}\right\vert\rule{0cm}{1.7cm}_{\substack{\rule{0cm}{1.28cm}\\ h=x_1 }}
+\vec{T}_1 =
 \begin{bmatrix}
 x_2   \\
 \frac{\cos x_1}{l} x_4 - x_3  \\
 x_1   \\
 x_3
-\end{bmatrix} \ \ \ \mathrm{eller,} \ \ \
-\begin{bmatrix}
-\eta_1   \\
-\eta_2   \\
-\eta_3   \\
-\xi
-\end{bmatrix}
+\end{bmatrix} \ \ \ \ , \ \ \ \
+%\begin{bmatrix}
+%\eta_1   \\
+%\eta_2   \\
+%\eta_3   \\
+%\xi
+%\end{bmatrix} \left.\rule{0cm}{1.7cm}\right\vert\rule{0cm}{1.7cm}_{\substack{\rule{0cm}{1.28cm}\\ h=x_2 }}
+\vec{T}_2
 =
 \begin{bmatrix}
 x_1   \\
 \frac{\cos x_1}{l} x_4 - x_3   \\
 x_2   \\
 x_4
-\end{bmatrix}
+\end{bmatrix} \ \ \ .
 \end{align}
-
-
-
-final transform, inverse transform,
+%
+To choose a transform the following is considered.\\
+A continuously differentiable map, $\vec{T}$, with a continuously differentiable inverse, $\vec{T}^{-1}$, is known as a diffeomorphism. Further, $\vec{T}$ is a global diffeomorphism iff its Jacobian is nonsingular for all $\vec{x} \in \mathbb{R}^n$ and $\lim_{||\vec{x}||\rightarrow \infty}||\vec{T}(\vec{x})|| = \infty$ , \cite{HKKhalil}.\\
+The Jacobian of each transform is computed,
 \begin{align}
-  T
+\vec{J}_1 = \frac{\partial \vec{T}_1(\vec{x})}{\partial \vec{x}}
+&=
+\begin{bmatrix}
+  0                       & 1 &  0 & 0                  \\
+  -\frac{\sin x_1}{l} x_4 & 0 & -1 & \frac{\cos x_1}{l} \\
+  1                       & 0 &  0 & 0                  \\
+  0                       & 0 &  1 & 0
+\end{bmatrix}  \label{eq:transform_h_x1} \\
+\vec{J}_2 = \frac{\partial \vec{T}_2(\vec{x})}{\partial \vec{x}}
+&=
+\begin{bmatrix}
+  1                       & 0 &  0 & 0                  \\
+  -\frac{\sin x_1}{l} x_4 & 0 & -1 & \frac{\cos x_1}{l} \\
+  0                       & 1 &  0 & 0                  \\
+  0                       & 0 &  0 & 1
+\end{bmatrix} \ \ \ . \label{eq:transform_h_x2}
+\end{align}
+To check for singularity the determinant is found for the two Jacobian matrices. In the case of \autoref{eq:transform_h_x1}, $\det(\vec{J}_1) = -\cos x_1/l$, so if $\cos x_1 = 0$ the Jacobian becomes singular. This only happens when the pendulum is horizontal which is outside the operating range of a stabilizing controller. However, for \autoref{eq:transform_h_x2}, $\det(\vec{J}_2) = 1$, and so, the Jacobian is nonsingular for all $\vec{x} \in \mathbb{R}^4$. Further, $\lim_{||\vec{x}||\rightarrow \infty}||\vec{T}(\vec{x})|| = \infty$ so,
+\begin{align}
+  \vec{T}
   = 
   \begin{bmatrix}
   \eta_1   \\
@@ -248,13 +278,15 @@ final transform, inverse transform,
   \end{bmatrix}
   =
   \begin{bmatrix}
-  x_2   \\
-  \frac{\cos x_1}{l} x_4 - x_3  \\
   x_1   \\
-  x_3
-  \end{bmatrix} \ \ \ , \ \ \ \
-%
-  T^{-1} = 
+  \frac{\cos x_1}{l} x_4 - x_3  \\
+  x_2   \\
+  x_4
+  \end{bmatrix} \ \ \ , \label{eq:transform}
+\end{align}
+is a global diffeomorphism and therefore chosen as the final system transform, with the inverse given by,
+\begin{align}
+  \vec{T}^{-1} = 
   \begin{bmatrix}
     x_1  \\
     x_2  \\
@@ -262,15 +294,16 @@ final transform, inverse transform,
     x_4
   \end{bmatrix}
   =
-  %\begin{bmatrix}
-  %\eta_1   \\
-  %\eta_2   \\
-  %\eta_3   \\
-  %\xi
-  %\end{bmatrix} \ \ \ .
-  \label{eq:transform and inverse}
+  \begin{bmatrix}
+  \eta_1   \\
+  \eta_3   \\
+  \frac{\cos \eta_1}{l} \xi - \eta_2  \\
+  \xi
+  \end{bmatrix} \ \ \ .
+  \label{eq:inverseTransform}
 \end{align}
-transform derivative,
+%
+The derivative of the transform, \autoref{eq:transform}, along the trajectories of the system is,
 \begin{align}
   \begin{bmatrix}
     \dot{\eta}_1   \\
@@ -278,128 +311,177 @@ transform derivative,
     \dot{\eta}_3   \\
     \dot{\xi}
   \end{bmatrix}
-  =
+  &=
   \begin{bmatrix}
-    \dot{x_2}   \\
-    \tfrac{d}{dt}(\frac{\cos x_1}{l} x_4) - \dot{x_3}  \\
-    \dot{x_1}   \\
-    \dot{x_3}
-    \end{bmatrix} \ \ \ .
-  \label{eq:transform_dt}
+    \dot{x}_1   \\
+    \frac{-\sin x_1}{l}\dot{x}_1 x_4 + \frac{\cos x_1}{l} \dot{x}_4 - \dot{x}_3  \\
+    \dot{x}_2   \\
+    \dot{x}_4
+  \end{bmatrix} \label{eq:transform_dt} \\
+  %
+  %
+  %
+  \begin{bmatrix}
+  \dot{\eta}_1   \\
+  \dot{\eta}_2   \\
+  \dot{\eta}_3   \\
+  \dot{\xi}
+  \end{bmatrix} 
+  &=
+  \begin{bmatrix}
+    x_3    \\
+    \frac{-\sin x_1}{l} x_3 x_4 + \frac{\cos x_1}{l} f_4(\vec{x}) + \frac{\cos x_1}{l} g_4(\vec{x}) u  - f_3(\vec{x}) - g_3(\vec{x}) u \\
+    x_4    \\ 
+    f_4(\vec{x}) + g_4(\vec{x}) u 
+  \end{bmatrix} \ \ \ , \label{eq:transform_dt_alongTraj}
 \end{align}
-
-from this the regular form \autoref{eq:regularForm} is achieved using the inverse transform to obtain full change of variables,
+%
+from which the regular form is obtained by rearranging and using the inverse transform,
 \begin{align}
-  \begin{bmatrix}
-    \dot{\eta}_1   \\
-    \dot{\eta}_2   \\
-    \dot{\eta}_3   \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
-    \begin{picture} (0,0)(0,0) \multiput(-2,14)(4,0){3}{\line(2,0){2}} \end{picture}
-    \dot{\xi}
+\begin{bmatrix}
+  \dot{\eta}_1   \\
+  \dot{\eta}_2   \\
+  \dot{\eta}_3   \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+  %\begin{picture} (0,0)(0,0) \multiput(-2,14)(4,0){3}{\line(2,0){2}} \end{picture}
+  \dot{\xi}
   \end{bmatrix} 
   &=
   \overbrace{
     \underbrace{
       \begin{bmatrix}
-        x_4    \\
-        %\frac{l \sin x1}{\cos^2 x_1} x_3^2 +  \tfrac{l}{\cos x_1} f_1(\vec{x})  - f_2(\vec{x}) \\ 
-        \sin x_1 x_4 x_3 + l f_1(\vec{x}) - \cos x_1 f_2(\vec{x})  \\
-        x_3    \\ %these are dotted lines, yea, that's LaTeX for ya, go figure..
-        \begin{picture} (0,0)(0,0) \multiput(-65,14)(4,0){40}{\line(2,0){2}} \end{picture}
-        f_1(\vec{x}) 
+      \frac{\cos \eta_1}{l} \xi - \eta_2    \\
+      %\frac{l \sin x1}{\cos^2 x_1} x_3^2 +  \tfrac{l}{\cos x_1} f_1(\vec{x})  - f_2(\vec{x}) \\ 
+      \frac{-\sin \eta_1}{l} (\frac{\cos \eta_1}{l} \xi - \eta_2) \xi + \frac{\cos \eta_1}{l} f_4(\vec{\eta},\xi) - f_3(\vec{\eta},\xi) \\
+      \xi    \\ %these are dotted lines, yea, that's LaTeX for ya, go figure..
+      \begin{picture} (0,0)(0,0) \multiput(-95,14)(4,0){57}{\line(2,0){2}} \end{picture}
+      f_4(\vec{\eta},\xi) 
       \end{bmatrix}
     }_{f_b} }^{f_a}
   +
   \underbrace{
     \begin{bmatrix}
-      0    \\
-      0    \\
-      0    \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
-      \begin{picture} (0,0)(0,0) \multiput(4,14)(4,0){17}{\line(2,0){2}} \end{picture}
-      \frac{\cos x_1}{l (M + m - m \cos^2 x_1)}
+    0    \\
+    0    \\
+    0    \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+    \begin{picture} (0,0)(0,0) \multiput(0,14)(4,0){10}{\line(2,0){2}} \end{picture}
+    g_4(\vec{\eta},\xi)
     \end{bmatrix}
   }_{g_b} u  \ \ \ ,
   \label{eq:regularFormMatrix}
 \end{align}
-
-
+where,
+\begingroup\makeatletter\def\f@size{10}\check@mathfonts
+\def\maketag@@@#1{\hbox{\m@th\normalsize\normalfont#1}}%
 \begin{align}
-s &=   \xi - \phi(\vec{\eta}) = 0     \ \ \ ,
-\end{align}
-design $\phi(\vec{\eta})$
-
-if $s = 0$ then $\xi = \phi(\vec{\eta})$, that is, the reduced-order system,
-\begin{align}
-  \vec{\dot{\eta}} &=  f_a(\vec{\eta},\phi(\vec{\eta}))     \ \ \ ,
-  \label{eq:asymStabOrigReducedOrder}
-\end{align}
-is asymptotically stable in the origin.
-
-linearization of reduced-order system,
+f_3(\vec{\eta},\xi) &= \frac{1}{ l^2 m (M + m - m \cos^2 \eta_1) }
+\left[
+(M + m) b_{p,v} \left(\eta_2 - \frac{\cos \eta_1 \xi}{l}\right) + \right. \nonumber \\
+&+ (M + m) b_{p,c} \tanh\left(\mathrm{k}_{\mathrm{tanh}} \left(\eta_2 - \frac{ \cos \eta_1 \xi}{l}\right)\right) + m^2 g l \sin \eta_1 - b_{c,c} m l \tanh\left(\mathrm{k}_{\mathrm{tanh}} \xi\right) \cos \eta_1 - \nonumber \\
+&- \left. m^2 l^2 \cos \eta_1 \sin \eta_1 \left(\eta_2 - \frac{\xi \cos \eta_1}{l}\right)^2 + M g l m \sin \eta_1 - b_{c,v} m l \xi \cos \eta_1
+\right] \\
 %
-\begin{align}
-A &= \frac{\partial \vec{\dot{\eta}}}{\partial \vec{\eta}} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
-=
-\begin{bmatrix}
-0 & -1                  & 0 \\
-0 & \frac{g_{p,c}}{l m} & g \\
-0 & 0                   & 0 
-\end{bmatrix}   \ \ \ , \ \ \
-B = \frac{\partial \vec{\dot{\eta}}}{\partial \xi} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
-=
-\begin{bmatrix}
-l  \\
-\frac{-b_{p,v}-b_{p,c}}{l m}  \\
-1  
-\end{bmatrix}   \ \ \ ,
-\label{eq:linearReducedOrder_A}
-\end{align}
-
-stabilize reduced order system by,
-\begin{align}
-\phi(\vec{\eta}) &=   - \vec{k} \vec{\eta}  \ \ \ ,
-\end{align}
-
-design $u$ to bring $s$ to zero.\\
-Lyapunov function candidate, $V = \frac{1}{2}s^2$,
-derivative along trajectories of system
-\begin{align}
-\dot{V} &= s\dot{s} \\
-\dot{V} &= s ( \dot{\xi} + \vec{k}\vec{\dot{\eta}}  ) \\
-\dot{V} &= s ( f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u +\vec{k}f_a(\vec{\eta},\xi) )  \\
-\dot{V} &= (\vec{k}f_a +  f_b) s + g_b s u \\
-\dot{V} &= g_b s (\vec{k}f_a  +  f_b) g_b^{-1} + g_b s u   \\
-\dot{V} &\leq g_b |s| \left|\vec{k}f_a g_b^{-1} +  f_b \right| + g_b s u  \ \ \ .
-\label{eq:lyapunov}
-\end{align}
-
-using $|s| = \text{sgn}(s) s$ and introducing tuning parameter $\beta_0$ to design $u$,
-\begin{align}
-u = -\text{sgn}(s)\beta (\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \mathrm{where}, \ \ \ \beta(\vec{\eta},\xi)  &= \varrho(\vec{\eta},\xi) + \beta_0 \\
-\mathrm{and}, \ \ \  \varrho(\vec{\eta},\xi) &= \left|\vec{k}f_a  +  f_b \right| \ \ \ .
-\label{eq:ssControlBeta0}
-\end{align}
-s.t.
-\begin{align}
-\dot{V} &\leq g_b |s| \left|\vec{k}f_a +  f_b \right|  g_b^{-1} - g_b\  \mathrm{sgn}(s) s \left|\vec{k}f_a  +  f_b + \beta_0 \right| g_b^{-1}
-\label{eq:lyapunov2}
-\end{align}
-
-
-sign-function discontinuity\\
-sat-function used
-\begin{align}
-\text{sat}\left( \tfrac{s}{\varepsilon} \right) &=
-\begin{cases}
-\ \ \frac{s}{\varepsilon},                           & \ \text{if} \ | \frac{s}{\varepsilon} | \leq 1 \\
-\ \ \text{sgn}\left( \tfrac{s}{\varepsilon} \right), & \ \text{if} \ | \frac{s}{\varepsilon} |  >   1 \ \ \ ,
-\end{cases}
-\label{eq:satuationFunction2}
-\end{align}
-where $\frac{1}{\varepsilon}$ slope
-\begin{align}
-u &= -\text{sat}(\tfrac{s}{\varepsilon})\beta (\vec{\eta},\xi)  g_b^{-1}(\vec{\eta},\xi)  \ \ \ .
-\label{eq:ssControlSat}
-\end{align}
 %
+f_4(\vec{\eta},\xi) &= -\frac{1}{ l (M + m - m \cos^2 \eta_1) } \left[   b_{c,v} l \xi - b_{p,v} \cos \eta_1 \left(\eta_2 - \frac{\cos \eta_1 \xi}{l}\right) + b_{c,c} l \tanh\left(\mathrm{k}_{\mathrm{tanh}} \xi\right) - \right. \nonumber \\
+&- b_{p,c} \tanh\left(\mathrm{k}_{\mathrm{tanh}} \left(\eta_2 - \frac{ \cos \eta_1 \xi}{l}\right)\right) \cos \eta_1 + \nonumber \\
+&+ \left. l^2 m \sin \eta_1 \left(\eta_2 - \frac{\xi \cos \eta_1}{l}\right)^2 - m g l \cos \eta_1 \sin \eta_1  \right] \\
+%
+%
+g_4(\vec{\eta},\xi) &= \frac{1}{M + m - m \cos^2 \eta_1 }
+\ \ \ .
+\label{eq:f3f4g4} \\ \nonumber
+\end{align}
+\endgroup \vspace{-44pt}
+
+%
+%
+%
+%f3 = \frac{ M b_{p,v} (\eta_2 - \frac{\xi \cos \eta_1}{l}) + b_{p,v} m (\eta_2 - \frac{\xi \cos \eta_1}{l}) + M b_{p,c} \tanh(k_{\mathrm{tanh}} (\eta_2 - \frac{\xi \cos \eta_1}{l})) + b_{p,c} m \tanh(k_{\mathrm{tanh}} (\eta_2 - \frac{\xi \cos \eta_1}{l})) + g l m^2 \sin \eta_1 - b_{c,c} l m \tanh(k_{\mathrm{tanh}} \xi) \cos \eta_1 - l^2 m^2 \cos \eta_1 \sin \eta_1 (\eta_2 - \frac{\xi \cos \eta_1}{l})^2 + M g l m \sin \eta_1 - b_{c,v} l m \xi \cos \eta_1 }{ l^2 m (M + m - m \cos^2 \eta_1) }
+%
+%
+%
+%f4 = -\frac{1}{ l (M + m - m \cos^2 \eta_1) } \left[   b_{c,v} l \xi - b_{p,v} \cos \eta_1 \left(\eta_2 - \frac{\cos \eta_1 \xi}{l}\right) + b_{c,c} l \tanh\left(\mathrm{k}_{\mathrm{tanh}} \xi\right) - b_{p,c} \tanh\left(\mathrm{k}_{\mathrm{tanh}} \left(\eta_2 - \frac{ \cos \eta_1 \xi}{l}\right)\right) \cos \eta_1 + l^2 m \sin \eta_1 \left(\eta_2 - \frac{\xi \cos \eta_1}{l}\right)^2 - m g l \cos \eta_1 \sin \eta_1  \right]
+%
+%
+\fxnote{Is this too much?}
+
+
+%\begin{align}
+%s &=   \xi - \phi(\vec{\eta}) = 0     \ \ \ ,
+%\end{align}
+%design $\phi(\vec{\eta})$
+%
+%if $s = 0$ then $\xi = \phi(\vec{\eta})$, that is, the reduced-order system,
+%\begin{align}
+%  \vec{\dot{\eta}} &=  f_a(\vec{\eta},\phi(\vec{\eta}))     \ \ \ ,
+%  \label{eq:asymStabOrigReducedOrder}
+%\end{align}
+%is asymptotically stable in the origin.
+%
+%linearization of reduced-order system,
+%%
+%\begin{align}
+%A &= \frac{\partial \vec{\dot{\eta}}}{\partial \vec{\eta}} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
+%=
+%\begin{bmatrix}
+%0 & -1                  & 0 \\
+%0 & \frac{g_{p,c}}{l m} & g \\
+%0 & 0                   & 0 
+%\end{bmatrix}   \ \ \ , \ \ \
+%B = \frac{\partial \vec{\dot{\eta}}}{\partial \xi} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
+%=
+%\begin{bmatrix}
+%l  \\
+%\frac{-b_{p,v}-b_{p,c}}{l m}  \\
+%1  
+%\end{bmatrix}   \ \ \ ,
+%\label{eq:linearReducedOrder_A}
+%\end{align}
+%
+%stabilize reduced order system by,
+%\begin{align}
+%\phi(\vec{\eta}) &=   - \vec{k} \vec{\eta}  \ \ \ ,
+%\end{align}
+%
+%design $u$ to bring $s$ to zero.\\
+%Lyapunov function candidate, $V = \frac{1}{2}s^2$,
+%derivative along trajectories of system
+%\begin{align}
+%\dot{V} &= s\dot{s} \\
+%\dot{V} &= s ( \dot{\xi} + \vec{k}\vec{\dot{\eta}}  ) \\
+%\dot{V} &= s ( f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u +\vec{k}f_a(\vec{\eta},\xi) )  \\
+%\dot{V} &= (\vec{k}f_a +  f_b) s + g_b s u \\
+%\dot{V} &= g_b s (\vec{k}f_a  +  f_b) g_b^{-1} + g_b s u   \\
+%\dot{V} &\leq g_b |s| \left|\vec{k}f_a g_b^{-1} +  f_b \right| + g_b s u  \ \ \ .
+%\label{eq:lyapunov}
+%\end{align}
+%
+%using $|s| = \text{sgn}(s) s$ and introducing tuning parameter $\beta_0$ to design $u$,
+%\begin{align}
+%u = -\text{sgn}(s)\beta (\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \mathrm{where}, \ \ \ \beta(\vec{\eta},\xi)  &= \varrho(\vec{\eta},\xi) + \beta_0 \\
+%\mathrm{and}, \ \ \  \varrho(\vec{\eta},\xi) &= \left|\vec{k}f_a  +  f_b \right| \ \ \ .
+%\label{eq:ssControlBeta0}
+%\end{align}
+%s.t.
+%\begin{align}
+%\dot{V} &\leq g_b |s| \left|\vec{k}f_a +  f_b \right|  g_b^{-1} - g_b\  \mathrm{sgn}(s) s \left|\vec{k}f_a  +  f_b + \beta_0 \right| g_b^{-1}
+%\label{eq:lyapunov2}
+%\end{align}
+%
+%
+%sign-function discontinuity\\
+%sat-function used
+%\begin{align}
+%\text{sat}\left( \tfrac{s}{\varepsilon} \right) &=
+%\begin{cases}
+%\ \ \frac{s}{\varepsilon},                           & \ \text{if} \ | \frac{s}{\varepsilon} | \leq 1 \\
+%\ \ \text{sgn}\left( \tfrac{s}{\varepsilon} \right), & \ \text{if} \ | \frac{s}{\varepsilon} |  >   1 \ \ \ ,
+%\end{cases}
+%\label{eq:satuationFunction2}
+%\end{align}
+%where $\frac{1}{\varepsilon}$ slope
+%\begin{align}
+%u &= -\text{sat}(\tfrac{s}{\varepsilon})\beta (\vec{\eta},\xi)  g_b^{-1}(\vec{\eta},\xi)  \ \ \ .
+%\label{eq:ssControlSat}
+%\end{align}
+%%
 

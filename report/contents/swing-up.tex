@@ -140,7 +140,6 @@ The controlled acceleration at the pivot point, $a_c$, is then designed to satis
 \end{align}
 where the tuning parameter, $k>0$, is introduced to allow scaling the control output to fit the capabilities of the actuator. Inserting the control law yields,
 \begin{align}
-  \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} a_c  \\
   \dot{V} &= m l E_\Delta \cos \theta \dot{\theta} (-k E_\Delta \cos \theta \dot{\theta})     \label{eq:lyapunovDerivativeControlled1} \\
   \dot{V} &= -k m l (E_\Delta \cos \theta \dot{\theta})^2  \leq 0  \ \ \ ,   \label{eq:lyapunovDerivativeControlled2} 
 \end{align}
@@ -161,48 +160,49 @@ All conditions of LaSalle's \autoref{th:lasallesTheorem} are satisfied, thus, if
   C &=  \{ \vec{x} \in \Omega_c \ | \ \dot{\theta} = 0 \}  \\
   E &= A \cup B \cup C \ \ \ . \label{eq:E}
 \end{align}
-To construct set $M$ it is necessary to evaluate each set for invariance with respect to the controlled system. A proof is developed to show invariance of the first set.
-\begin{proof}[Invariance of Set A]
-  \label{pr:invariantA}
-  Recall the relation between $\dot{\theta}$ and $\theta$ for $E_\Delta = 0$,
-  \begin{align}
-    &\dot{\theta}_z = \pm \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}}  \ \ \ ,  \label{eq:thetaDotForEDeltaZero}
-  \end{align}
-  where $\dot{\theta}_z$ is the angular velocity for which the energy error is zero. Further, consider the model in following form,
-  \begin{align}
-    \ddot{\theta} &= \tfrac{1}{J} ( m l \cos \theta a_c + m g l \sin \theta ) \ \ \ .  \label{eq:pendulumDynamics3}
-  \end{align}
-  To prove that $A$ is invariant with respect to \autoref{eq:pendulumDynamics3}, the slope of $\dot{\theta}_z$ is compared to the slope of the controlled system trajectories in the set. If the slopes are equal, then no trajectory can leave the set $A$, thus proving $A$ is invariant with respect to the controlled system. The slope of $\dot{\theta}_z$ is,
-  \begin{align}
-    \frac{\partial \dot{\theta}_z}{\partial \theta} &= \pm \frac{m g l \sin\theta}{ J } \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{-\tfrac{1}{2}} \\
-    \frac{\partial \dot{\theta}_z}{\partial \theta} &= \frac{m g l \sin\theta}{ J \rule{0pt}{12pt}\dot{\theta}_z}  \ \ \ .  \label{eq:thetaDotForEDeltaZero_dTheta}
-  \end{align}
-  The slope of the trajectories of the controlled system, \autoref{eq:pendulumDynamics3}, in set $A$ is then,
-  \begin{align}
-    b &= \frac{\ddot{\theta}_z}{\rule{0pt}{12pt}\dot{\theta}_z} \\
-    b &= \frac{- m l \cos \theta a_c( \theta, \dot{\theta}_z ) + m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
-    b &= \frac{- k m l \cos^2 \theta E_\Delta( \theta, \dot{\theta}_z ) \dot{\theta}_z + m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
-    b &= \frac{- k m l \cos^2 \theta ( \tfrac{1}{2} J \dot{\theta}_z^2 + m g l (\cos \theta -1)  ) \dot{\theta}_z}{ J \rule{0pt}{12pt}\dot{\theta}_z}  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
-    b &= - k m l \cos^2 \theta \tfrac{1}{2} \dot{\theta}_z^2 - \tfrac{1}{J} k m l \cos^2 \theta m g l (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
-    %b &= - k m l \cos^2 \theta \tfrac{1}{2} \left( \pm \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}} \right)^2 \\
-    %  &- \tfrac{1}{l^2 m} k m^2 l^2 g \cos^2 \theta (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
-    b &= - k m l \cos^2 \theta \tfrac{1}{2} \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)  - \tfrac{1}{l^2 m} k m^2 l^2 g \cos^2 \theta (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
-    b &= - k m l \cos^2 \theta \tfrac{1}{2} \frac{-2 m g l (\cos \theta -1)}{l^2 m} - k \cos^2 \theta m g (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z}  \\
-    b &= k \cos^2 \theta m g (\cos \theta -1) - k \cos^2 \theta m g (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
-    b &= \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \ \ \ ,  \label{eq:systemTrajSlopeInSetA}
-  \end{align}
-  where $\ddot{\theta}_z$ is the angular acceleration of the controlled system in set $A$.\\
-  Finally, since,
-  \begin{align}
-    \frac{\partial \dot{\theta}_z}{\partial \theta} &= b \ \ \ ,  \label{eq:slopesEqual}
-  \end{align}
-  the set $A$ is invariant with respect to the controlled system.\vspace{-4pt}
-  \begin{align}
-    \tag*{$\blacksquare\ $}
-  \end{align}
-\end{proof}
+To construct set $M$ it is necessary to evaluate each set for invariance with respect to the controlled system. A proof is developed to show invariance of set $A$.
+%\begin{proof}[Invariance of Set A]
+%  \label{pr:invariantA}
+Recall the relation between $\dot{\theta}$ and $\theta$ for $E_\Delta = 0$ ,
+\begin{align}
+  &\dot{\theta}_z = \pm \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}}  \ \ \ ,  \label{eq:thetaDotForEDeltaZero}
+\end{align}
+where $\dot{\theta}_z$ is the angular velocity for which the energy error is zero. Further, consider the controlled system in following form,
+\begin{align}
+  \ddot{\theta} &= \tfrac{1}{J} ( -k m l \cos \theta E_\Delta \cos \theta \dot{\theta} + m g l \sin \theta ) \ \ \ .  \label{eq:pendulumDynamics3}
+\end{align}
+To prove that $A$ is invariant with respect to \autoref{eq:pendulumDynamics3}, the slope of $\dot{\theta}_z$ is compared to the slope of the controlled system trajectories in the set. If the slopes are equal, then no trajectory can leave the set $A$, thus proving $A$ is invariant with respect to the controlled system. The slope of $\dot{\theta}_z$ is,
+\begin{align}
+  \frac{\partial \dot{\theta}_z}{\partial \theta} &= \pm \frac{m g l \sin\theta}{ J } \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{-\tfrac{1}{2}} \\
+  \frac{\partial \dot{\theta}_z}{\partial \theta} &= \frac{m g l \sin\theta}{ J \rule{0pt}{12pt}\dot{\theta}_z}  \ \ \ .  \label{eq:thetaDotForEDeltaZero_dTheta}
+\end{align}
+The slope of the trajectories of the controlled system, \autoref{eq:pendulumDynamics3}, in set $A$ is then,
+\begin{align}
+  b &= \frac{\ddot{\theta}_z}{\rule{0pt}{12pt}\dot{\theta}_z} \\
+  %b &= \frac{- m l \cos \theta a_c( \theta, \dot{\theta}_z ) + m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+  b &= \frac{- k m l \cos^2 \theta E_\Delta( \theta, \dot{\theta}_z ) \dot{\theta}_z + m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+  b &= \frac{- k m l \cos^2 \theta ( \tfrac{1}{2} J \dot{\theta}_z^2 + m g l (\cos \theta -1)  ) \dot{\theta}_z}{ J \rule{0pt}{12pt}\dot{\theta}_z}  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+  b &= - k m l \cos^2 \theta \tfrac{1}{2} \dot{\theta}_z^2 - \tfrac{1}{J} k m l \cos^2 \theta m g l (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+  %b &= - k m l \cos^2 \theta \tfrac{1}{2} \left( \pm \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}} \right)^2 \\
+  %  &- \tfrac{1}{l^2 m} k m^2 l^2 g \cos^2 \theta (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+  b &= - k m l \cos^2 \theta \tfrac{1}{2} \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)  - \tfrac{1}{l^2 m} k m^2 l^2 g \cos^2 \theta (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+  b &= - k m l \cos^2 \theta \tfrac{1}{2} \frac{-2 m g l (\cos \theta -1)}{l^2 m} - k \cos^2 \theta m g (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z}  \\
+  b &= k \cos^2 \theta m g (\cos \theta -1) - k \cos^2 \theta m g (\cos \theta -1)  +  \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \\
+  b &= \frac{m g l \sin \theta}{ J \rule{0pt}{12pt}\dot{\theta}_z} \ \ \ ,  \label{eq:systemTrajSlopeInSetA}
+\end{align}
+where $\ddot{\theta}_z$ is the angular acceleration of the controlled system in set $A$.\\
+Finally, since,
+\begin{align}
+  \frac{\partial \dot{\theta}_z}{\partial \theta} &= b \ \ \ ,  \label{eq:slopesEqual}
+\end{align}
+the set $A$ is invariant with respect to the controlled system. %\vspace{-4pt}
+%\begin{align}
+%  \tag*{$\blacksquare\ $}
+%\end{align}
 %
-\vspace{-8pt}
+%\end{proof}
+%
+%\vspace{-8pt}
 The set $B$ is invariant only for the intersection $B \cap A$, any other values of the angular velocity will cause it to leave the set since $\cos \theta = 0$ corresponds to a horizontal position of the pendulum. A similar argument can be made for set $C$, however, in this case if $\theta = \pi$, the system stays in the set. So, the invariant part of set $C$ excluding $A$ is,
 \begin{align}
   F &=  \{ \vec{x} \in \Omega_c \ | \ \dot{\theta} = 0 \ , \ \theta = \pi \}  \ \ \ ,  \label{eq:F}
@@ -215,7 +215,7 @@ M &= A \cup F \ \ \ .  \label{eq:M}
 The sets are visualized in \autoref{fig:setPlot}.
 \begin{figure}[H]
   \includegraphics[width=.65\textwidth]{figures/setPlot}
-  \caption{The set $\Omega_c$ shown along with sets in $\Omega_c$ for which $\dot{V}(\vec{x}) = 0$. Set $A$ and $F$ together form the largest invariant set $M$ in $E$. The phase portrait of the controlled system shows how its trajectories line up with $A$ as stated by \autoref{pr:invariantA}.}
+  \caption{The set $\Omega_c$ shown along with sets in $\Omega_c$ for which $\dot{V}(\vec{x}) = 0$. Set $A$ and $F$ together form the largest invariant set $M$ in $E$. The phase portrait of the controlled system shows how its trajectories line up with $A$ indicating invariance of $A$ with respect to the controlled system.}
   \label{fig:setPlot}
 \end{figure}
 %
