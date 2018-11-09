@@ -4,30 +4,37 @@ A sliding mode control strategy is employed to accomplish these goals. The desig
 Firstly, the model of the system, from \autoref{eq:nonlinearStateSpace}, is considered in following form,
 \begin{align}
   \begin{bmatrix}
-    \dot{x}_1 \\
-    \dot{x}_2 \\
-    \dot{x}_3 \\
-    \dot{x}_4
+    \dot{x_1} \\
+    \dot{x_2} \\
+    \dot{x_3} \\
+    \dot{x_4}
   \end{bmatrix}
   &=
   \underbrace{
-    \begin{bmatrix}
-      x_3 \\
-      x_4 \\
-      \vec{M}^{-1}(x_1) ( - \vec{C}(x_1,x_3) - \vec{B}(x_3,x_4) - \vec{G}(x_1) )
-    \end{bmatrix}
+    \left[
+      \begin{array}{c}
+        x_3 \\
+        x_4 \\
+        \multirow{2}{*}{$ \vec{M}^{-1}(x_1) ( - \vec{C}(x_1,x_3) - \vec{B}(x_3,x_4) - \vec{G}(x_1) ) $}\\
+        \phantom{eq}
+      \end{array}
+    \right]
   }_{\vec{f}(\vec{x})}
   +
-  \underbrace{ 
-    \begin{bmatrix}
-      0 \\
-      0 \\
-      \vec{M}^{-1}(x_1) \vec{F} 
-    \end{bmatrix}
+  \underbrace{
+    \left[
+      \begin{array}{c}
+        0 \\
+        0 \\
+        \multirow{2}{*}{$ \vec{M}^{-1}(x_1) \vec{F} $}\\
+        \phantom{eq}
+      \end{array}
+    \right]
   }_{\vec{g}(\vec{x}) u}
-  \label{eq:nonlinearStateSpace2} \ \ \ ,
+\label{eq:nonlinearStateSpace2} \ \ \ ,
 \end{align}
-where
+%
+where,
 \begin{align}
   \vec{M}^{-1}
   &=
@@ -37,13 +44,13 @@ where
   \end{bmatrix}  \ \ \ ,
 \end{align}
 %
-and states $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\theta}\ \ \dot{x}\ ]^\mathrm{T} $ and input vector $\vec{F} = [\ 0 \ \ u \ ]^\mathrm{T}$ as before.
+with states $ [\ x_1\ \ x_2\ \ x_3\ \ x_4\ ]^\mathrm{T} = [\ \theta\ \ x\ \ \dot{\theta}\ \ \dot{x}\ ]^\mathrm{T} $ and input vector $\vec{F} = [\ 0 \ \ u \ ]^\mathrm{T}$ as before.
 
 In \autoref{eq:nonlinearStateSpace2} the input, $u$, appear in two of the four state equations. To design a sliding mode controller for the system, it is transformed into \textit{regular form}, 
 \begin{align}
-\dot{\vec{\eta}} &=  \vec{f_a}(\vec{\eta},\xi) \nonumber   \\
-\dot{\xi}        &=  f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u    \ \ \ ,
-\label{eq:regularForm}
+  \dot{\vec{\eta}} &=  \vec{f_a}(\vec{\eta},\xi) \nonumber   \\
+  \dot{\xi}        &=  f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u    \ \ \ ,
+  \label{eq:regularForm}
 \end{align}
 %
 where the input only appears on one state equation.
@@ -148,17 +155,17 @@ The suggested transform is then,
   \end{bmatrix}
   \ \ \Rightarrow \ \ 
   \begin{bmatrix}
-  \eta_1   \\
-  \eta_2   \\
-  \eta_3   \\
-  \xi
+    \eta_1   \\
+    \eta_2   \\
+    \eta_3   \\
+    \xi
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \phi_1(\vec{x})   \\
-  \phi_2(\vec{x})   \\
-  h(\vec{x})        \\
-  L_f h(\vec{x})
+    \phi_1(\vec{x})   \\
+    \phi_2(\vec{x})   \\
+    h(\vec{x})        \\
+    L_f h(\vec{x})
   \end{bmatrix} \ \ \ ,
   \label{eq:transformPhi} 
 \end{align}
@@ -168,120 +175,124 @@ where $L_f h(\vec{x})$ is the \textit{Lie derivative} of $h(\vec{x})$ along $f(\
 h = \theta \ \ \Rightarrow \ \ 
   \vec{T}_1 =
   \begin{bmatrix}
-  \eta_1  \\
-  \eta_2  \\
-  \eta_3  \\
-  \xi
+    \eta_1  \\
+    \eta_2  \\
+    \eta_3  \\
+    \xi
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \phi_1  \\
-  \phi_2  \\
-  x_1     \\
-  x_3
+    \phi_1  \\
+    \phi_2  \\
+    x_1     \\
+    x_3
   \end{bmatrix} \ \ \ \mathrm{and}\ \ h = x \ \ \Rightarrow \ \
   \vec{T}_2 =
   \begin{bmatrix}
-  \eta_1   \\
-  \eta_2   \\
-  \eta_3   \\
-  \xi
+    \eta_1   \\
+    \eta_2   \\
+    \eta_3   \\
+    \xi
   \end{bmatrix}
   =
   \begin{bmatrix}
-  \phi_1  \\
-  \phi_2  \\
-  x_2     \\
-  x_4
+    \phi_1  \\
+    \phi_2  \\
+    x_2     \\
+    x_4
   \end{bmatrix} \ \ \ ,
 \end{align}
 leaving $\phi_1$ and $\phi_2$ to be determined. This is done by satisfying,
 \begin{align}
-\frac{\partial \eta_1}{\partial x_3} g_3 + \frac{\partial \eta_1}{\partial x_4} g_4 &= 0       \label{eq:chooseEta1}  \\
-\frac{\partial \eta_2}{\partial x_3} g_3 + \frac{\partial \eta_2}{\partial x_4} g_4 &= 0       \label{eq:chooseEta2}  
-\ \ \ .
+  \frac{\partial \eta_1}{\partial x_3} g_3 + \frac{\partial \eta_1}{\partial x_4} g_4 &= 0       \label{eq:chooseEta1}  \\
+  \frac{\partial \eta_2}{\partial x_3} g_3 + \frac{\partial \eta_2}{\partial x_4} g_4 &= 0       \label{eq:chooseEta2}  
+  \ \ \ .
 \end{align}
 from \autoref{eq:chooseEta1Eta2Eta3Xi}. For $\vec{T}_1$ the choice $\phi_1 = x_2$ satisfies \autoref{eq:chooseEta1} with no loss of rank in the transform. Conversely for $\vec{T}_2$ the choice $\phi_1 = x_1$ satisfies \autoref{eq:chooseEta1} again with no loss of rank. This leaves $\phi_2$ which, for both transforms, is determined by finding a solution to \autoref{eq:chooseEta2},
 \begin{align}
- \frac{\partial \eta_2}{\partial x_3} \frac{\cos x_1}{l (M + m - m \cos^2 x1)} + \frac{\partial \eta_2}{\partial x_4} \frac{1}{M + m - m \cos^2 x_1 } = 0 \ \ \ ,
+  \frac{\partial \eta_2}{\partial x_3} \frac{\cos x_1}{l (M + m - m \cos^2 x1)} + \frac{\partial \eta_2}{\partial x_4} \frac{1}{M + m - m \cos^2 x_1 } = 0 \ \ \ ,
 \end{align}
 choosing,
 \begin{align}
-\frac{\partial \eta_2}{\partial x_4} = \frac{\cos x_1}{l}  \ \ , \ \ \ \frac{\partial \eta_2}{\partial x_3}  = -1 \ \ \ ,
+  \frac{\partial \eta_2}{\partial x_4} = \frac{\cos x_1}{l}  \ \ , \ \ \ \frac{\partial \eta_2}{\partial x_3}  = -1 \ \ \ ,
 \end{align}
 such that,
 \begin{align}
-\eta_2 =  \frac{\cos x_1}{l} x_4 - x_3 \ \ \ .
+  \eta_2 =  \frac{\cos x_1}{l} x_4 - x_3 \ \ \ .
 \end{align}
 %
 This results in the following two transform candidates,
 \begin{align}
-%\begin{bmatrix}
-%\eta_1   \\
-%\eta_2   \\
-%\eta_3   \\
-%\xi
-%\end{bmatrix} \left.\rule{0cm}{1.7cm}\right\vert\rule{0cm}{1.7cm}_{\substack{\rule{0cm}{1.28cm}\\ h=x_1 }}
-\vec{T}_1 =
-\begin{bmatrix}
-x_2   \\
-\frac{\cos x_1}{l} x_4 - x_3  \\
-x_1   \\
-x_3
-\end{bmatrix} \ \ \ \ , \ \ \ \
-%\begin{bmatrix}
-%\eta_1   \\
-%\eta_2   \\
-%\eta_3   \\
-%\xi
-%\end{bmatrix} \left.\rule{0cm}{1.7cm}\right\vert\rule{0cm}{1.7cm}_{\substack{\rule{0cm}{1.28cm}\\ h=x_2 }}
-\vec{T}_2
-=
-\begin{bmatrix}
-x_1   \\
-\frac{\cos x_1}{l} x_4 - x_3   \\
-x_2   \\
-x_4
-\end{bmatrix} \ \ \ .
+  %\begin{bmatrix}
+  %\eta_1   \\
+  %\eta_2   \\
+  %\eta_3   \\
+  %\xi
+  %\end{bmatrix} \left.\rule{0cm}{1.7cm}\right\vert\rule{0cm}{1.7cm}_{\substack{\rule{0cm}{1.28cm}\\ h=x_1 }}
+  \vec{T}_1 =
+  \begin{bmatrix}
+    x_2   \\
+    \frac{\cos x_1}{l} x_4 - x_3  \\
+    x_1   \\
+    x_3
+  \end{bmatrix} \ \ \ \ , \ \ \ \
+  %\begin{bmatrix}
+  %\eta_1   \\
+  %\eta_2   \\
+  %\eta_3   \\
+  %\xi
+  %\end{bmatrix} \left.\rule{0cm}{1.7cm}\right\vert\rule{0cm}{1.7cm}_{\substack{\rule{0cm}{1.28cm}\\ h=x_2 }}
+  \vec{T}_2
+  =
+  \begin{bmatrix}
+    x_1   \\
+    \frac{\cos x_1}{l} x_4 - x_3   \\
+    x_2   \\
+    x_4
+  \end{bmatrix} \ \ \ .
 \end{align}
 %
 To choose a transform the following is considered.\\
-A continuously differentiable map, $\vec{T}$, with a continuously differentiable inverse, $\vec{T}^{-1}$, is known as a diffeomorphism. Further, $\vec{T}$ is a global diffeomorphism iff its Jacobian is nonsingular for all $\vec{x} \in \mathbb{R}^n$ and $\lim_{||\vec{x}||\rightarrow \infty}||\vec{T}(\vec{x})|| = \infty$ , \cite{HKKhalil}.\\
+It is desired for the transform, $\vec{T}$, to be continuously differentiable and have a continuously differentiable inverse, $\vec{T}^{-1}$. Such a transform is known as a diffeomorphism. Further, $\vec{T}$ is a global diffeomorphism iff its Jacobian is nonsingular for all $\vec{x} \in \mathbb{R}^n$ and $\lim_{||\vec{x}||\rightarrow \infty}||\vec{T}(\vec{x})|| = \infty$ , \cite{HKKhalil}.\\
 The Jacobian of each transform is computed,
 \begin{align}
-\vec{J}_1 = \frac{\partial \vec{T}_1(\vec{x})}{\partial \vec{x}}
-&=
-\begin{bmatrix}
-  0                       & 1 &  0 & 0                  \\
-  -\frac{\sin x_1}{l} x_4 & 0 & -1 & \frac{\cos x_1}{l} \\
-  1                       & 0 &  0 & 0                  \\
-  0                       & 0 &  1 & 0
-\end{bmatrix}  \label{eq:transform_h_x1} \\
-\vec{J}_2 = \frac{\partial \vec{T}_2(\vec{x})}{\partial \vec{x}}
-&=
-\begin{bmatrix}
-  1                       & 0 &  0 & 0                  \\
-  -\frac{\sin x_1}{l} x_4 & 0 & -1 & \frac{\cos x_1}{l} \\
-  0                       & 1 &  0 & 0                  \\
-  0                       & 0 &  0 & 1
-\end{bmatrix} \ \ \ . \label{eq:transform_h_x2}
+  \vec{J}_1 = \frac{\partial \vec{T}_1(\vec{x})}{\partial \vec{x}}
+  &=
+  \begin{bmatrix}
+    0                       & 1 &  0 & 0                  \\
+    -\frac{\sin x_1}{l} x_4 & 0 & -1 & \frac{\cos x_1}{l} \\
+    1                       & 0 &  0 & 0                  \\
+    0                       & 0 &  1 & 0
+  \end{bmatrix}  \label{eq:transform_h_x1} \\
+  \vec{J}_2 = \frac{\partial \vec{T}_2(\vec{x})}{\partial \vec{x}}
+  &=
+  \begin{bmatrix}
+    1                       & 0 &  0 & 0                  \\
+    -\frac{\sin x_1}{l} x_4 & 0 & -1 & \frac{\cos x_1}{l} \\
+    0                       & 1 &  0 & 0                  \\
+    0                       & 0 &  0 & 1
+  \end{bmatrix} \ \ \ . \label{eq:transform_h_x2}
 \end{align}
-To check for singularity the determinant is found for the two Jacobian matrices. In the case of \autoref{eq:transform_h_x1}, $\det(\vec{J}_1) = -\cos x_1/l$, so if $\cos x_1 = 0$ the Jacobian becomes singular. This only happens when the pendulum is horizontal which is outside the operating range of a stabilizing controller. However, for \autoref{eq:transform_h_x2}, $\det(\vec{J}_2) = 1$, and so, the Jacobian is nonsingular for all $\vec{x} \in \mathbb{R}^4$. Further, $\lim_{||\vec{x}||\rightarrow \infty}||\vec{T}(\vec{x})|| = \infty$ so,
+To check for singularity the determinant is found for the two Jacobian matrices,
+\begin{align}
+  \det(\vec{J}_1) &= -\frac{\cos x_1}{l} \ \ \ \ , \ \ \ \  \det(\vec{J}_2) = 1 \ \ \ . \label{eq:determinantOfJ1andJ2}
+\end{align}
+If $\cos x_1 = 0$ the Jacobian, $\vec{J}_1$, becomes singular. This only happens when the pendulum is in a horizontal position, which is outside the operating range of a stabilizing controller. However, the Jacobian, $\vec{J}_2$, is nonsingular for all $\vec{x} \in \mathbb{R}^4$. Further, $\lim_{||\vec{x}||\rightarrow \infty}||\vec{T}_2(\vec{x})|| = \infty$ so,
 \begin{align}
   \vec{T}
   = 
   \begin{bmatrix}
-  \eta_1   \\
-  \eta_2   \\
-  \eta_3   \\
-  \xi
+    \eta_1   \\
+    \eta_2   \\
+    \eta_3   \\
+    \xi
   \end{bmatrix}
   =
   \begin{bmatrix}
-  x_1   \\
-  \frac{\cos x_1}{l} x_4 - x_3  \\
-  x_2   \\
-  x_4
+    x_1   \\
+    \frac{\cos x_1}{l} x_4 - x_3  \\
+    x_2   \\
+    x_4
   \end{bmatrix} \ \ \ , \label{eq:transform}
 \end{align}
 is a global diffeomorphism and therefore chosen as the final system transform, with the inverse given by,
@@ -369,7 +380,7 @@ from which the regular form is obtained by rearranging and using the inverse tra
   }_{g_b} u  \ \ \ ,
   \label{eq:regularFormMatrix}
 \end{align}
-where,
+where,\fxnote{Is this too much?}
 \begingroup\makeatletter\def\f@size{10}\check@mathfonts
 \def\maketag@@@#1{\hbox{\m@th\normalsize\normalfont#1}}%
 \begin{align}
@@ -402,86 +413,120 @@ g_4(\vec{\eta},\xi) &= \frac{1}{M + m - m \cos^2 \eta_1 }
 %f4 = -\frac{1}{ l (M + m - m \cos^2 \eta_1) } \left[   b_{c,v} l \xi - b_{p,v} \cos \eta_1 \left(\eta_2 - \frac{\cos \eta_1 \xi}{l}\right) + b_{c,c} l \tanh\left(\mathrm{k}_{\mathrm{tanh}} \xi\right) - b_{p,c} \tanh\left(\mathrm{k}_{\mathrm{tanh}} \left(\eta_2 - \frac{ \cos \eta_1 \xi}{l}\right)\right) \cos \eta_1 + l^2 m \sin \eta_1 \left(\eta_2 - \frac{\xi \cos \eta_1}{l}\right)^2 - m g l \cos \eta_1 \sin \eta_1  \right]
 %
 %
-\fxnote{Is this too much?}
+%
+%
+The sliding manifold is chosen,
+\begin{align}
+s &=   \xi - \phi(\vec{\eta})    \ \ \ ,
+\end{align}
+where $\phi(\vec{\eta})$ is to be designed. If $s$ is zero then $\xi = \phi(\vec{\eta})$, such that,
+\begin{align}
+\vec{\dot{\eta}} &=  f_a(\vec{\eta},\phi(\vec{\eta}))     \ \ \ ,
+\label{eq:reducedOrderSys}
+\end{align}
+is the reduced-order system with $\phi(\vec{\eta})$ as control input. It is then sought to design $\phi(\vec{\eta})$ such that \autoref{eq:reducedOrderSys} is asymptotically stable at its origin.\\
+To that end, the reduced-order system is linearized,
+%
+\begin{align}
+A &= \frac{\partial \vec{\dot{\eta}}}{\partial \vec{\eta}} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
+=
+\begin{bmatrix}
+0 & -1                  & 0 \\
+0 & \frac{g_{p,c}}{l m} & g \\
+0 & 0                   & 0 
+\end{bmatrix}   \ \ \ , \ \ \
+B = \frac{\partial \vec{\dot{\eta}}}{\partial \xi} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
+=
+\begin{bmatrix}
+l  \\
+\frac{-b_{p,v}-b_{p,c}}{l m}  \\
+1  
+\end{bmatrix}   \ \ \ ,
+\label{eq:linearReducedOrder_A}
+\end{align}
+%
+and a linear state feedback controller is designed for the reduced order system,
+\begin{align}
+\phi(\vec{\eta}) &=   - \vec{k} \vec{\eta}  \ \ \ .
+\end{align}
+%
+% GRAPH OF STABILIZED REDUCED-ORDER SYSTEM!!
+%
+\fxnote{graph of stabilized reduced-order system}\\
 
+The reduced-order system is stabilized under the assumption that $s$ is zero. Thus, the design of $u$ is concerned with bringing $s$ to zero.
+\begin{theorem}[Lyapunov Stability Theorem]
+  \label{th:lyapunovStabilityTheorem}
+  Consider the autonomous system, $f(\vec{x}) = \dot{\vec{x}}$, where $f : \mathbb{D} \rightarrow \mathbb{R} ^n$ is locally Lipschitz and $\vec{x}=\vec{0}$ is an equilibrium point. Then if $\exists\ V : \mathbb{D} \rightarrow \mathbb{R}$ and \vspace{-12pt}
+  \begin{enumerate}
+    \item $V(\vec{x})$ is $C^1$
+    \item $V(\vec{x}) > 0$ $\forall\ \vec{x} \in \mathbb{D}\backslash 0$ and $V(\vec{0}) = 0$
+    \item $\dot{V}(\vec{x}) \leq 0$ in $\mathbb{D}$
+  \end{enumerate} \vspace{-12pt}
+  then $\vec{x} = \vec{0}$ is stable. Further, if,
+  \vspace{-12pt}
+  \begin{itemize}
+    \item[] $ \dot{V}(\vec{x}) < 0\ \mathrm{in}\ \mathbb{D}\backslash 0  \ \ \ ,  $
+  \end{itemize}\vspace{-12pt}
+  then $\vec{x} = \vec{0}$ is asymptotically stable \cite{HKKhalil}.
+\end{theorem}\vspace{-12pt}
 
-%\begin{align}
-%s &=   \xi - \phi(\vec{\eta}) = 0     \ \ \ ,
-%\end{align}
-%design $\phi(\vec{\eta})$
-%
-%if $s = 0$ then $\xi = \phi(\vec{\eta})$, that is, the reduced-order system,
-%\begin{align}
-%  \vec{\dot{\eta}} &=  f_a(\vec{\eta},\phi(\vec{\eta}))     \ \ \ ,
-%  \label{eq:asymStabOrigReducedOrder}
-%\end{align}
-%is asymptotically stable in the origin.
-%
-%linearization of reduced-order system,
-%%
-%\begin{align}
-%A &= \frac{\partial \vec{\dot{\eta}}}{\partial \vec{\eta}} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
-%=
-%\begin{bmatrix}
-%0 & -1                  & 0 \\
-%0 & \frac{g_{p,c}}{l m} & g \\
-%0 & 0                   & 0 
-%\end{bmatrix}   \ \ \ , \ \ \
-%B = \frac{\partial \vec{\dot{\eta}}}{\partial \xi} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
-%=
-%\begin{bmatrix}
-%l  \\
-%\frac{-b_{p,v}-b_{p,c}}{l m}  \\
-%1  
-%\end{bmatrix}   \ \ \ ,
-%\label{eq:linearReducedOrder_A}
-%\end{align}
-%
-%stabilize reduced order system by,
-%\begin{align}
-%\phi(\vec{\eta}) &=   - \vec{k} \vec{\eta}  \ \ \ ,
-%\end{align}
-%
-%design $u$ to bring $s$ to zero.\\
-%Lyapunov function candidate, $V = \frac{1}{2}s^2$,
-%derivative along trajectories of system
-%\begin{align}
-%\dot{V} &= s\dot{s} \\
-%\dot{V} &= s ( \dot{\xi} + \vec{k}\vec{\dot{\eta}}  ) \\
-%\dot{V} &= s ( f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u +\vec{k}f_a(\vec{\eta},\xi) )  \\
-%\dot{V} &= (\vec{k}f_a +  f_b) s + g_b s u \\
-%\dot{V} &= g_b s (\vec{k}f_a  +  f_b) g_b^{-1} + g_b s u   \\
-%\dot{V} &\leq g_b |s| \left|\vec{k}f_a g_b^{-1} +  f_b \right| + g_b s u  \ \ \ .
-%\label{eq:lyapunov}
-%\end{align}
-%
-%using $|s| = \text{sgn}(s) s$ and introducing tuning parameter $\beta_0$ to design $u$,
-%\begin{align}
-%u = -\text{sgn}(s)\beta (\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \mathrm{where}, \ \ \ \beta(\vec{\eta},\xi)  &= \varrho(\vec{\eta},\xi) + \beta_0 \\
-%\mathrm{and}, \ \ \  \varrho(\vec{\eta},\xi) &= \left|\vec{k}f_a  +  f_b \right| \ \ \ .
-%\label{eq:ssControlBeta0}
-%\end{align}
-%s.t.
-%\begin{align}
-%\dot{V} &\leq g_b |s| \left|\vec{k}f_a +  f_b \right|  g_b^{-1} - g_b\  \mathrm{sgn}(s) s \left|\vec{k}f_a  +  f_b + \beta_0 \right| g_b^{-1}
-%\label{eq:lyapunov2}
-%\end{align}
-%
-%
-%sign-function discontinuity\\
-%sat-function used
-%\begin{align}
-%\text{sat}\left( \tfrac{s}{\varepsilon} \right) &=
-%\begin{cases}
-%\ \ \frac{s}{\varepsilon},                           & \ \text{if} \ | \frac{s}{\varepsilon} | \leq 1 \\
-%\ \ \text{sgn}\left( \tfrac{s}{\varepsilon} \right), & \ \text{if} \ | \frac{s}{\varepsilon} |  >   1 \ \ \ ,
-%\end{cases}
-%\label{eq:satuationFunction2}
-%\end{align}
-%where $\frac{1}{\varepsilon}$ slope
-%\begin{align}
-%u &= -\text{sat}(\tfrac{s}{\varepsilon})\beta (\vec{\eta},\xi)  g_b^{-1}(\vec{\eta},\xi)  \ \ \ .
-%\label{eq:ssControlSat}
-%\end{align}
-%%
+A Lyapunov function candidate is proposed,
+\begin{align}
+  V(\vec{\eta}, \xi) &= \tfrac{1}{2}s^2 \ \ \ , \label{eq:lyapunovFunctionCandidate}
+\end{align}
+where $s = \xi - \vec{k} \vec{\eta}$ hence,
+\begin{align}
+V &= \tfrac{1}{2}(\xi - \vec{k} \vec{\eta})^2 \label{eq:lyapunovFC}\\
+V &= \tfrac{1}{2}( \xi^2 + (\vec{k} \vec{\eta})^2 ) - \xi \vec{k} \vec{\eta} \\
+V &= \tfrac{1}{2}( \xi^2 + k_1^2 \eta_1^2 + k_2^2 \eta_2^2 + k_3^2 \eta_3^2 ) + k_1 k_2 \eta_1 \eta_2 + k_1 k_3 \eta_1 \eta_3 + k_2 k_3 \eta_2 \eta_3 - \nonumber \\
+  &- \xi ( k_1 \eta_1 + k_2 \eta_2 + k_3 \eta_3 )
+\ \ \ . \label{eq:lyapunovFCExpanded}
+\end{align}
+The partial derivatives are,
+%% derivatives  for eta1 and xi   and if they are C^0  --> V is C^1
+\begin{align}
+  \frac{\partial V}{\partial \xi}    &= \xi - \vec{k}\vec{\eta}
+    \label{eq:lyapunovCandidateDiff_xi} \\
+  \frac{\partial V}{\partial \eta_1} &= k_1^2 \eta_1 + k_1 k_2 \eta_2 + k_1 k_3 \eta_3 - k_1 \xi
+    \label{eq:lyapunovCandidateDiff_eta1} 
+    \ \ \ .
+\end{align}
+The partial derivatives with respect to $\eta_2$ and $\eta_3$ yield similar results to that in \autoref{eq:lyapunovCandidateDiff_eta1}. Since all four partial derivatives are $C^0$ then $V$ is $C^1$ in the entire $\mathbb{R} ^4$, thus satisfying the first condition of the Lyapunov Stability \autoref{th:lyapunovStabilityTheorem}. Further, from \autoref{eq:lyapunovFC}, it is clear that $V$ is positive definite in the entire state space without zero and zero in the origin, thus also satisfying the second condition.\\
+To assess the third condition of \autoref{th:lyapunovStabilityTheorem}, the derivative of the Lyapunov function candidate is found along trajectories of the system,
+\begin{align}
+\dot{V} &= s\dot{s} \\
+\dot{V} &= s ( \dot{\xi} + \vec{k}\vec{\dot{\eta}}  ) \\
+\dot{V} &= s ( f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) u +\vec{k}f_a(\vec{\eta},\xi) )  \\
+\dot{V} &= (\vec{k}f_a +  f_b) s + g_b s u \\
+\dot{V} &= g_b s (\vec{k}f_a  +  f_b) g_b^{-1} + g_b s u   \\
+\dot{V} &\leq g_b |s| \left|\vec{k}f_a  +  f_b \right| g_b^{-1} + g_b s u  \ \ \ .
+\label{eq:lyapunov}
+\end{align}
+This leads to the design of $u$ which is chosen such that the third condition of \autoref{th:lyapunovStabilityTheorem} is satisfied,
+\begin{align}
+u = -\text{sgn}(s)\beta (\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \mathrm{where}, \ \ \ \beta(\vec{\eta},\xi)  &= \varrho(\vec{\eta},\xi) + \beta_0 \\
+\ \ \ \ \ \ \  \varrho(\vec{\eta},\xi) &= \left|\vec{k}f_a  +  f_b \right| \ \ \ ,
+\label{eq:ssControlBeta0}
+\end{align}
+and  $\beta_0 > 0$ is a tuning parameter allowing $\dot{V}$ to be positive definite, thereby guaranteeing asymptotic stability of the origin by \autoref{th:lyapunovStabilityTheorem},
+\begin{align}
+\dot{V} &< g_b |s| \left|\vec{k}f_a +  f_b \right|  g_b^{-1} - g_b\  \mathrm{sgn}(s) s \left|\vec{k}f_a  +  f_b + \beta_0 \right| g_b^{-1} \ \ \ .
+\label{eq:lyapunov2}
+\end{align}
+For implementation, the discontinuity introduced by the sign-function in the control law is cause for excessive switching and chattering due to delays in the real system. To circumvent this issue, a saturation function with a steep slope, $1/\varepsilon$, is used to approximate the sign-function,
+\begin{align}
+\text{sat}\left( s/\varepsilon \right) &=
+\begin{cases}
+\ \ s/\varepsilon              &  \ | s/\varepsilon | \leq 1 \\
+\ \ \text{sgn}\left( s \right) &  \ | s/\varepsilon |  >   1 \ \ \ ,
+\end{cases}
+\label{eq:satuationFunction2}
+\end{align}
+hence,
+\begin{align}
+u &= -\text{sat}(s/\varepsilon)\beta (\vec{\eta},\xi)  g_b^{-1}(\vec{\eta},\xi)  \ \ \ .
+\label{eq:ssControlSat}
+\end{align}
+
 
