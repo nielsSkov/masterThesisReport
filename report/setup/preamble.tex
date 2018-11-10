@@ -35,8 +35,9 @@
 
 % Set up how figure and table captions are displayed
 \usepackage{float}
-\usepackage{caption}
+%\usepackage{caption}
 \usepackage{subcaption}
+%\usepackage{subfig}
 \captionsetup
 {
   justification = centering,    %<--centering caption with multiple lines
@@ -46,9 +47,11 @@
 }
 \captionsetup[subfigure]
 {
-  justification = centering, %<--centering subfigure caption text
-  singlelinecheck=false,
-  font = footnotesize        %<--font size for subfigures
+  justification   = justified,  %<--centering subfigure caption text
+  singlelinecheck = false,
+  font            = scriptsize, %<--font size for subfigures
+  belowskip       = 2pt,
+  format          = hang
 } 
 
 % Enable row combination in tables
@@ -75,6 +78,7 @@
 % Defines new environments such as equation,
 % align and split 
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{relsize}
 % Adds new math symbols
 \usepackage{amssymb}

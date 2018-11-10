@@ -127,7 +127,7 @@ where,
     \end{bmatrix} \ \ \ \Rightarrow \ \ \ \ 
   \begin{cases}
     g_3 = \frac{\cos x_1}{l (M + m - m \cos^2 x1)}\\
-    g_4 = \frac{1}{M + m - m \cos^2 x_1 }
+    g_4 = \frac{1}{M + m - m \cos^2 x_1 } \ \ \ \ .
   \end{cases}
   \label{eq:g_3_and_4} 
 \end{align}
@@ -206,7 +206,7 @@ leaving $\phi_1$ and $\phi_2$ to be determined. This is done by satisfying,
 \begin{align}
   \frac{\partial \eta_1}{\partial x_3} g_3 + \frac{\partial \eta_1}{\partial x_4} g_4 &= 0       \label{eq:chooseEta1}  \\
   \frac{\partial \eta_2}{\partial x_3} g_3 + \frac{\partial \eta_2}{\partial x_4} g_4 &= 0       \label{eq:chooseEta2}  
-  \ \ \ .
+  \ \ \ ,
 \end{align}
 from \autoref{eq:chooseEta1Eta2Eta3Xi}. For $\vec{T}_1$ the choice $\phi_1 = x_2$ satisfies \autoref{eq:chooseEta1} with no loss of rank in the transform. Conversely for $\vec{T}_2$ the choice $\phi_1 = x_1$ satisfies \autoref{eq:chooseEta1} again with no loss of rank. This leaves $\phi_2$ which, for both transforms, is determined by finding a solution to \autoref{eq:chooseEta2},
 \begin{align}
@@ -252,9 +252,9 @@ This results in the following two transform candidates,
   \end{bmatrix} \ \ \ .
 \end{align}
 %
-To choose a transform the following is considered.\\
+%To choose a transform the following is considered.\\
 It is desired for the transform, $\vec{T}$, to be continuously differentiable and have a continuously differentiable inverse, $\vec{T}^{-1}$. Such a transform is known as a diffeomorphism. Further, $\vec{T}$ is a global diffeomorphism iff its Jacobian is nonsingular for all $\vec{x} \in \mathbb{R}^n$ and $\lim_{||\vec{x}||\rightarrow \infty}||\vec{T}(\vec{x})|| = \infty$ , \cite{HKKhalil}.\\
-The Jacobian of each transform is computed,
+Thus the Jacobian of each transform is computed,
 \begin{align}
   \vec{J}_1 = \frac{\partial \vec{T}_1(\vec{x})}{\partial \vec{x}}
   &=
@@ -347,7 +347,7 @@ The derivative of the transform, \autoref{eq:transform}, along the trajectories 
   \end{bmatrix} \ \ \ , \label{eq:transform_dt_alongTraj}
 \end{align}
 %
-from which the regular form is obtained by rearranging and using the inverse transform,
+from which the \textit{regular form} is obtained by rearranging and using the inverse transform,
 \begin{align}
 \begin{bmatrix}
   \dot{\eta}_1   \\
@@ -415,7 +415,7 @@ g_4(\vec{\eta},\xi) &= \frac{1}{M + m - m \cos^2 \eta_1 }
 %
 %
 %
-The sliding manifold is chosen,
+With the system on regular form, design is proceeded by choosing a sliding manifold,
 \begin{align}
 s &=   \xi - \phi(\vec{\eta})    \ \ \ ,
 \end{align}
@@ -428,48 +428,84 @@ is the reduced-order system with $\phi(\vec{\eta})$ as control input. It is then
 To that end, the reduced-order system is linearized,
 %
 \begin{align}
-A &= \frac{\partial \vec{\dot{\eta}}}{\partial \vec{\eta}} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
-=
-\begin{bmatrix}
-0 & -1                  & 0 \\
-0 & \frac{g_{p,c}}{l m} & g \\
-0 & 0                   & 0 
-\end{bmatrix}   \ \ \ , \ \ \
-B = \frac{\partial \vec{\dot{\eta}}}{\partial \xi} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
-=
-\begin{bmatrix}
-l  \\
-\frac{-b_{p,v}-b_{p,c}}{l m}  \\
-1  
-\end{bmatrix}   \ \ \ ,
-\label{eq:linearReducedOrder_A}
+  A &= \frac{\partial \vec{\dot{\eta}}}{\partial \vec{\eta}} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
+  =
+  \begin{bmatrix}
+    0           & -1                     & 0 \\
+   -\frac{g}{l} & \frac{-b_{p,v}}{l^2 m} & 0 \\
+    0           & 0                      & 0 
+  \end{bmatrix}   \ \ \ , \ \ \
+  B = \frac{\partial \vec{\dot{\eta}}}{\partial \xi} \whereThree{\vec{\eta}=\vec{0}\ \ \ \ }{\xi=0\ \ \ \ }{\text{k}_\text{tanh}=1} \ 
+  =
+  \begin{bmatrix}
+    \frac{1}{l}                       \\
+    \frac{b_{p,v} + b_{p,c} l}{l^3 m} \\
+    1 
+  \end{bmatrix}   \ \ \ .
+  \label{eq:linearReducedOrder_A}
 \end{align}
 %
-and a linear state feedback controller is designed for the reduced order system,
+Checking for controllability,
+\begin{align}
+  \mathrm{rank}(\mathcal{C}) &= \mathrm{rank}([\ \begin{matrix} B & AB & A^2 B \end{matrix}\ ]) = 3  \ \ \ ,
+\end{align}
+and since the controllability matrix, $\mathcal{C}$, has full rank, the linearized system is controllable.
+%
+A state feedback controller is designed for the linearized reduced-order system,
 \begin{align}
 \phi(\vec{\eta}) &=   - \vec{k} \vec{\eta}  \ \ \ .
 \end{align}
 %
-% GRAPH OF STABILIZED REDUCED-ORDER SYSTEM!!
+The poles are placed in $\vec{p} = [\ \ -4 \ -5 \ -6\ \ ]$ using matlab \textit{place()}-command to obtain the gains, $\vec{k} =  [\ \ 4.5824 \ -0.8341 \ -1.9766 \ \ ]$. Simulations of the controlled reduced-order system are run for both the linearized and the nonlinear system, see \autoref{fig:reducedOrderControlledSimulation}.
 %
-\fxnote{graph of stabilized reduced-order system}\\
+\begin{figure}[H]
+  \captionsetup[subfigure]
+  {
+    margin          = {12pt,5pt}  %caption margin
+  }
+  \subcaptionbox{The angle reaches zero with small oscillations in the nonlinear simulation.}[0.4\textwidth] %caption width
+  {
+    \includegraphics[width=0.4\textwidth]{figures/eta1}
+  }
+  \hspace{.5cm}
+  \subcaptionbox{Large oscillations occur in the nonlinear simulation. This parameter does not directly have a physical interpretation.}[0.4\textwidth] %caption width
+  {
+    \includegraphics[width=0.4\textwidth]{figures/eta2}
+  }
 
+  \subcaptionbox{The cart position reaches zero with small oscillations in the nonlinear simulation.}[0.4\textwidth] %caption width
+  {
+    \includegraphics[width=0.4\textwidth]{figures/eta3}
+  }
+  \hspace{.5cm}
+  \subcaptionbox{The tendency to oscillations in the nonlinear simulation also appears in the control signal for the reduced-order system.}[0.4\textwidth] %caption width
+  {
+    \includegraphics[width=0.4\textwidth]{figures/xi}
+  }
+  \caption{Nonlinear and linear simulation of the state feedback control designed for the linearized reduced-order system.}
+  \label{fig:reducedOrderControlledSimulation}
+\end{figure}
+%
+%
 The reduced-order system is stabilized under the assumption that $s$ is zero. Thus, the design of $u$ is concerned with bringing $s$ to zero.
+
+\begin{minipage}{\textwidth}
 \begin{theorem}[Lyapunov Stability Theorem]
   \label{th:lyapunovStabilityTheorem}
-  Consider the autonomous system, $f(\vec{x}) = \dot{\vec{x}}$, where $f : \mathbb{D} \rightarrow \mathbb{R} ^n$ is locally Lipschitz and $\vec{x}=\vec{0}$ is an equilibrium point. Then if $\exists\ V : \mathbb{D} \rightarrow \mathbb{R}$ and \vspace{-12pt}
+  Consider the autonomous system, $f(\vec{x}) = \dot{\vec{x}}$, where $f : \mathbb{D} \rightarrow \mathbb{R} ^n$ is locally Lipschitz and $\vec{x}=\vec{0}$ is an equilibrium point. Then if $\exists\ V : \mathbb{D} \rightarrow \mathbb{R}$ and %\vspace{-12pt}
   \begin{enumerate}
     \item $V(\vec{x})$ is $C^1$
     \item $V(\vec{x}) > 0$ $\forall\ \vec{x} \in \mathbb{D}\backslash 0$ and $V(\vec{0}) = 0$
     \item $\dot{V}(\vec{x}) \leq 0$ in $\mathbb{D}$
-  \end{enumerate} \vspace{-12pt}
+  \end{enumerate} %\vspace{-12pt}
   then $\vec{x} = \vec{0}$ is stable. Further, if,
-  \vspace{-12pt}
+  %\vspace{-12pt}
   \begin{itemize}
     \item[] $ \dot{V}(\vec{x}) < 0\ \mathrm{in}\ \mathbb{D}\backslash 0  \ \ \ ,  $
-  \end{itemize}\vspace{-12pt}
+  \end{itemize}%\vspace{-12pt}
   then $\vec{x} = \vec{0}$ is asymptotically stable \cite{HKKhalil}.
-\end{theorem}\vspace{-12pt}
+\end{theorem}%\vspace{-12pt}
+\end{minipage}
 
 A Lyapunov function candidate is proposed,
 \begin{align}
@@ -490,9 +526,9 @@ The partial derivatives are,
     \label{eq:lyapunovCandidateDiff_xi} \\
   \frac{\partial V}{\partial \eta_1} &= k_1^2 \eta_1 + k_1 k_2 \eta_2 + k_1 k_3 \eta_3 - k_1 \xi
     \label{eq:lyapunovCandidateDiff_eta1} 
-    \ \ \ .
+    \ \ \ ,
 \end{align}
-The partial derivatives with respect to $\eta_2$ and $\eta_3$ yield similar results to that in \autoref{eq:lyapunovCandidateDiff_eta1}. Since all four partial derivatives are $C^0$ then $V$ is $C^1$ in the entire $\mathbb{R} ^4$, thus satisfying the first condition of the Lyapunov Stability \autoref{th:lyapunovStabilityTheorem}. Further, from \autoref{eq:lyapunovFC}, it is clear that $V$ is positive definite in the entire state space without zero and zero in the origin, thus also satisfying the second condition.\\
+and similar results to \autoref{eq:lyapunovCandidateDiff_eta1} are obtained for the partial derivatives with respect to $\eta_2$ and $\eta_3$. Since all four partial derivatives are $C^0$ then $V$ is $C^1$ in the entire $\mathbb{R} ^4$, thus satisfying the first condition of the Lyapunov Stability \autoref{th:lyapunovStabilityTheorem}. Further, from \autoref{eq:lyapunovFC}, it is clear that $V$ is positive definite in the entire state space without zero and zero in the origin, thus also satisfying the second condition.\\
 To assess the third condition of \autoref{th:lyapunovStabilityTheorem}, the derivative of the Lyapunov function candidate is found along trajectories of the system,
 \begin{align}
 \dot{V} &= s\dot{s} \\
