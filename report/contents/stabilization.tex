@@ -349,38 +349,58 @@ The derivative of the transform, \autoref{eq:transform}, along the trajectories 
 %
 from which the \textit{regular form} is obtained by rearranging and using the inverse transform,
 \begin{align}
-\begin{bmatrix}
-  \dot{\eta}_1   \\
-  \dot{\eta}_2   \\
-  \dot{\eta}_3   \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
-  %\begin{picture} (0,0)(0,0) \multiput(-2,14)(4,0){3}{\line(2,0){2}} \end{picture}
-  \dot{\xi}
+  \begin{bmatrix}
+    \dot{\eta}_1   \\
+    \dot{\eta}_2   \\
+    \dot{\eta}_3   \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+    %\begin{picture} (0,0)(0,0) \multiput(-2,14)(4,0){3}{\line(2,0){2}} \end{picture}
+    \dot{\xi}
   \end{bmatrix} 
   &=
-  \overbrace{
-    \underbrace{
-      \begin{bmatrix}
-      \frac{\cos \eta_1}{l} \xi - \eta_2    \\
-      %\frac{l \sin x1}{\cos^2 x_1} x_3^2 +  \tfrac{l}{\cos x_1} f_1(\vec{x})  - f_2(\vec{x}) \\ 
-      \frac{-\sin \eta_1}{l} (\frac{\cos \eta_1}{l} \xi - \eta_2) \xi + \frac{\cos \eta_1}{l} f_4(\vec{\eta},\xi) - f_3(\vec{\eta},\xi) \\
-      \xi    \\ %these are dotted lines, yea, that's LaTeX for ya, go figure..
-      \begin{picture} (0,0)(0,0) \multiput(-95,14)(4,0){57}{\line(2,0){2}} \end{picture}
-      f_4(\vec{\eta},\xi) 
-      \end{bmatrix}
-    }_{f_b} }^{f_a}
+  \begin{bmatrix}
+    \multirow{3}{*}{$ \vec{f_a}(\vec{\eta},\phi(\vec{\eta})) $}\\
+    \\
+    \\
+    \begin{picture} (0,0)(0,0) \multiput(.5,14)(4,0){14}{\line(2,0){2}} \end{picture}
+     f_b(\vec{\eta},\phi(\vec{\eta}))
+  \end{bmatrix}
   +
-  \underbrace{
-    \begin{bmatrix}
+  \begin{bmatrix}
+    0 \\
+    0 \\
+    0 \\
+    \begin{picture} (0,0)(0,0) \multiput(-0,14)(4,0){14}{\line(2,0){2}} \end{picture}
+    g_b(\vec{\eta},\phi(\vec{\eta})) 
+  \end{bmatrix} \\
+%
+%
+  \begin{bmatrix}
+    \dot{\eta}_1   \\
+    \dot{\eta}_2   \\
+    \dot{\eta}_3   \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+    %\begin{picture} (0,0)(0,0) \multiput(-2,14)(4,0){3}{\line(2,0){2}} \end{picture}
+    \dot{\xi}
+  \end{bmatrix} 
+  &=
+  \begin{bmatrix}
+    \frac{\cos \eta_1}{l} \xi - \eta_2    \\
+    %\frac{l \sin x1}{\cos^2 x_1} x_3^2 +  \tfrac{l}{\cos x_1} f_1(\vec{x})  - f_2(\vec{x}) \\ 
+    \frac{-\sin \eta_1}{l} (\frac{\cos \eta_1}{l} \xi - \eta_2) \xi + \frac{\cos \eta_1}{l} f_4(\vec{\eta},\xi) - f_3(\vec{\eta},\xi) \\
+    \xi    \\ %these are dotted lines, yea, that's LaTeX for ya, go figure..
+    \begin{picture} (0,0)(0,0) \multiput(-95,14)(4,0){57}{\line(2,0){2}} \end{picture}
+    f_4(\vec{\eta},\xi) 
+  \end{bmatrix}
+  \begin{bmatrix}
     0    \\
     0    \\
     0    \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
     \begin{picture} (0,0)(0,0) \multiput(0,14)(4,0){10}{\line(2,0){2}} \end{picture}
     g_4(\vec{\eta},\xi)
-    \end{bmatrix}
-  }_{g_b} u  \ \ \ ,
+  \end{bmatrix}
+  \ \ \ ,
   \label{eq:regularFormMatrix}
 \end{align}
-where,\fxnote{Is this too much?}
+where,
 \begingroup\makeatletter\def\f@size{10}\check@mathfonts
 \def\maketag@@@#1{\hbox{\m@th\normalsize\normalfont#1}}%
 \begin{align}
@@ -456,7 +476,7 @@ A state feedback controller is designed for the linearized reduced-order system,
 \phi(\vec{\eta}) &=   - \vec{k} \vec{\eta}  \ \ \ .
 \end{align}
 %
-The poles are placed in $\vec{p} = [\ \ -4 \ -5 \ -6\ \ ]$ using matlab \textit{place()}-command to obtain the gains, $\vec{k} =  [\ \ 4.5824 \ -0.8341 \ -1.9766 \ \ ]$. Simulations of the controlled reduced-order system are run for both the linearized and the nonlinear system, see \autoref{fig:reducedOrderControlledSimulation}.
+The poles are placed in $\vec{p} = [\ \ -4 \ -6 \ -7\ \ ]$ using matlab \textit{place()}-command to obtain the gains, $\vec{k} =  [\ \ 7.3918 \ -1.3414 \ -5.5344 \ \ ]$. Simulations of the controlled reduced-order system are run for both the linearized and the nonlinear system, see \autoref{fig:reducedOrderControlledSimulation}.
 %
 \begin{figure}[H]
   \captionsetup[subfigure]
@@ -565,4 +585,103 @@ u &= -\text{sat}(s/\varepsilon)\beta (\vec{\eta},\xi)  g_b^{-1}(\vec{\eta},\xi) 
 \label{eq:ssControlSat}
 \end{align}
 
-
+A simulation of the design is shown in \autoref{fig:theta_slidingMode} and \ref{fig:x_slidingMode}, starting from an initial angle of \SI{0.1}{rad \cdot s^{-1}}. Both the angle and cart position are brought to zero. The small oscillations are thought to origin from the linear part of the design, where oscillations were observed in the simulation of the nonlinear reduced order system with linear control, see \autoref{fig:reducedOrderControlledSimulation}.
+%
+%AVAILABLE PLOTS FROM THIS SIMULATION
+%x_slidingMode
+%xDot_slidingMode
+%xDotDot_slidingMode
+%theta_slidingMode
+%thetaDot_slidingMode
+%thetaDotDot_slidingMode
+%ia_slidingMode
+%phase_slidingMode
+%Edelta_slidingMode
+%ani_slidingMode
+\begin{figure}[H]
+  \hspace{-10pt}
+  \captionbox
+  {
+    A simulation of the sliding mode design starting form an initial angle of \SI{0.1}{rad \cdot s^{-1}} at zero angular velocity. The angle is maintained around zero with small oscillation.
+    \label{fig:theta_slidingMode}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.4\textwidth]{figures/theta_slidingMode}
+  }
+  \hspace{20pt}
+  \captionbox 
+  {
+    The cart position successfully returns to zero with small oscillations after the pendulum angle is brought to zero.
+    \label{fig:x_slidingMode}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.4\textwidth]{figures/x_slidingMode}
+  }  
+\end{figure}
+%
+To achieve this behavior from relatively wide catch angle, a large peak occurs in the armature current, see \autoref{fig:ia_slidingMode}. However, with the short duration of the peak, this is not considered a problem. If it is desired to bring down the peak current, the sliding mode controller could simply be activated at a narrower angle.
+%
+\begin{figure}[H]
+  \includegraphics[width=.42\textwidth]{figures/ia_slidingMode}
+  \caption{The control signal from the simulation in \autoref{fig:theta_slidingMode} and \ref{fig:x_slidingMode}. The peak current is rather large, which is to be expected given the relatively wide initial angle. It is not considered to be a problem, since the large current is only maintained for a short duration.}
+  \label{fig:ia_slidingMode}
+\end{figure}
+%
+Finally the swing-up controller and the sliding mode controller are simulated in concert, where the sliding mode controller is activated at a catch angle of \SI{0.1}{rad \cdot s^{-1}}. The result is seen in \autopageref{fig:theta_swingAndCatch} and \autoref{fig:x_swingAndCatch}, where the swing-up controller brings the angle below the catch angle in seven swings, after which the system is stabilized in zero by the sliding mode controller.
+%
+%AVAILABLE PLOTS FROM THIS SIMULATION
+%x_swingAndCatch
+%xDot_swingAndCatch
+%xDotDot_swingAndCatch
+%theta_swingAndCatch
+%thetaDot_swingAndCatch
+%thetaDotDot_swingAndCatch
+%ia_swingAndCatch
+%phase_swingAndCatch
+%Edelta_swingAndCatch
+%ani_swingAndCatch
+\begin{figure}[H]
+  \hspace{-10pt}
+  \captionbox
+  {
+    Simulation of the swing-up controller using sliding mode to catch the pendulum when the angle reaches below \SI{0.1}{rad \cdot s^{-1}}.
+    \label{fig:theta_swingAndCatch}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.4\textwidth]{figures/theta_swingAndCatch}
+  }
+  \hspace{20pt}
+  \captionbox 
+  {
+    The cart position successfully returns to zero after the pendulum angle is stabilized at zero.
+    \label{fig:x_swingAndCatch}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.4\textwidth]{figures/x_swingAndCatch}
+  }  
+\end{figure}
+%
+The needed actuation signal is seen in \autoref{fig:ia_swingAndCatch} and though some peaks occur, the RMS stays below the rated continuous current limit of the motor. The peak at \SI{5}{s} is narrow compared to that in \autoref{fig:ia_slidingMode} since the swing-up controller provides some entry velocity at the catch angle.
+%
+\begin{figure}[H]
+  \includegraphics[width=.42\textwidth]{figures/ia_swingAndCatch}
+  \caption{Control signal from the simulation in \autoref{fig:theta_swingAndCatch} and \ref{fig:x_swingAndCatch}. Again large peaks occur in the armature current, however, only for short durations and with the RMS keeping below the rated continuous current limit.}
+  \label{fig:ia_swingAndCatch}
+\end{figure}
+%
+The system was first transformed into \textit{regular form} after which the reduced order system was stabilized using linearization and linear state feedback. Some small oscillations were observed in the nonlinear simulation of the controlled reduced order system. The sliding mode design was proceeded from there based on Lyapunov stability criteria, and the final control law was simulated stabilizing the system also in concert with the swing-up controller.\\
+This concludes the stabilization design and carries into the final chapter of \textit{Part 1} where considerations in implementation are presented along with the final test results from the cart pendulum system setup.
+%x
+%xDot
+%xDotDot
+%theta
+%thetaDot
+%thetaDotDot
+%ia
+%phase
+%Edelta
+%ani
