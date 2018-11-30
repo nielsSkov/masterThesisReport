@@ -1,125 +1,204 @@
-\chapter{Implementation and Results}
+\chapter{Results}
+\fxnote{Write results chapter}
 
-% ---GRAPHS TO PRODUCE---
+%ADDITIONAL PLOTS AVAILABLE
 %
-% >SIMULATION<
-% slidingMode_theta
-% slidingMode_x
-% slidingMode_u
+%thetaDot_swing_p00
+%xDot_swing_p00
+%thetaDotBiasZoom_swing_p00
 %
-% swingAndCatch_theta
-% swingAndCatch_x
-% swingAndCatch_u
-%
-% >TEST<
-% slidingMode_test_theta
-% slidingMode_test_x
-% slidingMode_test_u
-%
-% swingUp_test_theta
-% swingUp_test_x
-% swingUp_test_Edelta
-% swingUp_test_u
-%
-% swingAndCatch_test_theta
-% swingAndCatch_test_x
-% swingAndCatch_test_u
-
-\fxnote{Write about FIR filter for swing-up}
-
 \begin{figure}[H]
-  \hspace{-10pt}
-  \captionbox
-  {
-    Test of sliding mode controller starting at zero. The controller is subjected to a disturbance after which it rebalances successfully bringing the angle back to zero.
-    \label{fig:slidingMode_test_theta}
-  }
-  {
-    \hspace{-1cm}
-    \includegraphics[width=.4\textwidth]{figures/x_4_conX}
-  }
-  \hspace{20pt}
-  \captionbox 
-  {
-    The cart returns to zero once the pendulum is rebalanced.
-    \label{fig:slidingMode_test_x}
-  }
-  {
-    \hspace{-1cm}
-    \includegraphics[width=.4\textwidth]{figures/xDot_4_conX}
-  }  
-\end{figure}
-
-\begin{figure}[H]
-  \includegraphics[width=.42\textwidth]{figures/ia_4_conX}
-  \caption{ u  }
-  \label{fig:slidingMode_test_u}
-\end{figure}
-
-\begin{figure}[H]
-  \hspace{-10pt}
+  \hspace{1cm}
   \captionbox
   {
     The swing-up controller approaches the equilibrium and eventually reaches the heteroclinic orbit.
-    \label{fig:swingUp_test_theta}
+    \label{fig:theta_swing_p00}
   }
   {
     \hspace{-1cm}
-    \includegraphics[width=.4\textwidth]{figures/x_4_conX}
+    \includegraphics[width=.39\textwidth]{figures/theta_swing_p00}
   }
   \hspace{20pt}
   \captionbox 
   {
     Once the energy reference is tracked, the cart maintains a closer proximity to zero on the rail.
-    \label{fig:swingUp_test_x}
+    \label{fig:x_swing_p00}
   }
   {
     \hspace{-1cm}
-    \includegraphics[width=.4\textwidth]{figures/xDot_4_conX}
+    \includegraphics[width=.4\textwidth]{figures/x_swing_p00}
   }  
 \end{figure}
 
 \begin{figure}[H]
-  \includegraphics[width=.42\textwidth]{figures/ia_4_conX}
-  \caption{From the test in \autoref{fig:swingUp_test_theta} and \ref{fig:swingUp_test_x} energy reference is reached.}
-  \label{fig:swingUp_test_Edelta}
-\end{figure}
-
-\begin{figure}[H]
-  \includegraphics[width=.42\textwidth]{figures/ia_4_conX}
-  \caption{ u  }
-  \label{fig:swingUp_test_u}
-\end{figure}
-
-Though the swing-up controller reaches the heteroclinic orbit, it takes some time to get there. It is possible to approach the equilibrium faster by adding some energy to the energy reference. This will mean that the swing-up controller would eventually cause some entry velocity at equilibrium and overshoot. However, since the catch controller is enabled close to equilibrium, this adjustment causes catch after fewer swings. Further, the sliding mode controller is helped by some entry velocity at the maximum catch angle.\fxnote{note the adjustment, Edelta eq Edelta plu addedE}
-
-\begin{figure}[H]
-  \hspace{-10pt}
+  \hspace{1cm}
   \captionbox
   {
-    Test of the final design of swing-up with the higher energy reference and sliding mode controller successfully catching the pendulum after 7 swings.
-    \label{fig:swingAndCatch_test_theta}
+    From the test in \autoref{fig:theta_swing_p00} and \ref{fig:x_swing_p00} energy reference is reached.
+    \label{fig:Edelta_swing_p00}
   }
   {
     \hspace{-1cm}
-    \includegraphics[width=.4\textwidth]{figures/x_4_conX}
+    \includegraphics[width=.4\textwidth]{figures/Edelta_swing_p00}
+  }
+  \hspace{20pt}
+  \captionbox 
+  {
+    phase swing p00
+    \label{fig:phase_swing_p00}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.364\textwidth]{figures/phase_swing_p00}
+  }  
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=.42\textwidth]{figures/ia_swing_p00}
+  \caption{ ia swing p00 }
+  \label{fig:ia_swing_p00}
+\end{figure}
+
+%ADDITIONAL PLOTS AVAILABLE
+%
+%thetaDot_swing_p08
+%xDot_swing_p08
+%thetaDotBiasZoom_swing_p08
+%
+\begin{figure}[H]
+  \hspace{1cm}
+  \captionbox
+  {
+    The swing-up controller approaches the equilibrium and eventually reaches the heteroclinic orbit.
+    \label{fig:theta_swing_p08}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.395\textwidth]{figures/theta_swing_p08}
+  }
+  \hspace{20pt}
+  \captionbox 
+  {
+    Once the energy reference is tracked, the cart maintains a closer proximity to zero on the rail.
+    \label{fig:x_swing_p08}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.4\textwidth]{figures/x_swing_p08}
+  }  
+\end{figure}
+
+\begin{figure}[H]
+  \hspace{1cm}
+  \captionbox
+  {
+    From the test in \autoref{fig:theta_swing_p08} and \ref{fig:x_swing_p08} energy reference is reached.
+    \label{fig:Edelta_swing_p08}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.4\textwidth]{figures/Edelta_swing_p08}
+  }
+  \hspace{20pt}
+  \captionbox 
+  {
+    phase swing p00
+    \label{fig:phase_swing_p08}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.364\textwidth]{figures/phase_swing_p08}
+  }  
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=.42\textwidth]{figures/ia_swing_p08}
+  \caption{ ia swing p08 }
+  \label{fig:ia_swing_p08}
+\end{figure}
+
+
+
+
+Though the swing-up controller reaches the heteroclinic orbit, it takes some time to get there. It is possible to approach the equilibrium faster by adding some energy to the energy reference. This will mean that the swing-up controller would eventually cause some entry velocity at equilibrium and overshoot. However, since the catch controller is enabled close to equilibrium, this adjustment causes catch after fewer swings. Further, the sliding mode controller is helped by some entry velocity at the maximum catch angle.\fxnote{note the adjustment, Edelta eq Edelta plu addedE}
+
+
+
+%ADDITIONAL PLOTS AVAILABLE
+%
+%thetaDot_slide
+%xDot_slide
+%thetaDotBiasZoom_slide
+\begin{figure}[H]
+  \hspace{1cm}
+  \captionbox
+  {
+    Test of sliding mode controller starting at zero. The controller is subjected to a disturbance after which it rebalances successfully bringing the angle back to zero.
+    \label{fig:theta_slide}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.4\textwidth]{figures/theta_slide}
+  }
+  \hspace{20pt}
+  \captionbox 
+  {
+    The cart returns to zero once the pendulum is rebalanced.
+    \label{fig:x_slide}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.4\textwidth]{figures/x_slide}
+  }  
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=.42\textwidth]{figures/ia_slide}
+  \caption{ ia slide  }
+  \label{fig:ia_slide}
+\end{figure}
+
+
+\begin{figure}[H]
+  \includegraphics[width=.7\textwidth]{figures/states_slideEKFproblem}
+  \caption{ states slideEKFproblem  }
+  \label{fig:states_slideEKFproblem}
+\end{figure}
+
+
+%ADDITIONAL PLOTS AVAILABLE
+%
+%thetaDot_swingNslide
+%xDot_swingNslide
+%phase_swingNslide
+%Edelta_swingNslide
+\begin{figure}[H]
+  \hspace{1cm}
+  \captionbox
+  {
+    Test of the final design of swing-up with the higher energy reference and sliding mode controller successfully catching the pendulum after 7 swings.
+    \label{fig:theta_swingNslide}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.384\textwidth]{figures/theta_swingNslide}
   }
   \hspace{20pt}
   \captionbox 
   {
     The cart keeps around zero on the rail, especially after the pendulum angle is controlled to zero.
-    \label{fig:swingAndCatch_test_x}
+    \label{fig:x_swingNslide}
   }
   {
     \hspace{-1cm}
-    \includegraphics[width=.4\textwidth]{figures/xDot_4_conX}
+    \includegraphics[width=.4\textwidth]{figures/x_swingNslide}
   }  
 \end{figure}
 
 \begin{figure}[H]
-  \includegraphics[width=.42\textwidth]{figures/ia_4_conX}
-  \caption{ u  }
-  \label{fig:swingAndCatch_test_u}
+  \includegraphics[width=.42\textwidth]{figures/ia_swingNslide}
+  \caption{ ia swingNslide }
+  \label{fig:ia_swingNslide}
 \end{figure}
 
 In the implementation, the angle is wrapped around using modulo such that zero is always found at the upright position. This means catch can happen from either side of the swing and even after overshoot. Wrapping the angle in this way causes a discontinuity at $\pm \pi$ at the stable equilibrium. This however does not cause a problem for the swing up sequence, but both the wrapped angle and the continuous are kept accessible, allowing the Kalman filter\fxnote{Kalman} to use the continuous version.
