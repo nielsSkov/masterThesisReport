@@ -8,10 +8,40 @@
 \subsection{Cart Friction and Mass}
 \fxnote{Write about cart and mass friction}
 
+\begin{figure}[H]
+  \hspace{1cm}
+  \captionbox
+  {
+    cartColoumb
+    \label{fig:cartColoumb}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.45\textwidth]{figures/cartColoumb}
+  }
+  \hspace{20pt}
+  \captionbox 
+  {
+    cartErrn
+    \label{fig:cartErrn}
+  }
+  {
+    \hspace{-1cm}
+    \includegraphics[width=.45\textwidth]{figures/cartErrn}
+  }  
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=.42\textwidth]{figures/cartColoumbSmoothDownSample}
+  \caption{cartColoumbSmoothDownSample}
+  \label{fig:cartColoumbSmoothDownSample}
+\end{figure}
+
+
 \subsection{Pendulum Friction}
 \fxnote{Write about pendulum friction}
 
-
+$m l ^2 \ddot{\theta} = m g l  \sin \theta - b_{p,v} \dot{\theta} - \tanh(k_{tanh} \dot{\theta}) b_{p,c} $
 
 \section{MA Filter Design}
 The measurements in the system are the position, $x$, of the cart and the angle, $\theta$, of the pendulum. Thus, the last two states, $\dot{x}$ and $\dot{\theta}$, must be estimated for the implementation. To that end, a numerical differentiation is applied to the position measurements in order to obtain the velocities,
