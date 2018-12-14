@@ -43,6 +43,20 @@
 
 $m l ^2 \ddot{\theta} = m g l  \sin \theta - b_{p,v} \dot{\theta} - \tanh(k_{tanh} \dot{\theta}) b_{p,c} $
 
+\begin{figure}[H]
+  \includegraphics[width=.7\textwidth]{figures/pendulum1Est}
+  \caption{pendulum1Est}
+  \label{fig:pendulum1Est}
+\end{figure}
+
+$ b_{p,c} = 0.0041 $ \\
+$ b_{p,v} = 0.0005 $
+
+added \SI{2.25}{g} to measured weight and subtracted \SI{0.66}{cm} from measured length
+
+$ m = 0.2235 $ \\
+$ l = 0.3169 $
+
 \section{MA Filter Design}
 The measurements in the system are the position, $x$, of the cart and the angle, $\theta$, of the pendulum. Thus, the last two states, $\dot{x}$ and $\dot{\theta}$, must be estimated for the implementation. To that end, a numerical differentiation is applied to the position measurements in order to obtain the velocities,
 \begin{align}
