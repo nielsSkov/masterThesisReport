@@ -1,16 +1,18 @@
 \chapter{Implementation}
-To implement the control designs discussed in \textit{Part 1} it is necessary to estimate some parameters, compensate for any friction between the cart and the rail and filter the measurements obtained from the system. Such considerations, estimations and designs are discussed in this section.
+To implement the control designs discussed here in \textit{Part 1} it is necessary to estimate some parameters, compensate for any friction between the cart and the rail and filter the measurements obtained from the system. Such considerations, estimations and designs are discussed in this section.
 
 \section{Cart Friction and Mass Estimation}
-The control designs are carried out under the assumption that there is no friction between the cart and the rail. It turns out that this friction is rather complex and also depend on position and direction of the cart in addition to its velocity, this issue was also found by previous project groups \cite{JHHorgensen}. To accommodate the no cart friction assumption, a feed forward friction compensator is designed. The idea is to simply counter the predicted friction at any given time directly in the control signal.\\
-Since the friction depends on the cart position, the estimation must be done locally for each position on the rail. To do so, the pendulum masses are removed, the rods strapped to the cart to limit dynamics and the cart is made to oscillate around each centimeter of the rail. Each test is sustained for \SI{20}{s} and repeated for each centimeter resulting in a total of 68 tests avoiding impact at the ends of the rail. Each test spans on average \SI{2.68}{cm} creating some overlap between tests. The reduced dynamics used for the estimation are given by,
+The control designs are carried out under the assumption that there is no friction between the cart and the rail. It turns out that this friction is rather complex and also depend on position and direction of the cart in addition to its velocity, this issue was also found by previous project groups \cite{JHHorgensen}.\\
+To accommodate the no cart friction assumption, a feed forward friction compensator is designed. The idea is to simply counter the predicted friction at any given time directly in the control signal.
+
+Since the friction depends on the cart position, the estimation must be done locally for each position on the rail. To do so, the pendulum masses are removed, the rods strapped to the cart to limit dynamics and the cart is made to oscillate around each centimeter of the rail. Each test is sustained for \SI{20}{s} and repeated for each centimeter, resulting in a total of 68 tests. This is the largest possible range for the test while avoiding impact at the ends of the rail. Each test spans on average \SI{2.68}{cm} creating some overlap between tests. The reduced dynamics used for the estimation are given by,
 \begin{align}
   ( M + m )\ddot{x} &=  u - b_{c,v} \dot{x} - \tanh(\text{k}_\text{tanh}\dot{x}) b_{c,c} \ \ \ .
   \label{eq:reducedForCartEstimation}
 \end{align}
 %
-SenseTool\fxnote{source} is used to estimate the model parameters. Since the mass is also unknown it is also included for estimation. The mass is estimated to be \SI{6.28}{kg}. With more parameters more manual tuning is required in order to start close enough for optimization algorithm to converge. To reduce the number of parameters as much as possible, once estimated, the mass is fixed as part of the model. The remaining three parameters are viscous friction and coulomb friction for negative and positive velocities. After some trail and error it is concluded that the viscous friction is negligible compared to the coulomb frictions finally leaving only two parameters.\\
-To make the estimations converge without too much manual tuning only part of each test is fitted, see \autoref{fig:manyEst}. Every time the test window is moved, the next estimate is started with the results of the previous estimate as its initial values.
+The optimization fitting tool, Senstools, \cite{MHKnudsen}, is used to estimate the model parameters. Since the mass is unknown it is also included for estimation. The mass is estimated to be \SI{6.28}{kg}. With more parameters more manual tuning is required in order to start close enough for optimization algorithm to converge. To reduce the number of parameters as much as possible, once estimated, the mass is fixed as part of the model. The remaining three parameters are viscous friction and coulomb friction for negative and positive velocities. After some trail and error it is concluded that the viscous friction is negligible compared to the coulomb frictions finally leaving only two parameters.\\
+To make the estimations converge without too much manual tuning only part of each test is fitted, see \autoref{fig:manyEst}. The time window is moved, and the estimation is run again. The window is moved \num{34} times resulting in $34\cdot68 = 2312$ estimations in total. Every time the test window is moved, the next estimate is started with the results of the previous estimate as its initial values.
 %
 \begin{figure}[H]
   \includegraphics[width=.6\textwidth]{figures/manyEst_tear}
@@ -43,7 +45,7 @@ To include as much data as possible, the estimate is repeated across the data fo
   }  
 \end{figure}
 %
-The estimations are worse near the left of the rail, see \autoref{fig:cartErrn}. The cause for this is not known, however it is considered less important as the compensation is more critical near the middle of the rail where the pendulum is being balanced.
+The estimations are worse near the left of the rail, see \autoref{fig:cartErrn}. The cause for this is not known, however it is considered less important as the compensation is more critical near the middle of the rail where the pendulum is balanced.
 
 The result in \autoref{fig:cartColoumb} contains some undesired discontinuities. To solve this problem the resulting mean curves are up-sampled by linear interpolation, smoothed and finally down-sampled to obtain the smoothed result in \autoref{fig:cartColoumbSmoothDownSample}.
 \begin{figure}[H]
@@ -54,7 +56,7 @@ The result in \autoref{fig:cartColoumb} contains some undesired discontinuities.
 The result is implemented as lookup tables along with a linear interpolation function to avoid discontinuities between table entries. This determines the cart Coulomb friction based on velocity, direction and position, which is then added to the control signal to counter the friction therm in the dynamics.
 
 \section{Pendulum Friction}
-With the cart mass estimated and its friction handled by friction compensation, the remaining estimate is pendulum friction. Again SensTool is used along with a reduced model of the pendulum,
+With the cart mass estimated and its friction handled by friction compensation, the remaining estimate is pendulum friction. Again Senstools is used along with a reduced model of the pendulum,
 %
 \begin{align}
   m l ^2 \ddot{\theta} &= m g l  \sin \theta - b_{p,v} \dot{\theta} - \tanh(k_{tanh} \dot{\theta}) b_{p,c} \ \ \ .

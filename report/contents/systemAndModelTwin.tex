@@ -143,11 +143,12 @@ The final dynamic equations for the twin pendulum system are then,
 \label{eq:theta1Dynamics1} \\
 - m_2 l_2 \cos \theta_2 \ddot{x} + m_2 l_2^2 \ddot{\theta}_2 - m_2 g l_2 \sin \theta_2 = Q_2
 \label{eq:theta2Dynamics1} \\
-(M + m_1 + m_2) \ddot{x} + m_1 l_1 \sin \theta_1 \dot{\theta}_1^2 - m_1 l_1 \cos \theta_1 \ddot{\theta}_1 + m_2 l_2 \sin \theta_2 \dot{\theta}_2^2 - m_2 l_2 \cos \theta_2 \ddot{\theta}_2 = Q_3  \ \ \ , 
+(M + m_1 + m_2) \ddot{x} + m_1 l_1 \sin \theta_1 \dot{\theta}_1^2 - m_1 l_1 \cos \theta_1 \ddot{\theta}_1 + m_2 l_2 \sin \theta_2 \dot{\theta}_2^2 - m_2 l_2 \cos \theta_2 \ddot{\theta}_2 = Q_3  \ \ \ . 
 \label{eq:xDynamics1} \\ \nonumber
 \end{gather}\endgroup \vspace{-44pt}
 
-\fxnote{compare dynamic equations to single pendulum equations.} and arranged in following manner,
+If one of the angles are fixed in these equations, that is, $\theta_1$ or $\theta_2$ and its derivatives are set to zero, then the system reduces to the cart pendulum system from \textit{Part 1} with added mass from the extra pendulum. This added mass appears in the equations as an increase in cart mass, which makes sense as the pendulum is fixed to the cart in this scenario.\\
+As for the cart pendulum system from \textit{Part 1}, by arranging the dynamic equations,
 %
 \begingroup\makeatletter\def\f@size{10}\check@mathfonts
 \def\maketag@@@#1{\hbox{\m@th\normalsize\normalfont#1}}%
