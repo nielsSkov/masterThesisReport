@@ -2,7 +2,55 @@
 The cart pendulum system from \textit{Part 1} is used again. However, here in \textit{Part 2} an additional pendulum is mounted on the cart. The modification is discussed and a model for the changed system is developed in this chapter. The remaining of \textit{Part 2} is concerned with estimating parameters, developing a state estimator and ultimately stabilizing the two pendulums in upright position.
 
 \section{System Addition}
+\fxnote{picture of twin pendulum}
 
+\begin{figure}[H]
+  \includegraphics[width=.7\textwidth]{figures/pendulum2Est}
+  \caption{The fit resulting in the estimations of the new second pendulum friction.}
+  \label{fig:pendulum2Est}
+\end{figure}
+
+Same as for the first pendulum, estimated in \textit{Part 1}, the mass is increased to obtain a good fit. In this case the pendulum mass is increased by \SI{13.2}{g}, less than for the first pendulum, which makes sense since the added pendulum is shorter thus adding less mass to the system. For the first pendulum the length was decreased by \SI{0.66}{cm}, while for the new pendulum the measured length is used. Though the mass center should move towards the rod, it being shorter and with more mass at the end than the first pendulum, it makes sense that the mass center is moved so little for the new pendulum that the effect becomes negligible.
+
+\begin{table}[H]
+  \begin{tabular}{|l|l|l|l|}
+    \hline %-------------------------------------------------------------------------------------------
+    \textbf{Parameter}          & \textbf{Notation} & \textbf{Quantity} & \textbf{Unit}              \\
+    \hline %-------------------------------------------------------------------------------------------
+    Nominal current
+    (max. continuous current)   & $I_{\mathrm{N}}$  & \SI{4.58}         &  \si{A}                    \\
+    \hline %-------------------------------------------------------------------------------------------
+    Torque constant             & $\tau_m$          & \SI{93.4e-3}      &  \si{N\cdot m\cdot A^{-1}} \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pendulum 1 Rod Length       & $l1$              & \num{0.3169}      &  \si{m}                    \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pendulum 2 Rod Length       & $l2$              & \num{0.2000}      &  \si{m}                    \\
+    \hline %-------------------------------------------------------------------------------------------
+    Rail Length                 & $l_r$             & \num{0.89}        &  \si{m}                    \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pulley Radius               & $r$               & \num{0.028}       &  \si{m}                    \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pendulum 1 Mass             & $m1$              & \num{0.2235}      &  \si{kg}                   \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pendulum 2 Mass             & $m2$              & \num{0.2642}      &  \si{kg}                   \\
+    \hline %-------------------------------------------------------------------------------------------
+    Cart Mass                   & $M$               & \num{6.28}        &  \si{kg}                   \\
+    \hline %-------------------------------------------------------------------------------------------
+    Cart Coulomb Friction       & $b_{c,c}$         & $f(x,\dot{x})$    &  \si{N}                    \\
+    \hline %-------------------------------------------------------------------------------------------
+    Cart Viscous Friction       & $b_{c,v}$         & \num{0}           &  \si{N\cdot m^{-1}\ s}     \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pendulum 1 Coulomb Friction & $b_{p1,c}$        & \SI{4.1e-3}       &  \si{N\cdot m}             \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pendulum 1 Viscous Friction & $b_{p1,v}$        & \SI{0.5e-3}       &  \si{N\cdot m\cdot s}      \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pendulum 2 Coulomb Friction & $b_{p2,c}$        & \SI{5.7e-3}       &  \si{N\cdot m}             \\
+    \hline %-------------------------------------------------------------------------------------------
+    Pendulum 2 Viscous Friction & $b_{p2,v}$        & \SI{0.1e-3}       &  \si{N\cdot m\cdot s}      \\
+    \hline %-------------------------------------------------------------------------------------------
+  \end{tabular}
+  \caption{Table of all system parameters including the estimated parameters for the added second pendulum and with some updated notation for the augmented system.\label{table:systemParametersTwin} }
+\end{table}
 
 \section{Model}
 To model the twin pendulum system, consider the excessive coordinate convention in \autoref{fig:excessiveCoordinatesTwin} along with the generalized coordinates in the mechanical drawing, \autoref{fig:mechanicalDrawingTwin}.

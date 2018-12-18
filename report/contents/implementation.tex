@@ -67,11 +67,11 @@ This model assumes there is no cart, so for the test, the cart is fixed to the r
 %
 \begin{figure}[H]
   \includegraphics[width=.7\textwidth]{figures/pendulum1Est}
-  \caption{pendulum1Est}
+  \caption{The fit resulting in the estimations of the pendulum friction.}
   \label{fig:pendulum1Est}
 \end{figure}
 %
-To obtain a good fit, \SI{2.25}{g} is added to the measured mass and \SI{0.66}{cm} is subtracted from the measured length of the rod. This is presumed to be reasonable, since the rod is otherwise assumed to be massless which is not the case. The error in the assumption would move the mass center closer to the pivot point, thus reducing the effective length of the rod and adding some mass to the weight, corresponding to the adjustments. The pendulum Coulomb friction, $b_{p,c}$, is estimated to \SI{4.1e-3}{N\cdot m} and the viscous friction, $b_{p,v}$, to \SI{0.5e-3}{N\cdot m\cdot s}.
+To obtain a good fit, \SI{22.5}{g} is added to the measured mass and \SI{0.66}{cm} is subtracted from the measured length of the rod. This is presumed to be reasonable, since the rod is otherwise assumed to be massless which is not the case. The error in the assumption would move the mass center closer to the pivot point, thus reducing the effective length of the rod and adding some mass to the weight, corresponding to the adjustments. The pendulum Coulomb friction, $b_{p,c}$, is estimated to \SI{4.1e-3}{N\cdot m} and the viscous friction, $b_{p,v}$, to \SI{0.5e-3}{N\cdot m\cdot s}.
 
 \section{MA Filter Design}
 The measurements in the system are the position, $x$, of the cart and the angle, $\theta$, of the pendulum. Thus, the last two states, $\dot{x}$ and $\dot{\theta}$, must be estimated for the implementation. To that end, a numerical differentiation is applied to the position measurements in order to obtain the velocities,
