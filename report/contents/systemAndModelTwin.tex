@@ -49,7 +49,7 @@ Same as for the first pendulum, estimated in \textit{Part 1}, the mass is increa
     Pendulum 2 Viscous Friction & $b_{p2,v}$        & \SI{0.1e-3}       &  \si{N\cdot m\cdot s}      \\
     \hline %-------------------------------------------------------------------------------------------
   \end{tabular}
-  \caption{Table of all system parameters including the estimated parameters for the added second pendulum and with some updated notation for the augmented system.\label{table:systemParametersTwin} }
+  \caption{Table of all system parameters including the estimated parameters for the added second pendulum. Notice the updated notation where \textit{pendulum 1} is the pendulum also used in \textit{Part 1} and \textit{pendulum 2} is the newly attached pendulum.\label{table:systemParametersTwin} }
 \end{table}
 
 \section{Model}
@@ -105,12 +105,12 @@ The excessive coordinates and derivatives thereof are then expressed in therms o
   \end{cases} &
   \hspace{20pt}
   \begin{cases}
-    \dot{x}_{p_1} =  \dot{x} - l_1 \sin \theta_1 \\
+    \dot{x}_{p_1} =  \dot{x} - l_1 \cos \theta_1 \dot{\theta}_1 \\
     \dot{y}_{p_1} =  -l_1 \sin \theta_1 \dot{\theta}_1
   \end{cases}
   \hspace{10pt}
   \begin{cases}
-    \dot{x}_{p_2} = \dot{x} - l_2 \sin \theta_2 \\
+    \dot{x}_{p_2} = \dot{x} - l_2 \cos \theta_2 \dot{\theta}_2 \\
     \dot{y}_{p_2} = -l_2 \sin \theta_2 \dot{\theta}_2
   \end{cases}  \ \ \ .
   \label{eq:excessiveToGeneralizedDerivatives}
@@ -120,8 +120,8 @@ Inserting \autoref{eq:excessiveToGeneralized} and \ref{eq:excessiveToGeneralized
 %
 \begin{align}
   U &= M g l_1 + m_1 g (l_1 + l_1 \cos \theta_1) + m_2 g (l_1 + l_2 \cos \theta_2)  \label{eq:potentialEnergyTwinGeneralized}  \\
-  T &= \tfrac{1}{2} M \dot{x}^2 + \tfrac{1}{2} m_1 (\dot{x} - l_1 \sin \theta_1)^2  + \tfrac{1}{2} m_1 (-l_1 \sin \theta_1 \dot{\theta}_1)^2 + \nonumber \\
-    &+ \tfrac{1}{2} m_2 (\dot{x} - l_2 \sin \theta_2)^2 + \tfrac{1}{2} m_2 (-l_2 \sin \theta_2 \dot{\theta}_2)^2 \label{eq:kineticEnergyTwinGeneralized} \ \ \ .
+  T &= \tfrac{1}{2} M \dot{x}^2 + \tfrac{1}{2} m_1 (\dot{x} - l_1 \cos \theta_1 \dot{\theta}_1)^2  + \tfrac{1}{2} m_1 (-l_1 \sin \theta_1 \dot{\theta}_1)^2 + \nonumber \\
+    &+ \tfrac{1}{2} m_2 (\dot{x} - l_2 \cos \theta_2 \dot{\theta}_2)^2 + \tfrac{1}{2} m_2 (-l_2 \sin \theta_2 \dot{\theta}_2)^2 \label{eq:kineticEnergyTwinGeneralized} \ \ \ .
 \end{align}
 %
 Proceeding to compute the Lagrangian,
