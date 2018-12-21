@@ -1,5 +1,5 @@
 \chapter{System and Model}
-The cart pendulum system from \textit{Part 1} is used again. However, here in \textit{Part 2} an additional pendulum is mounted on the cart. The modification is discussed and a model for the changed system is developed in this chapter. The remaining of \textit{Part 2} is concerned with estimating parameters, developing a state estimator and ultimately stabilizing the two pendulums in upright position.
+The cart pendulum system from \textit{Part 1} is used again. However, here in \textit{Part 2} an additional pendulum is mounted on the cart. The modification is discussed and a model for the changed system is developed in this chapter. The remaining of \textit{Part 2} is concerned with estimating parameters, developing a state estimator, designing a swing-up controller and ultimately stabilizing the two pendulums in upright position.
 
 \section{System Addition}
 \fxnote{picture of twin pendulum}
@@ -108,11 +108,11 @@ The excessive coordinates and derivatives thereof are then expressed in therms o
     \dot{x}_{p_1} =  \dot{x} - l_1 \cos \theta_1 \dot{\theta}_1 \\
     \dot{y}_{p_1} =  -l_1 \sin \theta_1 \dot{\theta}_1
   \end{cases}
-  \hspace{10pt}
+  %\hspace{10pt}
   \begin{cases}
     \dot{x}_{p_2} = \dot{x} - l_2 \cos \theta_2 \dot{\theta}_2 \\
-    \dot{y}_{p_2} = -l_2 \sin \theta_2 \dot{\theta}_2
-  \end{cases}  \ \ \ .
+    \dot{y}_{p_2} = -l_2 \sin \theta_2 \dot{\theta}_2 \ \ \ \ \ \ \ .
+  \end{cases}
   \label{eq:excessiveToGeneralizedDerivatives}
 \end{align}
 
