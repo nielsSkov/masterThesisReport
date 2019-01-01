@@ -15,6 +15,19 @@
 \selectlanguage{english}
 %\title{Cubli}
 
+%%% Frontpage Settings %%%
+\pagenumbering{gobble} %turn off page numbers
+\newgeometry{top=3.5cm, bottom=2cm, left=2cm, right=2cm}     % use whatever margins you want for left, right, top and bottom.
+\fancyhfoffset[E,O]{0pt}
+\pagestyle{fancy}
+\fancyhead[C]{\small
+  \MakeUppercase{  Aalborg University, Control \& Automation }\\
+  \MakeUppercase{  Fredrik Bajers Vej 7, DK-9220 Aalborg     }
+}
+\include{contents/frontpage}
+\restoregeometry     %so it does not affect the rest of the pages.
+\fancyhead[C]{} %clear centered header
+
 %%% Frontmatter Settings %%%
 \pagestyle{empty} %disable headers and footers
 \pagenumbering{roman} %use roman page numbering in the frontmatter I II...
@@ -24,7 +37,6 @@
 
 %%% Introductory Formalities %%%
 %\includepdf[pages={1}]{formalities/frontpage.pdf}
-\include{contents/frontpage}
 \pagestyle{fancy}
 \include{formalities/kolofon}
 \input{formalities/titleSheet.tex}
@@ -40,8 +52,6 @@
 %%% Mainmatter Settings %%%
 \pagenumbering{arabic} %use arabic page numbering in the mainmatter
 \fancyfoot[RO,LE]{\thepage \text{ of} \pageref{LastPage}}
-\fancyfoot[RE,LO]{}
-\fancyhead[RE,LO]{}
 \fancyhead[RE,LO]{\color{aaublue}\small\nouppercase\leftmark} %even page - chapter title
 \pagestyle{fancy}
 

@@ -2,15 +2,23 @@
 The cart pendulum system from \textit{Part 1} is used again. However, here in \textit{Part 2} an additional pendulum is mounted on the cart. The modification is discussed and a model for the changed system is developed in this chapter. The remaining of \textit{Part 2} is concerned with estimating parameters, developing a state estimator, designing a swing-up controller and ultimately stabilizing the two pendulums in upright position.
 
 \section{System Addition}
-\fxnote{picture of twin pendulum}
-
+In \autoref{fig:twinSystemSetup} the setup from \textit{Part 1} is shown with the added pendulum.
+%
+\begin{figure}[H]
+  \includegraphics[width=.7\textwidth]{figures/systemSetup}
+  \caption{twinSystemSetup}
+  \label{fig:twinSystemSetup}
+\end{figure}
+%
+The added pendulum measures \SI{20}{cm} from pivot point to geometrical center of the \SI{251}{g} weight at its end. The friction parameters are estimated again using Senstools, \cite{MHKnudsen}, and with the same reduced pendulum model as in \textit{Part 1}.
+%
 \begin{figure}[H]
   \includegraphics[width=.7\textwidth]{figures/pendulum2Est}
-  \caption{The fit resulting in the estimations of the new second pendulum friction.}
+  \caption{The fit resulting in the estimations of the new second pendulum friction, where $\theta_2$ is the new pendulum angle.}
   \label{fig:pendulum2Est}
 \end{figure}
-
-Same as for the first pendulum, estimated in \textit{Part 1}, the mass is increased to obtain a good fit. In this case the pendulum mass is increased by \SI{13.2}{g}, less than for the first pendulum, which makes sense since the added pendulum is shorter thus adding less mass to the system. For the first pendulum the length was decreased by \SI{0.66}{cm}, while for the new pendulum the measured length is used. Though the mass center should move towards the rod, it being shorter and with more mass at the end than the first pendulum, it makes sense that the mass center is moved so little for the new pendulum that the effect becomes negligible.
+%
+Same as for the first pendulum, parameters estimated in \textit{Part 1}, the mass is increased to obtain a good fit. In this case the pendulum mass is increased by \SI{13.2}{g}, less than for the first pendulum, which makes sense since the added pendulum is shorter thus adding less mass to the system. For the first pendulum the length was decreased by \SI{0.66}{cm}, while for the new pendulum the measured length is used. Though the mass center should move towards the rod, it being shorter and with more mass at the end than the first pendulum, it makes sense that the mass center is moved so little for the new pendulum that the effect becomes negligible.
 
 \begin{table}[H]
   \begin{tabular}{|l|l|l|l|}

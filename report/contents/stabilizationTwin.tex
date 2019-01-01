@@ -40,6 +40,7 @@ The nonlinear state space system from \autoref{eq:nonlinearStateSpaceTwin} are l
     \frac{g m_1}{M l_2}       & \frac{g (M + m_2)}{M l_2} & 0 & -\frac{b_{p_1,c} + b_{p_1,v}}{M l_1 l_2}             & -\frac{(M + m2)(b_{p_2,c} + b_{p_2,v})}{M l_2^2 m_2} & 0 \\
     \frac{g m_1}{M}           & \frac{g m_2}{M}           & 0 & -\frac{b_{p_1,c} + b_{p_1,v}}{M l_1}                 & -\frac{b_{p_2,c} + b_{p_2,v}}{M l_2}                 & 0
   \end{bmatrix}  \label{eq:linearTwin_A} \\
+  \nonumber \\
   B &= 
   \begin{bmatrix}
     0  &  0  &  0  &  \frac{1}{M l_1} & \frac{1}{M l_2} & \frac{1}{M}
@@ -51,9 +52,8 @@ The controllability matrix is computed for the linearized system,
 \begin{align}
   \mathrm{rank}(\mathcal{C}) &= \mathrm{rank}([\ \begin{matrix} B & AB & A^2 B & A^3 B & A^4 B & A^5 B \end{matrix}\ ]) = 6  \ \ \ ,
 \end{align}
-and since $\mathcal{C}$ has full rank, the system is controllable. It is interesting to note that if friction is set to zero and the two pendulums 
+and since $\mathcal{C}$ has full rank, the system is controllable. It is interesting to note that if friction is set to zero and both pendulums are given same length, then $\mathcal{C}$ looses rank, that is, the system would no longer be controllable. This is true even if the pendulum masses are different.
 %
-
 
 \begin{figure}[H]
   \hspace{-10pt}
