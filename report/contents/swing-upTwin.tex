@@ -1,3 +1,5 @@
+% !TeX root = ../main.tex
+%
 \chapter{Swing-Up Design}
 This chapter contains a swing-up design for the twin pendulum system. As for the cart pendulum system in \textit{Part 1} the design is based on \cite{kjAastrom}. The presented approach is similar to the sat-based energy controller, the final design from \textit{Part 1}. Detailed nonlinear analysis is left out here since this design exploits the same principals as for the final cart pendulum swing-up controller in \textit{Part 1}.\\
 Both pendulums are started in $\pi$ at rest and the design is based on the pendulum energies in the coordinate system fixed to the cart, thus reducing the generalized coordinates to,
@@ -66,8 +68,18 @@ and with the dynamics given by,
 %
 the derivative of $V$ is evaluated along trajectories of the system,
 \begin{align}
-  \dot{V} &= E_{\Delta_1} \dot{E}_{\Delta_1} + E_{\Delta_2} \dot{E}_{\Delta_2}  \label{eq:lyapunovDerivativeTwin1} \\ 
-  \dot{V} &= G a_c   \ \ \ ,  \label{eq:lyapunovDerivativeTwin2}
+  \dot{V} &= E_{\Delta_1} \dot{E}_{\Delta_1} + E_{\Delta_2} \dot{E}_{\Delta_2}
+  \label{eq:lyapunovDerivativeTwin1} \\ 
+  \dot{V} &=
+  E_{\Delta_1} ( J_1 \dot{\theta}_1 \ddot{\theta}_1 - m_1 g l_1 \sin \theta_1 \dot{\theta}_1 )  \nonumber \\
+  &+
+  E_{\Delta_2} ( J_2 \dot{\theta}_2 \ddot{\theta}_2 - m_2 g l_2 \sin \theta_2 \dot{\theta}_2 ) 
+  \label{eq:lyapunovDerivativeTwin2} \\
+  \dot{V} &= E_{\Delta_1} ( \dot{\theta}_1 ( m_1 l_1 \cos \theta_1 a_c + m_1 g l_1 \sin \theta_1 )  - m_1 g l_1 \sin \theta_1 \dot{\theta}_1 ) \nonumber \\
+  &+
+  E_{\Delta_2} ( \dot{\theta}_2 ( m_2 l_2 \cos \theta_2 a_c + m_2 g l_2 \sin \theta_2 )  - m_2 g l_2 \sin \theta_2 \dot{\theta}_2 )
+  \label{eq:lyapunovDerivativeTwin3} \\
+  \dot{V} &= G a_c   \ \ \ ,  \label{eq:lyapunovDerivativeTwin4}
 \end{align}
 %
 where,
@@ -164,7 +176,7 @@ The control signal used to obtain the behavior in these simulations are shown in
   \hspace{20pt}
   \captionbox 
   {
-    Both states, $x$ and $\dot{x}$, are successfully brought to zero while still allowing the swing-up controller to maintain orbit.
+    Both states, $x$ and $\dot{x}$, are successfully brought to around zero while still allowing the swing-up controller to maintain orbit.
     \label{fig:xDot_twinSwing}
   }
   {

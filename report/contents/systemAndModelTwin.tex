@@ -1,16 +1,21 @@
+% !TeX root = ../main.tex
+%
 \chapter{System and Model}
 The cart pendulum system from \textit{Part 1} is used again. However, here in \textit{Part 2} an additional pendulum is mounted on the cart. The modification is discussed and a model for the changed system is developed in this chapter. The remaining of \textit{Part 2} is concerned with estimating parameters, developing a state estimator, designing a swing-up controller and ultimately stabilizing the two pendulums in upright position.
 
 \section{System Addition}
-In \autoref{fig:twinSystemSetup} the setup from \textit{Part 1} is shown with the added pendulum.
+In \autoref{fig:twinSystemSetup} the setup from \textit{Part 1} is shown with the added pendulum. The new pendulum is mounted on a new motor (not directly visible in the figure), a brushed Maxon 370356 DC motor \cite{maxonMotor}, same as for the first pendulum. The motor is not in use for this project and only acts as a joint with a HEDS 5540 optical quadrature encoder \cite{avagoTechnologies}.
 %
 \begin{figure}[H]
   \includegraphics[width=.7\textwidth]{figures/twinSetupLabled}
-  \caption{twinSystemSetup}
+  \caption{The setup form \textit{Part 1} with a new pendulum attached on the back side of the cart. The motor controller in use is not directly visible here as it is mounted behind the supply.}
   \label{fig:twinSystemSetup}
 \end{figure}
 %
-The added pendulum measures \SI{20}{cm} from pivot point to geometrical center of the \SI{251}{g} weight at its end. The friction parameters are estimated again using Senstools, \cite{MHKnudsen}, and with the same reduced pendulum model as in \textit{Part 1}.
+
+
+The added pendulum measures \SI{20}{cm} from pivot point to geometrical center of the \SI{251}{g} weight at its end. The friction parameters are estimated again using Senstools, \cite{MHKnudsen}, and with the same reduced pendulum model as in \textit{Part 1}.\\
+Same as for the first pendulum, the mass is increased to obtain a good fit. In this case the pendulum mass is increased by \SI{13.2}{g}, less than for the first pendulum, which makes sense since the added pendulum is shorter thus adding less mass to the system. For the first pendulum the length was decreased by \SI{0.66}{cm}, while for the new pendulum the measured length is used. Though the mass center should move towards the rod, it being shorter and with more mass at the end than the first pendulum, it makes sense that the mass center is moved so little for the new pendulum that the effect becomes negligible. \autoref{fig:pendulum2Est} shows the result of the estimation.
 %
 \begin{figure}[H]
   \includegraphics[width=.7\textwidth]{figures/pendulum2Est}
@@ -18,8 +23,8 @@ The added pendulum measures \SI{20}{cm} from pivot point to geometrical center o
   \label{fig:pendulum2Est}
 \end{figure}
 %
-Same as for the first pendulum, parameters estimated in \textit{Part 1}, the mass is increased to obtain a good fit. In this case the pendulum mass is increased by \SI{13.2}{g}, less than for the first pendulum, which makes sense since the added pendulum is shorter thus adding less mass to the system. For the first pendulum the length was decreased by \SI{0.66}{cm}, while for the new pendulum the measured length is used. Though the mass center should move towards the rod, it being shorter and with more mass at the end than the first pendulum, it makes sense that the mass center is moved so little for the new pendulum that the effect becomes negligible.
-
+In \autoref{table:systemParametersTwin} all parameters for the twin pendulum system are gathered and notation is introduced to accommodate the added pendulum. 
+%
 \begin{table}[H]
   \begin{tabular}{|l|l|l|l|}
     \hline %-------------------------------------------------------------------------------------------
@@ -59,7 +64,10 @@ Same as for the first pendulum, parameters estimated in \textit{Part 1}, the mas
   \end{tabular}
   \caption{Table of all system parameters including the estimated parameters for the added second pendulum. Notice the updated notation where \textit{pendulum 1} is the pendulum also used in \textit{Part 1} and \textit{pendulum 2} is the newly attached pendulum.\label{table:systemParametersTwin} }
 \end{table}
+%
+In practice the new pendulum and motor were added before estimations were made in \textit{Part 1}. This means parameters remain unchanged between the two versions of the setup allowing demonstration of both with the minimal modification of adding or removing the second pendulum mass.
 
+\pagebreak
 \section{Model}
 To model the twin pendulum system, consider the excessive coordinate convention in \autoref{fig:excessiveCoordinatesTwin} along with the generalized coordinates in the mechanical drawing, \autoref{fig:mechanicalDrawingTwin}.
 \begin{figure}[H]
