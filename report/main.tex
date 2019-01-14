@@ -16,17 +16,18 @@
 %\title{Cubli}
 
 %%% Frontpage Settings %%%
-\pagenumbering{gobble} %turn off page numbers
-\newgeometry{top=3.5cm, bottom=2cm, left=2cm, right=2cm}     % use whatever margins you want for left, right, top and bottom.
-\fancyhfoffset[E,O]{0pt}
-\pagestyle{fancy}
-\fancyhead[C]{\small
-  \MakeUppercase{  Aalborg University, Control \& Automation }\\
-  \MakeUppercase{  Fredrik Bajers Vej 7, DK-9220 Aalborg     }
-}
-\include{contents/frontpage}
-\restoregeometry     %so it does not affect the rest of the pages.
-\fancyhead[C]{} %clear centered header
+%\pagenumbering{gobble} %turn off page numbers
+%\newgeometry{top=3.5cm, bottom=2cm, left=2cm, right=2cm}     % use whatever margins you want for left, right, top and bottom.
+%\fancyhfoffset[E,O]{0pt}
+%\pagestyle{fancy}
+%\fancyhead[C]{\small
+%  \MakeUppercase{  Aalborg University, Control \& Automation }\\
+%  \MakeUppercase{  Fredrik Bajers Vej 7, DK-9220 Aalborg     }
+%}
+%\include{contents/frontpage}
+%\restoregeometry     %so it does not affect the rest of the pages.
+%\fancyhead[C]{} %clear centered header
+\includepdf[page={1}]{contents/frontAndBack}
 
 %%% Frontmatter Settings %%%
 \pagestyle{empty} %disable headers and footers
@@ -79,21 +80,27 @@
 %%% PART 2 %%%
 \part{Twin Pendulum}
 
-%---------- Chapter 1 ---------------------------------------- System and Model
+%---------- Chapter 7 ---------------------------------------- System and Model
 \input{contents/systemAndModelTwin.tex}
 
-%---------- Chapter 2 ---------------------------------------- Swing-Up
+%---------- Chapter 8 ---------------------------------------- Swing-Up
 \input{contents/swing-upTwin.tex}
 
-%---------- Chapter 3 ---------------------------------------- Stabilization
+%---------- Chapter 9 ---------------------------------------- Stabilization
 \input{contents/stabilizationTwin.tex}
 
-%---------- Chapter 4 ---------------------------------------- Implementation
-\input{contents/implementationTwin.tex}
+%---------- Chapter 10 --------------------------------------- State Estimation
+\input{contents/stateEstimationTwin.tex}
 
-%---------- Chapter 5 ---------------------------------------- Results
+%---------- Chapter 11 --------------------------------------- Implementation
+%\input{contents/implementationTwin.tex}
+
+%---------- Chapter 11 --------------------------------------- Results
 \input{contents/resultsTwin.tex}
 
+%---------- Chapter 12 --------------------------------------- Conclusion
+\addtocontents{toc}{\protect\vspace*{\baselineskip}\protect}
+\input{contents/conclusion.tex}
 
 %%% Setup for Appendix and Bibliography %%%
 \bookmarksetup{startatroot}
@@ -119,5 +126,8 @@
 
 %%% LIST OF CORRECTIONS %%%
 \listoffixmes
+
+%insert back
+\includepdf[page={2}]{contents/frontAndBack}
 
 \end{document}
