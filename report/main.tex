@@ -115,7 +115,7 @@
 
 %%% APPENDIX %%%
 
-\addcontentsline{toc}{chapter}{Appendix}
+%\addcontentsline{toc}{chapter}{Appendix}
 
 %---------- Appendix A ---------------------------------------- Test Title
 %\input{appendix/.tex}
@@ -129,5 +129,8 @@
 
 %insert back
 \includepdf[page={2}]{contents/frontAndBack}
+
+%exclude back from page-count
+\addtocounter{page}{-1}
 
 \end{document}
