@@ -13,7 +13,7 @@ Since the friction depends on the cart position, the estimation must be done loc
   \label{eq:reducedForCartEstimation}
 \end{align}
 %
-The optimization fitting tool, Senstools \cite{MHKnudsen}, is used to estimate the model parameters. Since the mass is unknown it is also included for estimation. The mass is estimated to be \SI{6.28}{kg}. With more parameters more manual tuning is required in order to start close enough for the optimization algorithm to converge. To reduce the number of parameters as much as possible, once estimated, the mass is fixed as part of the model. The remaining three parameters are viscous friction and coulomb friction for negative and positive velocities. After some trail and error it is concluded that the viscous friction is negligible compared to the coulomb frictions finally leaving only two parameters.\\
+The optimization fitting tool, Senstools \cite{MHKnudsen}, is used to estimate the model parameters. Since the mass is unknown it is also included for estimation. The mass is estimated to be \SI{6.28}{kg}. With more parameters more manual tuning is required in order to start close enough for the optimization algorithm to converge. To reduce the number of parameters as much as possible, once estimated, the mass is fixed as part of the model. The remaining three parameters are viscous friction and coulomb friction for negative and positive velocities. After some trial and error it is concluded that the viscous friction is negligible compared to the coulomb frictions finally leaving only two parameters.\\
 To make the estimations converge without too much manual tuning only part of each test is fitted, see \autoref{fig:manyEst}. The time window is moved, and the estimation is run again. The window is moved \num{34} times resulting in $34\cdot68 = 2312$ estimations in total. Every time the test window is moved, the next estimate is started with the results of the previous estimate as its initial values.
 %
 \begin{figure}[H]
@@ -78,17 +78,17 @@ To obtain a good fit, \SI{22.5}{g} is added to the measured mass and \SI{0.66}{c
 \section{MA Filter Design}
 The measurements in the system are the position, $x$, of the cart and the angle, $\theta$, of the pendulum. Thus, the last two states, $\dot{x}$ and $\dot{\theta}$, must be estimated for the implementation. To that end, a numerical differentiation is applied to the position measurements in order to obtain the velocities,
 \begin{align}
-  \dot{x} &= \frac{x_0 - x_{-1}}{T_{s}}   \ \ \ ,
+  \dot{x}_n &= \frac{x_n - x_{n-1}}{T_{s}}   \ \ \ ,
   \label{eq:nummericalDiff}
 \end{align}
-where $T_s$ is the sample time and $x_0$ and $x_{-1}$ are the two latest samples. However, this approach causes noise in the velocities. Thus, an MA (Moving Average) filter is designed to smooth the signal,
+where $T_s$ is the sample time and $x_n$ and $x_{n-1}$ are the two latest samples. However, this approach causes noise in the velocities. Thus, an MA (Moving Average) filter is designed to smooth the signal,
 %
 \begin{align}
-  \dot{x}_{est} &= \frac{1}{N}\sum_{i=1-N}^{0} \dot{x}_i   \ \ \ ,
+  \dot{x}_{est} &= \frac{1}{N}\sum_{i=0}^{N} \dot{x}_N   \ \ \ ,
   \label{eq:MA}
 \end{align}
 %
-where $\dot{x}_0$ is the numerical differentiation based on the two latest measurements, $x_{est}$ is the filtered value and $N$ is the window size of the filter. In \autoref{fig:thetaDotMA_design} and \ref{fig:xDotMA_design} the MA filter is applied to the result of the numerical differentiation with two different window sizes. Since the interest here is quality of the signal, the following plots are not linked in time, but rather showing the signals where the filter characteristics shows clearly.
+where $\dot{x}_N$ is the numerical differentiation based on the two latest measurements, $\dot{x}_{est}$ is the filtered value and $N$ is the window size of the filter. In \autoref{fig:thetaDotMA_design} and \ref{fig:xDotMA_design} the MA filter is applied to the result of the numerical differentiation with two different window sizes. Since the interest here is quality of the signal, the following plots are not linked in time, but rather showing the signals where the filter characteristics shows clearly.
 %
 \begin{figure}[H]
   \hspace{1cm}

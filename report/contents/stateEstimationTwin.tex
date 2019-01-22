@@ -1,7 +1,7 @@
 % !TeX root = ../main.tex
 %
 \chapter{State Estimation}
-There are three measureable states in the twin pendulum system, the pendulum angles, $\theta_1$ and $\theta_2$, and the position of the cart, $x$. The renaming three states, the pendulum velocities, $\dot{\theta}_1$ and $\dot{\theta}_2$, and the cart velocity, $\dot{x}$, must be estimated.\\
+There are three measurable states in the twin pendulum system, the pendulum angles, $\theta_1$ and $\theta_2$, and the position of the cart, $x$. The renaming three states, the pendulum velocities, $\dot{\theta}_1$ and $\dot{\theta}_2$, and the cart velocity, $\dot{x}$, must be estimated. In this chapter a Kalman filter is designed based on \cite{haugen2015kompendium, rhudy2017kalman}.\\
 The pendulum angles are measured with a resolution of $\Delta_\theta =\ $\SI{\pi e-3} rad/tic and the cart position with a resolution of $\Delta_x =\ $\SI{0.088e-3} m/tic. This causes the quantization problem illustrated for $\theta_1$ in \autoref{fig:quantizationProblem}. This is less of an issue for $x$ since its measurement resolution is two orders of magnitude higher than that of the angles.
 %
 \begin{figure}[H]
@@ -10,7 +10,7 @@ The pendulum angles are measured with a resolution of $\Delta_\theta =\ $\SI{\pi
   \label{fig:quantizationProblem}
 \end{figure}
 %
-To estimate the three unmeasured states and solve the quantization problem a Kalman filter is designed. In the design process it is useful to have a simulation exhibiting the same issues as the real system. To that end a simple quantization model is proposed,
+To estimate the three unmeasured states and solve the quantization problem a Kalman filter is designed. In the design process it is useful to have a simulation exhibiting the same issues as the real system. To that end a simple quantization model, \cite[35]{dutoit2010applied}, is proposed,
 \begin{align}
 x_q = \Delta \left\lfloor\ \frac{x}{\Delta} + \frac{1}{2}\ \right\rfloor \ \ \ ,   \label{eq:quantizationModel}
 \end{align}
@@ -150,23 +150,14 @@ Since the quantization problem is less significant for the position measurements
 % theta2_KFsim
 % theta2Dot_KFsim
 %
-
-
-
-
+%
+%
+%
+%
 %-------plots-----------
-
-%  implemented Kalman filter
-
-\fxnote{tail for twin state estimation}
-
-
-
-
-
-
-
-
-
-
-
+%
+%  implemented Kalman filter  (maybe have it in results)
+%
+%
+%
+This concludes state estimation for the twin pendulum system. With all parameters estimated and the Kalman filter designed for state estimation any remaining comments on implementation are addressed when presenting the results in the next chapter.

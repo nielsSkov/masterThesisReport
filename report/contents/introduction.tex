@@ -1,6 +1,13 @@
 % !TeX root = ../main.tex
 %
 \chapter{Introduction}\label{chap:introduction}
-This project is concerned with developing nonlinear control strategies for a cart pendulum system and to apply these to the set-up provided in the Control and Automation Lab at Aalborg University (AAU).\\
-The project is two part. The objective of the first part is to design a swing-up controller along with a stabilizing controller to catch the pendulum at the upright position.\\
-In the second part an additional pendulum is attached to the cart in the setup making it a twin pendulum system. The idea is to estimate the additional state and ultimately stabilize the two pendulums in upright position.
+This thesis is concerned with investigating, developing and applying nonlinear control strategies to a cart pendulum and twin pendulum system. Since both these systems have less actuators than degrees of freedom, they fall into the category of underactuated systems. For the cart pendulum a motor controls the cart while the pendulum can only be acted on through the system dynamics. Adding a second pendulum to get the twin pendulum system means the system only has one actuated of the now three degrees of freedom.
+
+The control objective is to develop a swing-up procedure which brings the pendulums to the upright naturally unstable equilibrium. The concept used for the swing-up controllers is to bring the mechanical energy of each pendulum to match its potential energy in the unstable equilibrium.\\
+Once the pendulums are close to the upright position, a catch controller is deployed which then stabilizes the pendulums. For the cart pendulum system a sliding mode controller is developed and for the twin pendulum a Linear Quadratic Regulator (LQR) is designed.
+
+Though these two systems may not directly have other physical application than demonstration of control technique, they are extremely useful for studying control problems concerned with underactuated systems.\\
+In general the study of underactuated robotics uses the natural dynamics of the mechanical systems, attempting to achieve extraordinary performance in terms of speed, efficiency or robustness \cite{tedrake2009underactuated}.
+An example of an underactuated system is a walking robot. From a simplified point of view the supporting leg can be seen as an inverted pendulum once the other leg leaves the ground. Popular walking robots such as ASIMO makes use of high-gain feedback in an attempt to cancel out the natural dynamics of the system. This is about 20 times less efficient than a human gait and results in stiff and unnatural walking \cite{tedrake2009underactuated}. This approach also limits the operating range and thus versatility of the system \cite{tedrake2009underactuated}.\\
+While developing a robust, versatile and natural walking robot is certainly not a simple problem, it is clear that exploiting natural dynamics by underactuation is a considerable step on the way.\\
+So understanding and applying nonlinear control strategies to an isolated case like the cart pendulum and twin pendulum system could play an important role in the future of controlled underactuated systems.

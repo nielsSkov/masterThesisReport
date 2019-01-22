@@ -5,7 +5,7 @@ In this chapter three swing-up controllers are designed, all based on \cite{kjAa
 
 Consider the pendulum dynamics from \autoref{eq:energyDerivedDynamicEquation1}, where $J = m l^2$ is the pendulum inertia and frictions are assumed to be zero such that,
 \begin{align}
-  J \ddot{\theta} - m l \cos \theta a_c - m g l \sin \theta  &= 0 \ \ \ .  \label{eq:pendulumDynamics}
+  J \ddot{\theta} - m l \cos \theta\ a_c - m g l \sin \theta  &= 0 \ \ \ .  \label{eq:pendulumDynamics}
 \end{align}
 This equation captures the behavior of the pendulum corresponding to some controlled acceleration $a_c$ at the pivot point. This acceleration is viewed as the control input for now. The force needed to achieve this acceleration is considered at the end of the design. It is further convenient to describe the energy of the pendulum with the coordinate frame fixed at its pivot point, see \autoref{fig:fixedCooredinateSystem}.
 %
@@ -62,7 +62,7 @@ The idea is to reach the reference $E_\Delta = 0$, which happens when,
   &\dot{\theta} = \pm \left(\frac{-2 m g l (\cos \theta -1)}{J}\right)^{\tfrac{1}{2}}  \ \ \ .  \label{eq:energyDeltaZero2}
 \end{align}
 %
-A plot of \autoref{eq:energyDeltaZero2} in the phase plane, see \autoref{fig:orbit}, reveals a set of solutions joining the two unstable equilibrium points.
+A plot of $\dot{\theta}(\theta)$ from \autoref{eq:energyDeltaZero2} in the phase plane, see \autoref{fig:orbit}, reveals a set of solutions joining the two unstable equilibrium points.
 %
 \begin{figure}[H]
   \includegraphics[width=.4\textwidth]{figures/orbit}
@@ -547,8 +547,8 @@ where
 \begin{align}
 \mathrm{sgn}( s ) &=
 \begin{cases}
-\ \ \phantom{-}1 & \ \  | s |  \geq 0 \\
-\ \           -1 & \ \  | s |  <    0 \ \ \ ,
+\ \ \phantom{-}1 & \ \  s   \geq 0 \\
+\ \           -1 & \ \  s   <    0 \ \ \ ,
 \end{cases}
 \label{eq:sgnFunction1}
 \end{align}
@@ -678,7 +678,7 @@ and selecting new states $ [\ z_1\ \ z_2\ ]^\mathrm{T} = [\ x\ \ \dot{x}\ ]^\mat
       0 & 1 \\
       0 & 0
     \end{bmatrix}
-  }_{A}
+  }_{\vec{A}}
   \begin{bmatrix}
     z_1 \\
     z_2
@@ -689,7 +689,7 @@ and selecting new states $ [\ z_1\ \ z_2\ ]^\mathrm{T} = [\ x\ \ \dot{x}\ ]^\mat
       0 \\
       \tfrac{1}{M}
     \end{bmatrix}
-  }_{B}
+  }_{\vec{B}}
   v
   \label{eq:simpleLinearStateSpace} \ \ \ .
 \end{align}

@@ -1,3 +1,33 @@
 % !TeX root = ../main.tex
 %
 \chapter{Conclusion}
+\textbf{In \textit{Part 1}} of this thesis the cart pendulum system was investigated. A test setup provided in the Control and Automation Lab by AAU was used as a platform for implementation and test of the control strategies developed.\\
+The objective was to swing up the pendulum from downward position, then catch and stabilize it in upright position. To achieve this behavior on an underactuated nonlinear system, two control strategies were implemented in the final design.\\
+A model of the cart pendulum system was put forth and a simulation was developed to use during the design.
+
+In the process three energy based swing-up controllers were designed and tested in simulation. Though inefficient, the first controller was the simplest form of the idea and therefore useful in understanding the underlying principals of the energy based control strategies. For that reason, this is also where the nonlinear analysis of the energy based swing-up controller was investigated. It showed that, by Lasalle's Theorem, deploying this control strategy, the pendulum would converge to the set connecting two equilibrium points, thus eventually reaching heteroclinic orbit.\\
+The second swing-up controller was a sign-based controller with the same underlying logic as the first design, but using a sign function to give maximum control output in the desired direction. While the controller worked in simulation, the sign-function caused excessive switching making it undesirable for implementation.\\
+Though the sign-based controller could not be implemented, it showed an ideal swing-up behavior. This made the basis for the final sat-based controller in which most of the performance of the sign-based controller was maintained while eliminating the switching issue.\\
+All three swing-up controllers caused the cart in simulation to drift off the physical limitations of the rail. To solve this issue a simple liner state feedback controller was designed and successfully kept the cart position around zero, the middle of the rail.
+
+To catch the pendulum in upright position after the swing-up procedure, a sliding mode controller was developed. This involved a system transformation, linear state feedback stabilization of the reduced order model in the transformation and finally a sliding surface based in the Lyapunov Stability Theorem.
+
+In the implementation of these controllers it was necessary to estimate frictions in the system and mass of the cart. The friction between cart and rail proved challenging to model, and after analyzing the result of 68 tests along the rail, it was found that the friction depends on both position and direction of the cart. To manage this friction a lookup table was implemented with online interpolation between points to estimate and finally compensate for the cart friction along the rail. This friction compensation showed good results, but is not considered a perfect map or model of the cart friction.\\
+To obtain estimates of the unmeasured states an extended Kalman filter (provided by a previous project group) was used for stabilization and a moving average filter was designed and implemented for the swing-up controller.
+
+With all parameters accounted for the sliding mode and sat-based swing-up controller were successfully implemented and tested on the cart pendulum setup. The cart did on occasion diverge from zero before returning and re-stabilizing. It is thought to be an issue caused by imperfect friction compensation and possibly amplified by the extended Kalman filter not receiving likely dynamical behavior from the system based on the given input.
+
+\textbf{In \textit{Part 2}} an additional pendulum was mounted on the test setup from \textit{Part 1}, making it a twin pendulum system. This adds the challenge by a second unactuated link in the system.\\
+The objective was to use the knowledge and experience gained in \textit{Part 1} to develop a strategy for swinging up and catching both pendulums in upright position.\\
+A model was developed and implemented for simulation of the twin pendulum system and the new friction parameters for the second pendulum were estimated.
+
+The design of the twin swing-up controller was based on the same principals as for the sat-based energy controller for the cart pendulum system and showed good results in simulation.
+
+To stabilize and eventually catch the two pendulums and LQR was designed. The swing-up controller and LQR were successfully simulated together.
+
+Since an other two states were added to the system by the new pendulum a new state estimator was needed. Thus, a Kalman filter was designed, tuned and successfully implemented to smooth measurement quantization and estimate the three derivative states.
+
+Finally the swing-up and LQR controller were implemented on the twin pendulum system. The swing-up design shows good results, however further tuning is needed to bring the pendulums to equilibrium simultaneously for the catch controller to take over. Though exhibiting a lot of oscillations, the LQR successfully stabilized the two pendulums in upright position.
+
+\textbf{Future Work:} It would be interesting to see further attempts at estimating the cart friction. One could combine a position and direction dependent friction model with machine learning. The machine learning algorithm could then adjust and learn the rail friction given random control inputs until the model error is brought close to zero.\\
+Further tuning of the swing-up controller combined with a sliding mode design for the twin pendulum system is a clear next step. Developing an extended Kalman filter for the twin pendulum system would also be interesting to see.

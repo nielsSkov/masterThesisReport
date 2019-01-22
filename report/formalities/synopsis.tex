@@ -1,1 +1,8 @@
-\lipsum[2]\lipsum[2]
+% !TeX root = ../main.tex
+%
+This project is concerned with developing nonlinear control strategies for a cart pendulum system set-up provided in the Control and Automation Lab by Aalborg University (AAU).\\
+The project is two part. The first part considers the cart pendulum system and with an additional pendulum attached the second part considered the twin pendulum system. The objective of both pars is to swing up, catch and stabilize the pendulums in upright position.\\
+%The project is two part. The objective of the first part is to design a swing-up controller along with a stabilizing controller to catch the pendulum at the upright position.\\
+%In the second part an additional pendulum is attached to the cart in the setup making it a twin pendulum system. The idea is to estimate the additional state and ultimately swing up and stabilize the two pendulums in upright position.\\
+In the first part three energy based swing-up controller are designed for the cart pendulum system. A sliding mode controller is developed to catch and stabilize the pendulum. One of the energy based swing-up strategies is implemented on the test setup along with the sliding mode controller.\\
+In the second part knowledge from the first part is used to developed a swing-up strategy for the twin pendulum system. A Linear Quadratic Regulator (LQR) is designed as the stabilizing controller. The controllers are implemented and finally a Kalman filter is designed to estimate the unmeasured states of the twin pendulum system.
