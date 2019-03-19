@@ -27,7 +27,9 @@
 %\include{contents/frontpage}
 %\restoregeometry     %so it does not affect the rest of the pages.
 %\fancyhead[C]{} %clear centered header
+\pagenumbering{gobble}
 \includepdf[page={1}]{contents/frontAndBack}
+\cleardoublepage
 
 %%% Frontmatter Settings %%%
 \pagestyle{empty} %disable headers and footers
